@@ -26,7 +26,8 @@
     "crawl:internal": "node scripts/link-crawler.mjs --no-external",
     "crawl:test": "node scripts/link-crawler.mjs --self-test",
     "linkcheck": "node scripts/link-check.mjs",
-    "linkcheck:test": "node scripts/link-check.mjs --self-test"
+    "linkcheck:test": "node scripts/link-check.mjs --self-test",
+    "test:audit-gate:unit": "node scripts/audit-gate.test.mjs"
   },
   "dependencies": {
     "@upstash/redis": "1.37.0",
@@ -34,7 +35,7 @@
     "lucide-react": "1.7.0",
     "marked": "18.0.6",
     "minisearch": "7.2.0",
-    "next": "16.2.10",
+    "next": "16.2.12",
     "nodemailer": "9.0.3",
     "react": "19.2.7",
     "react-dom": "19.2.7",
@@ -55,5 +56,8 @@
     "tailwindcss": "^4",
     "tsx": "4.23.1",
     "typescript": "^5"
+  },
+  "overrides": {
+    "postcss": "8.5.23"
   }
 }

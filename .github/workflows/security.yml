@@ -44,4 +44,11 @@ jobs:
         run: npm ci
 
       - name: Audit — fail on high or critical
-        run: npm audit --audit-level=high
+        # Was `npm audit --audit-level=high`. That command cannot express "known,
+        # no forward fix", so a single unfixable transitive advisory turns this
+        # REQUIRED check permanently red and blocks every merge — including the
+        # merge that fixes the other advisories. audit-gate.mjs keeps the same
+        # severity floor and adds a per-advisory allowlist where each entry has a
+        # reason and a hard EXPIRY: past its date the gate goes red even if the
+        # advisory is gone, so an acceptance cannot become permanent silence.
+        run: node scripts/audit-gate.mjs

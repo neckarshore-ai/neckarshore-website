@@ -35,6 +35,11 @@ jobs:
         run: |
           npm run test:unit
           npm run test:lighthouse:unit
+          # Guards the dependency CVE gate itself (scripts/audit-gate.mjs), which decides whether
+          # the REQUIRED "npm audit" check goes green. Its fail-closed properties need a gate of
+          # their own — a security gate that silently passes is indistinguishable from a healthy
+          # repo. Pure node, no network, exits non-zero on failure.
+          npm run test:audit-gate:unit
           # §4c: gate the previously-ungated pure unit suites. test:search:unit is now GREEN at
           # HEAD (12 passed, 30 docs) and exits non-zero on failure (process.exit(fail?1:0)), so
           # this is a real gate, not cosmetic. The old "currently RED — /repositories missing"
