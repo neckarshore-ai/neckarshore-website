@@ -43,7 +43,7 @@
     "web-vitals": "5.3.0"
   },
   "devDependencies": {
-    "@playwright/test": "1.61.1",
+    "@playwright/test": "1.62.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/nodemailer": "8.0.1",
@@ -51,7 +51,7 @@
     "@types/react-dom": "^19",
     "@types/sanitize-html": "2.16.1",
     "eslint": "^9",
-    "eslint-config-next": "16.2.10",
+    "eslint-config-next": "16.2.12",
     "lighthouse": "13.4.1",
     "tailwindcss": "^4",
     "tsx": "4.23.1",
