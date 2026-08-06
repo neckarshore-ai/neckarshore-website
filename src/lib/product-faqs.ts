@@ -53,7 +53,7 @@ export const PRODUCT_FAQS: Record<string, FaqItem[]> = {
     },
     {
       q: "Woher kommen die Verzerrungen?",
-      a: "Die Bias-Bibliothek folgt Rolf Dobellis Katalog der Denkfehler. Der aktuelle v0.1-Prototyp deckt 18 Verzerrungen ab; geplant sind unter anderem ein Decision-Cemetery, ein Strategic Deep-Dive und ein Pre-Mortem-Generator.",
+      a: "Die Bias-Bibliothek folgt Rolf Dobellis Katalog der Denkfehler. Der aktuelle v0.1-Prototyp deckt 18 Verzerrungen ab.",
     },
   ],
 

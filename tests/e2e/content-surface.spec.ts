@@ -388,14 +388,15 @@ test.describe("Content surface — Snakeoil-Check live MMP", () => {
     );
   });
 
-  test("TC-CNT-036: renders the six MMP content axes as headings", async ({ page }) => {
+  test("TC-CNT-036: renders the five MMP content axes as headings", async ({ page }) => {
+    // "Status & Roadmap" removed 2026-08-06 (L-NECKARSHORE-HONESTY-FIXES: Park status = no
+    // published feature roadmap; product-portfolio.md line 14).
     await page.goto("/products/snakeoil-check");
     for (const heading of [
       "Das Problem",
       "Wie funktioniert Snakeoil-Check?",
       "Was Snakeoil-Check anders macht",
       "Live ausprobieren",
-      "Status & Roadmap",
       "Wie dieser Text entstand",
     ]) {
       await expect(page.getByRole("heading", { name: heading })).toBeVisible();

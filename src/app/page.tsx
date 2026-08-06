@@ -51,7 +51,7 @@ const faqItems = [
   },
   {
     q: "Was kostet Nearshore-Entwicklung bei neckarshore.ai?",
-    a: "Wir sind deutlich kosteneffektiver als Big-4-Consultancies bei vergleichbarer Qualität. Durch KI-Beschleunigung liefert ein kleines Team, wofür andere deutlich mehr Leute brauchen. Konkrete Preise besprechen wir im 15-Minuten Kennenlerntermin.",
+    a: "Wir sind deutlich kosteneffektiver als Big-4-Consultancies bei vergleichbarer Qualität. Durch KI-Beschleunigung liefert ein kleines Team, wofür andere deutlich mehr Leute brauchen. Konkrete Preise besprechen wir im 20-Minuten Kennenlerntermin.",
   },
   {
     q: "Wo sitzt neckarshore.ai?",
@@ -213,7 +213,7 @@ export default function Home() {
                   icon: Users,
                   title: "vs. Freelancers",
                   subtitle: "Die Verlässlichkeit einer Agentur, die Agilität eines Startups.",
-                  text: "Skalierbar, nicht einzelne Person. Strukturierte Prozesse, nicht ad-hoc. Volle Projektverantwortung mit konsistenten Qualitätsstandards.",
+                  text: "Ein strukturierter Engineering-Prozess statt Ad-hoc-Arbeit. Volle Projektverantwortung mit konsistenten Qualitätsstandards — Enterprise-Qualität ohne Enterprise-Headcount.",
                 },
               ].map((item) => (
                 <div
@@ -244,7 +244,7 @@ export default function Home() {
                   icon: Cpu,
                   title: "AI-Powered Development",
                   subtitle: "Software, schneller gebaut.",
-                  text: "Wir bauen eure Software mit KI-Beschleunigung. Ein kleines Team mit modernen AI-Tools liefert, wofür andere 3x so viele Leute brauchen. NestJS, TypeScript, PostgreSQL — kein Spielzeug, sondern Production-Stack.",
+                  text: "Wir bauen eure Software mit KI-Beschleunigung. Ein Senior-Architekt mit einem KI-gestützten Expertensystem liefert Delivery-Geschwindigkeit und -Breite, die normalerweise ein ganzes Team erfordert. NestJS, TypeScript, PostgreSQL — kein Spielzeug, sondern Production-Stack.",
                 },
                 {
                   icon: FileText,

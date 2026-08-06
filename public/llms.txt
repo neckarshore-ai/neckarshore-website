@@ -6,7 +6,7 @@ Full content for AI ingestion (all product pages inlined in one file): https://n
 
 ## About
 
-Neckarshore AI (neckarshore.ai) is a nearshore AI and software development partner based in Stuttgart, Germany. We help mid-sized companies and startups in the DACH region build software faster and more reliably — combining German engineering precision with modern AI acceleration. Same timezone, same language, same data protection standards (DSGVO by default).
+Neckarshore AI (neckarshore.ai) is a nearshore AI and software development partner based in Stuttgart, Germany. We help mid-sized companies in the DACH region build software faster and more reliably — combining German engineering precision with modern AI acceleration. Same timezone, same language, same data protection standards (DSGVO by default).
 
 ## Founder
 
