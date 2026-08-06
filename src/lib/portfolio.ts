@@ -255,7 +255,7 @@ export const PORTFOLIO: PortfolioCategory[] = [
         name: "Obsidian Vault Autopilot",
         slug: "obsidian-vault-autopilot",
         tagline: "Open-Source-Automatisierung für Wissens-Vaults in Obsidian — sortiert, benennt, taggt und reichert Notizen an.",
-        status: "preview",
+        status: "live",
         featured: true,
         href: "/products/obsidian-vault-autopilot",
         isExternal: false,

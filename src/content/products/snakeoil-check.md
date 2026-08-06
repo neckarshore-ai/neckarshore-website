@@ -27,10 +27,6 @@ Skepsis als Werkzeug, nicht als Haltung. Snakeoil-Check ersetzt das Bauchgefühl
 
 [snakeoil.neckarshore.ai](https://snakeoil.neckarshore.ai) — zum Start ein kostenloser Check pro Person, weitere Prüfungen als Shot-Pakete.
 
-## Status & Roadmap
-
-Live. Das Fundament — Scraping, Bewertungs-Engine und Modell-Router — läuft in der Produktion, das öffentliche Frontend ist erreichbar. Geplant: gespeicherte Historie, der Vergleich mehrerer Angebote und ein Abo für Vielprüfer.
-
 ## Wie dieser Text entstand
 
 KI-beschleunigt entworfen, vom Gründer redigiert — dieselbe Arbeitsweise, die Neckarshore baut.
