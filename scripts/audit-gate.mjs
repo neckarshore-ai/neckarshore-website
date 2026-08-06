@@ -75,6 +75,17 @@ export const ALLOWLIST = [
       "the production bundle. npm's remedy is eslint 10, a semver-major migration that is its own " +
       "decision. Removable once the ESLint chain moves off minimatch@3.",
   },
+  {
+    id: "GHSA-rgw5-rvv9-x895",
+    pkg: "brace-expansion",
+    devOnly: true,
+    expires: "2026-10-31",
+    reason:
+      "Second brace-expansion DoS (bypasses the GHSA-mh99 mitigation), same dev-only ESLint/" +
+      "typescript-estree chains (minimatch@3/@10), not in the production bundle. The bump fix is " +
+      "barred by the 2026-08-04 install freeze (Shai-Hulud wave, npm ci only). Re-decide at freeze " +
+      "lift: bump brace-expansion, then remove this entry together with its sibling.",
+  },
 ];
 
 /*
