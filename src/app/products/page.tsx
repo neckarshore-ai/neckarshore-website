@@ -6,7 +6,12 @@ import { ProductCard } from "@/components/ProductCard";
 import { JsonLd } from "@/components/JsonLd";
 import { PageSchema } from "@/components/PageSchema";
 import { pageMetadata } from "@/lib/seo";
-import { PORTFOLIO, featuredItems, hiddenItemCount } from "@/lib/portfolio";
+import {
+  PORTFOLIO,
+  featuredItems,
+  groupItemsByStatus,
+  hiddenItemCount,
+} from "@/lib/portfolio";
 import { cardDescription } from "@/lib/card-descriptions";
 import { collectionPageSchema } from "@/lib/schema/product";
 import { breadcrumbListSchema } from "@/lib/schema/breadcrumb";
@@ -60,9 +65,10 @@ export default function ProductsIndex() {
             Was wir bauen
           </h1>
           <p className="mt-5 text-lg leading-relaxed text-neutral-dark/80 dark:text-text-secondary">
-            Heute ein Flagship, dazu eine Handvoll Minimum Marketable Products, fokussierte
-            Open-Source-Skills — und ein paar Web-Präsenzen nebenbei. Alle nach derselben
-            Arbeitsweise gebaut: KI-beschleunigt, DSGVO-by-Design, Made in Germany.
+            Heute ein Flagship, dazu eine Handvoll Minimum Marketable Products,
+            fokussierte Open-Source-Skills — und ein paar Web-Präsenzen
+            nebenbei. Alle nach derselben Arbeitsweise gebaut: KI-beschleunigt,
+            DSGVO-by-Design, Made in Germany.
           </p>
         </header>
 
@@ -74,7 +80,10 @@ export default function ProductsIndex() {
             const balanceTile =
               tileCount % 2 === 1 ? category.balanceTile : undefined;
             return (
-              <section key={category.id} aria-labelledby={`tier-${category.id}`}>
+              <section
+                key={category.id}
+                aria-labelledby={`tier-${category.id}`}
+              >
                 <div className="flex items-baseline gap-3 border-b border-primary/5 pb-3 dark:border-text-secondary/10">
                   <h2
                     id={`tier-${category.id}`}
@@ -97,49 +106,63 @@ export default function ProductsIndex() {
                   {category.intro}
                 </p>
 
-                <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                  {featured.map((item) => (
-                    <ProductCard
-                      key={item.slug}
-                      item={item}
-                      headingLevel="h3"
-                      description={cardDescription(item.slug)}
-                    />
-                  ))}
-                  {hidden > 0 && (
-                    <Link
-                      href={category.href}
-                      data-track={`${category.track}_more`}
-                      aria-label={`Alle ${category.title} ansehen (${hidden} ${hidden === 1 ? "weiteres" : "weitere"})`}
-                      className="group flex flex-col items-start justify-center rounded-xl border border-dashed border-primary/20 px-6 py-5 transition-colors hover:border-accent hover:bg-accent/5 dark:border-text-secondary/20 dark:hover:border-accent-bright dark:hover:bg-accent-bright/5"
+                {/* Live products lead under their own sub-header, in-development follow —
+                    each A→Z (Founder decision 2026-08-06). Sub-header only when a tier has
+                    both groups; the +N/balance tiles stay in the LAST group's grid. */}
+                {groupItemsByStatus(featured).map((group, idx, groups) => (
+                  <div key={group.label}>
+                    {groups.length > 1 && (
+                      <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-muted dark:text-text-tertiary">
+                        {group.label}
+                      </p>
+                    )}
+                    <div
+                      className={`${groups.length > 1 ? "mt-3" : "mt-6"} grid gap-4 sm:grid-cols-2`}
                     >
-                      <span className="text-sm font-medium text-muted dark:text-text-tertiary">
-                        +{hidden} {hidden === 1 ? "weiteres" : "weitere"}
-                      </span>
-                      <span className="mt-1 font-heading text-base font-semibold text-accent transition-colors group-hover:text-accent-hover dark:text-accent-bright">
-                        Alle {category.title} ansehen →
-                      </span>
-                    </Link>
-                  )}
-                  {balanceTile && (
-                    <Link
-                      href={category.href}
-                      data-track={`${category.track}_balance`}
-                      aria-label={`Mehr über unsere ${category.title} erfahren`}
-                      className="group hidden flex-col items-start justify-center rounded-xl border border-dashed border-primary/20 px-6 py-5 transition-colors hover:border-accent hover:bg-accent/5 sm:flex dark:border-text-secondary/20 dark:hover:border-accent-bright dark:hover:bg-accent-bright/5"
-                    >
-                      <span className="text-sm font-medium text-muted dark:text-text-tertiary">
-                        {balanceTile.eyebrow}
-                      </span>
-                      <span className="mt-1 text-[15px] leading-relaxed text-neutral-dark/70 dark:text-text-secondary/80">
-                        {balanceTile.line}
-                      </span>
-                      <span className="mt-2 font-heading text-base font-semibold text-accent transition-colors group-hover:text-accent-hover dark:text-accent-bright">
-                        {balanceTile.cta} →
-                      </span>
-                    </Link>
-                  )}
-                </div>
+                      {group.items.map((item) => (
+                        <ProductCard
+                          key={item.slug}
+                          item={item}
+                          headingLevel="h3"
+                          description={cardDescription(item.slug)}
+                        />
+                      ))}
+                      {idx === groups.length - 1 && hidden > 0 && (
+                        <Link
+                          href={category.href}
+                          data-track={`${category.track}_more`}
+                          aria-label={`Alle ${category.title} ansehen (${hidden} ${hidden === 1 ? "weiteres" : "weitere"})`}
+                          className="group flex flex-col items-start justify-center rounded-xl border border-dashed border-primary/20 px-6 py-5 transition-colors hover:border-accent hover:bg-accent/5 dark:border-text-secondary/20 dark:hover:border-accent-bright dark:hover:bg-accent-bright/5"
+                        >
+                          <span className="text-sm font-medium text-muted dark:text-text-tertiary">
+                            +{hidden} {hidden === 1 ? "weiteres" : "weitere"}
+                          </span>
+                          <span className="mt-1 font-heading text-base font-semibold text-accent transition-colors group-hover:text-accent-hover dark:text-accent-bright">
+                            Alle {category.title} ansehen →
+                          </span>
+                        </Link>
+                      )}
+                      {idx === groups.length - 1 && balanceTile && (
+                        <Link
+                          href={category.href}
+                          data-track={`${category.track}_balance`}
+                          aria-label={`Mehr über unsere ${category.title} erfahren`}
+                          className="group hidden flex-col items-start justify-center rounded-xl border border-dashed border-primary/20 px-6 py-5 transition-colors hover:border-accent hover:bg-accent/5 sm:flex dark:border-text-secondary/20 dark:hover:border-accent-bright dark:hover:bg-accent-bright/5"
+                        >
+                          <span className="text-sm font-medium text-muted dark:text-text-tertiary">
+                            {balanceTile.eyebrow}
+                          </span>
+                          <span className="mt-1 text-[15px] leading-relaxed text-neutral-dark/70 dark:text-text-secondary/80">
+                            {balanceTile.line}
+                          </span>
+                          <span className="mt-2 font-heading text-base font-semibold text-accent transition-colors group-hover:text-accent-hover dark:text-accent-bright">
+                            {balanceTile.cta} →
+                          </span>
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </section>
             );
           })}

@@ -50,14 +50,22 @@ export const MMP_CARDS: Record<string, MmpCardData> = {
       "Ein Archiv echter menschlicher Stimmen für Familien und Institutionen. Geführte Aufnahme, Consent-first, sicher verwahrt — eine Stimme, die bleibt, für die Menschen, die nach uns kommen.",
     repoUrl: "https://github.com/neckarshore-mmps/phonesis-voicebank",
   },
+  // Grundversion 2026-08-06: scope is being defined (Engels pass) — the description stays
+  // deliberately claim-free until it lands. repoUrl per Founder decision 2026-08-06.
+  kaze: {
+    description:
+      "Das erste iOS-Produkt von Neckarshore AI. Der Produkt-Scope wird gerade geschärft — diese Seite füllt sich, sobald er steht. Gebaut nach derselben Arbeitsweise wie alles hier: KI-beschleunigt, DSGVO-by-Design, Made in Germany.",
+    repoUrl: "https://github.com/neckarshore-mmps/kaze",
+  },
   "local-seo-hub": {
     description:
       "AI-first Sichtbarkeits-Plattform für lokale Unternehmen. Rankings, Reviews und Citations fließen in einen einzigen Visibility Score (0–100) — gebaut für kleine Betriebe und die Agenturen, die sie betreuen.",
-    repoUrl: "https://github.com/neckarshore-mmps/mmp-local-seo-performance-hub",
+    repoUrl:
+      "https://github.com/neckarshore-mmps/mmp-local-seo-performance-hub",
   },
   "prod-or-pretend": {
     description:
-      "Ein konstruktiver Qualitäts-Spiegel für Tech-Hype. Prüft „an-einem-Wochenende-gebaut\"-Claims gegen echte Produktionsstandards — Tests, Security, Skalierbarkeit, Doku. Kein Debunker, sondern eine Substanz-von-Luft-Unterscheidung für Entscheider.",
+      'Ein konstruktiver Qualitäts-Spiegel für Tech-Hype. Prüft „an-einem-Wochenende-gebaut"-Claims gegen echte Produktionsstandards — Tests, Security, Skalierbarkeit, Doku. Kein Debunker, sondern eine Substanz-von-Luft-Unterscheidung für Entscheider.',
     repoUrl: "https://github.com/neckarshore-mmps/mmp-prod-or-pretend",
   },
   // NOTE: unlike the other MMP repos above, trustscope is PUBLIC (MIT) — the GitHub link
