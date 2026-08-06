@@ -122,7 +122,8 @@ export const PORTFOLIO: PortfolioCategory[] = [
       {
         name: "Omnopsis Documentor+X",
         slug: "omnopsis",
-        tagline: "KI-first Documentation Engine für Engineering-Teams — fail-closed, BYOLLM, DSGVO-by-Design.",
+        tagline:
+          "KI-first Documentation Engine für Engineering-Teams — fail-closed, BYOLLM, DSGVO-by-Design.",
         status: "live",
         // Pre-launch (Launch geplant Q3 2026) — the card pill must match the page, not the flagship status flag.
         statusLabel: "In Entwicklung",
@@ -162,7 +163,8 @@ export const PORTFOLIO: PortfolioCategory[] = [
       {
         name: "Snakeoil-Check",
         slug: "snakeoil-check",
-        tagline: "Neutraler KI-Reality-Check für Online-Coachings und High-Ticket-Angebote.",
+        tagline:
+          "Neutraler KI-Reality-Check für Online-Coachings und High-Ticket-Angebote.",
         status: "live",
         featured: true,
         href: "/products/snakeoil-check",
@@ -178,7 +180,8 @@ export const PORTFOLIO: PortfolioCategory[] = [
       {
         name: "Phonesis Voicebank",
         slug: "phonesis",
-        tagline: "Ein Archiv echter menschlicher Stimmen für den deutschen Markt.",
+        tagline:
+          "Ein Archiv echter menschlicher Stimmen für den deutschen Markt.",
         status: "preview",
         featured: true,
         href: "/products/phonesis",
@@ -191,9 +194,25 @@ export const PORTFOLIO: PortfolioCategory[] = [
         hasOwnPage: true,
       },
       {
+        name: "Kaze",
+        slug: "kaze",
+        tagline: "Das erste iOS-Produkt von Neckarshore AI.",
+        status: "preview",
+        featured: true,
+        href: "/products/kaze",
+        isExternal: false,
+        schemaType: "SoftwareApplication",
+        // Grundversion 2026-08-06 (Founder ask): card + [slug] skeleton detail page only.
+        // applicationCategory deliberately unset (schema default) until the Engels scope
+        // pass defines what Kaze publicly claims to be. No hasOwnPage → served by the
+        // skeleton; noindex + held out of the sitemap until real content lands.
+        noindex: true,
+      },
+      {
         name: "Local-SEO-Hub",
         slug: "local-seo-hub",
-        tagline: "AI-first Sichtbarkeits-Plattform für lokale Unternehmen — Rankings, Reviews, Citations in einem Score.",
+        tagline:
+          "AI-first Sichtbarkeits-Plattform für lokale Unternehmen — Rankings, Reviews, Citations in einem Score.",
         status: "preview",
         href: "/products/local-seo-hub",
         isExternal: false,
@@ -207,7 +226,8 @@ export const PORTFOLIO: PortfolioCategory[] = [
       {
         name: "Prod-or-Pretend",
         slug: "prod-or-pretend",
-        tagline: "Ein Qualitäts-Spiegel für Tech-Hype — prüft „an-einem-Wochenende-gebaut\"-Claims gegen echte Produktionsstandards.",
+        tagline:
+          'Ein Qualitäts-Spiegel für Tech-Hype — prüft „an-einem-Wochenende-gebaut"-Claims gegen echte Produktionsstandards.',
         status: "preview",
         href: "/products/prod-or-pretend",
         isExternal: false,
@@ -221,7 +241,8 @@ export const PORTFOLIO: PortfolioCategory[] = [
       {
         name: "TrustScope",
         slug: "trustscope",
-        tagline: "Deterministischer Vier-Säulen-Trust-Report für öffentliche GitHub-Repos — Sicherheit, Governance, Community.",
+        tagline:
+          "Deterministischer Vier-Säulen-Trust-Report für öffentliche GitHub-Repos — Sicherheit, Governance, Community.",
         status: "live",
         href: "/products/trustscope",
         isExternal: false,
@@ -254,7 +275,8 @@ export const PORTFOLIO: PortfolioCategory[] = [
       {
         name: "Obsidian Vault Autopilot",
         slug: "obsidian-vault-autopilot",
-        tagline: "Open-Source-Automatisierung für Wissens-Vaults in Obsidian — sortiert, benennt, taggt und reichert Notizen an.",
+        tagline:
+          "Open-Source-Automatisierung für Wissens-Vaults in Obsidian — sortiert, benennt, taggt und reichert Notizen an.",
         status: "live",
         featured: true,
         href: "/products/obsidian-vault-autopilot",
@@ -269,7 +291,8 @@ export const PORTFOLIO: PortfolioCategory[] = [
       {
         name: "Social Scrapers",
         slug: "social-scrapers",
-        tagline: "Obsidian-Skills für Instagram-, LinkedIn- und X-Profile — neutrale Markdown-Briefings statt Engagement-Bait.",
+        tagline:
+          "Obsidian-Skills für Instagram-, LinkedIn- und X-Profile — neutrale Markdown-Briefings statt Engagement-Bait.",
         status: "preview",
         featured: true,
         href: "/products/social-scrapers",
@@ -285,7 +308,8 @@ export const PORTFOLIO: PortfolioCategory[] = [
       {
         name: "IMAP Mailbox Cleanup",
         slug: "imap-mailbox-cleanup",
-        tagline: "Hybrid CLI + Claude-Skill für IONOS-IMAP-Postfach-Triage — dry-run by default, audit-logged.",
+        tagline:
+          "Hybrid CLI + Claude-Skill für IONOS-IMAP-Postfach-Triage — dry-run by default, audit-logged.",
         status: "preview",
         featured: true,
         href: "/products/imap-mailbox-cleanup",
@@ -300,7 +324,8 @@ export const PORTFOLIO: PortfolioCategory[] = [
       {
         name: "AI Phrase Check",
         slug: "ai-phrase-check",
-        tagline: "Erkennt KI-typische Floskeln in deutschem und englischem Text.",
+        tagline:
+          "Erkennt KI-typische Floskeln in deutschem und englischem Text.",
         status: "preview",
         href: "/products/ai-phrase-check",
         isExternal: false,
@@ -369,7 +394,8 @@ export const PORTFOLIO: PortfolioCategory[] = [
       {
         name: "oakwoodgolfclub.de",
         slug: "oakwood-golf-club",
-        tagline: "Web-Präsenz für einen Golfclub — Mitglieder-Portal in Arbeit.",
+        tagline:
+          "Web-Präsenz für einen Golfclub — Mitglieder-Portal in Arbeit.",
         status: "external",
         featured: true,
         href: "https://oakwoodgolfclub.de",
@@ -420,6 +446,26 @@ export function featuredItems(category: PortfolioCategory): PortfolioItem[] {
 /** Count of a category's items not shown on the portal teaser (live on the sub-portal). */
 export function hiddenItemCount(category: PortfolioCategory): number {
   return category.items.length - featuredItems(category).length;
+}
+
+/**
+ * Status-grouped card ordering (Founder decision 2026-08-06): Live products lead under
+ * their own sub-header, in-development products follow — each group sorted A→Z. Grouping
+ * keys off the EFFECTIVE pill label (statusPillLabel), so an honest `statusLabel` override
+ * (omnopsis "In Entwicklung") lands in the right group. Groups with no items are dropped;
+ * callers show the sub-header only when more than one group remains.
+ */
+export function groupItemsByStatus(
+  items: PortfolioItem[],
+): { label: string; items: PortfolioItem[] }[] {
+  const az = (a: PortfolioItem, b: PortfolioItem) =>
+    a.name.localeCompare(b.name, "de", { sensitivity: "base" });
+  const live = items.filter((i) => statusPillLabel(i) === "Live").sort(az);
+  const inDev = items.filter((i) => statusPillLabel(i) !== "Live").sort(az);
+  return [
+    { label: "Live", items: live },
+    { label: "In Entwicklung", items: inDev },
+  ].filter((g) => g.items.length > 0);
 }
 
 /** Slugs that the dynamic [slug] route owns: internal, non-bespoke skeletons. */

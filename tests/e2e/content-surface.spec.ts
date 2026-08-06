@@ -78,8 +78,8 @@ test.describe("Content surface — Products index", () => {
     page,
   }) => {
     await page.goto("/products");
-    // featured Top-3 present on the portal teaser
-    for (const slug of ["clearpath", "snakeoil-check", "phonesis"]) {
+    // featured MMPs present on the portal teaser (kaze added 2026-08-06, Grundversion)
+    for (const slug of ["clearpath", "snakeoil-check", "phonesis", "kaze"]) {
       await expect(page.locator(`a[href="/products/${slug}"]`).first()).toBeVisible();
     }
     // non-featured MMPs are NOT on the teaser (they live on the sub-portal)
@@ -101,6 +101,7 @@ test.describe("Content surface — Products index", () => {
       "clearpath",
       "snakeoil-check",
       "phonesis",
+      "kaze",
       "local-seo-hub",
       "prod-or-pretend",
     ]) {
