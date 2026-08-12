@@ -271,7 +271,11 @@ export default function TestManagementPage() {
                 </table>
               </div>
               {/* No count in the link text on purpose: this page's repo span is "repos with
-                  tests" (20); /repositories lists ALL repos (31) — a number here would mismatch. */}
+                  tests", /repositories lists ALL repos — a number here would mismatch.
+                  The two figures this comment used to name (20 and 31) were BOTH stale by
+                  2026-08-12, which is the joke: a comment written to prevent a wrong number
+                  on screen carried two wrong numbers itself. Deliberately unquantified now —
+                  a hand-typed count next to a derived one is the drift class, not a fix. */}
               <p className="mt-4 text-sm">
                 <Link
                   href="/repositories"

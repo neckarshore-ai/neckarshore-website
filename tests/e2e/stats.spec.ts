@@ -111,6 +111,35 @@ test.describe("Stats Tiles @smoke", () => {
     await expect(subline).not.toContainText("Repositories");
   });
 
+  test("TC-STAT-010: Repositories tile links into the inventory and matches repositories.json", async ({
+    page,
+  }) => {
+    // Two things at once, because they failed together on 2026-08-12: the tile
+    // showed a number nobody could check (34, from a hand-maintained list), and
+    // there was no way to click through to the list itself. The count assertion
+    // is derived from the served artifact — never a literal, or this test becomes
+    // the next hand-maintained number.
+    const res = await page.request.get("/repositories.json");
+    expect(res.status()).toBe(200);
+    const inventory = await res.json();
+    const expected = inventory.repos.length + inventory.privateCount;
+
+    await page.goto("/");
+    await page.waitForTimeout(1500); // animated counter settles
+
+    const value = await getStatValue(page, "Repositories");
+    expect(value).toBe(String(expected));
+
+    const subline = page.getByTestId("repos-subline");
+    await expect(subline).toBeVisible();
+    await expect(subline).toContainText("mehr");
+
+    const link = page.locator('a[data-track="stats_repos_detail"]');
+    await expect(link).toHaveAttribute("href", "/repositories");
+    await link.click();
+    await expect(page).toHaveURL(/\/repositories$/);
+  });
+
   test("TC-STAT-008: No API call to /api/github-stats", async ({ page }) => {
     const apiCalls: string[] = [];
     page.on("request", (req) => {
