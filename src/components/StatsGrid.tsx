@@ -107,8 +107,28 @@ export default function StatsGrid({
     track?: string;
     testId?: string;
   }[] = [
-    { icon: CalendarDays, value: String(devDays), label: "Days since First Commit" },
-    { icon: GitCommit, value: formatDE(commits), label: "Commits" },
+    // Days and Commits both link to /commits (Founder, 2026-08-12, with a marked
+    // screenshot): they are the two TIME facts in the grid, and the timeline is the
+    // page that explains both. Repositories -> /repositories, Tests -> /test-management.
+    // Endpoints has nothing behind it yet and therefore no cue.
+    {
+      icon: CalendarDays,
+      value: String(devDays),
+      label: "Days since First Commit",
+      sub: moreCue,
+      href: "/commits",
+      track: "stats_days_detail",
+      testId: "days-subline",
+    },
+    {
+      icon: GitCommit,
+      value: formatDE(commits),
+      label: "Commits",
+      sub: moreCue,
+      href: "/commits",
+      track: "stats_commits_detail",
+      testId: "commits-subline",
+    },
     {
       icon: FlaskConical,
       value: formatDE(tests) + testsSuffix,

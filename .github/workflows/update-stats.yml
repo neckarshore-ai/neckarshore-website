@@ -50,6 +50,16 @@ jobs:
           STATS_PAT: ${{ secrets.STATS_PAT }}
         run: node scripts/check-repo-list.mjs
 
+      # Commit-Aktivitaet fuer /commits. Laeuft NACH dem Listen-Gate (eine falsche Liste
+      # macht auch diese Zeitleiste falsch) und braucht denselben STATS_PAT, weil sonst die
+      # privaten Repos unsichtbar waeren und die Kurve still zu flach liefe.
+      # FAIL-SOFT im Gegensatz zum Gate darueber: ein Repo, dessen Statistik GitHub gerade
+      # neu berechnet (202), zaehlt als unvollstaendig und wird auf der Seite ausgewiesen.
+      - name: Commit-Aktivitaet erheben
+        env:
+          STATS_PAT: ${{ secrets.STATS_PAT }}
+        run: node scripts/fetch-commit-activity.mjs
+
       - name: Install cloc
         run: sudo apt-get install -y cloc
 
@@ -335,7 +345,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/stats.json public/estate-test-scope.json public/repositories.json public/estate-test-scope-history.jsonl
+          git add public/stats.json public/estate-test-scope.json public/repositories.json public/estate-test-scope-history.jsonl public/commit-activity.json
           if git diff --staged --quiet; then
             echo "No changes to stats — skipping commit"
           else
