@@ -88,7 +88,7 @@ function monthLabel(iso: string): string {
 export const metadata: Metadata = pageMetadata({
   title: "Commit-Aktivität | neckarshore.ai",
   description:
-    "Wie dieser Code-Bestand entstanden ist: Commit-Aktivität pro Woche und Monat seit dem ersten Commit, aufgeschlüsselt nach Bereichen — automatisch aus GitHub, nicht von Hand gepflegt.",
+    "Commit-Aktivität pro Woche und Monat seit März 2026, nach Bereichen aufgeschlüsselt — täglich automatisch aus GitHub statt aus einer gepflegten Liste.",
   path: "/commits",
 });
 
