@@ -69,6 +69,13 @@ const PAGES: { id: string; title: string; text: string; category: string; url: s
     url: "/products",
   },
   {
+    id: "page:/commits",
+    title: "Commit-Aktivität",
+    text: "Wie dieser Code-Bestand entstanden ist: Commit-Aktivität pro Woche und Monat seit dem ersten Commit im März 2026, aufgeschlüsselt nach Bereichen — Infrastruktur, Omnopsis, Websites, MMPs, Skills. Die Story hinter der Commits-Kachel, täglich automatisch aus GitHub statt aus einer gepflegten Liste.",
+    category: "Seite",
+    url: "/commits",
+  },
+  {
     id: "page:/repositories",
     title: "Unsere Repositories",
     text: "Der gesamte Code-Bestand hinter unseren Produkten, Skills und Websites. Öffentliche Repositories listen wir einzeln mit Beschreibung, nach Typ gruppiert; private zählen wir nur — ohne Namen. Täglich automatisch mit GitHub abgeglichen, nicht von Hand gepflegt.",
