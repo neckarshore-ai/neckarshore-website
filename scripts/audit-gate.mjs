@@ -65,27 +65,13 @@ export const ALLOWLIST = [
       "next@16.2.12 still resolves sharp to 0.34.5, and npm's proposed remedy here is next@9.3.3, " +
       "a downgrade across seven majors. Removable when Next widens its sharp range to >=0.35.0.",
   },
-  {
-    id: "GHSA-mh99-v99m-4gvg",
-    pkg: "brace-expansion",
-    devOnly: true,
-    expires: "2026-10-31",
-    reason:
-      "DoS in brace-expansion, reached only via minimatch@3 under ESLint tooling — dev-only, not in " +
-      "the production bundle. npm's remedy is eslint 10, a semver-major migration that is its own " +
-      "decision. Removable once the ESLint chain moves off minimatch@3.",
-  },
-  {
-    id: "GHSA-rgw5-rvv9-x895",
-    pkg: "brace-expansion",
-    devOnly: true,
-    expires: "2026-10-31",
-    reason:
-      "Second brace-expansion DoS (bypasses the GHSA-mh99 mitigation), same dev-only ESLint/" +
-      "typescript-estree chains (minimatch@3/@10), not in the production bundle. The bump fix is " +
-      "barred by the 2026-08-04 install freeze (Shai-Hulud wave, npm ci only). Re-decide at freeze " +
-      "lift: bump brace-expansion, then remove this entry together with its sibling.",
-  },
+  // Both brace-expansion entries (GHSA-mh99-v99m-4gvg, GHSA-rgw5-rvv9-x895) removed
+  // 2026-08-12. Their own text named the condition for removal — "the bump fix is
+  // barred by the install freeze, re-decide at freeze lift" — and the freeze lifted
+  // that morning. `npm audit fix` then resolved both, and the gate's own
+  // "listed but no longer reported" line confirmed the entries had gone inert.
+  // An acceptance that outlives its reason is how a temporary exception becomes
+  // permanent silence, which is exactly what design rule 2 exists to prevent.
 ];
 
 /*
