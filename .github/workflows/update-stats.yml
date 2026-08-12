@@ -34,6 +34,22 @@ jobs:
         with:
           token: ${{ secrets.STATS_PAT }}
 
+      # Membership gate for stats-config.json. It runs HERE and not in the PR
+      # test job for one reason: it needs cross-org read access, and the only
+      # place STATS_PAT exists is this workflow. In the PR job the honest
+      # options would be "permanently red" or "skip when the secret is
+      # missing" — and the second reports green for a check that never ran
+      # (backlog #448: vacuity guards must be CODE, not prose).
+      #
+      # Placed BEFORE "Collect stats" deliberately: if the list is wrong, every
+      # number computed from it is wrong too, and publishing first would mean
+      # the site serves bad figures until a human reads a red log. Fail here,
+      # keep serving yesterday's honest numbers.
+      - name: Repo-Liste gegen GitHub pruefen
+        env:
+          STATS_PAT: ${{ secrets.STATS_PAT }}
+        run: node scripts/check-repo-list.mjs
+
       - name: Install cloc
         run: sudo apt-get install -y cloc
 

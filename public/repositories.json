@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-08-12T05:24:51Z",
-  "privateCount": 20,
+  "updatedAt": "2026-08-12T19:52:35Z",
+  "privateCount": 23,
   "repos": [
     {
       "owner": "neckarshore-ai",
-      "name": "neckarshore-easter-eggs",
+      "name": "test-stats-action",
       "visibility": "public",
-      "description": "Session artifacts from an AI-orchestration team — songs, films, posters, quotes. Auto-synced from session Easter Eggs."
+      "description": "Reusable composite action: maps a test runner's native reporter output to the estate stats.json contract (runner-reported, never grep)."
     },
     {
       "owner": "neckarshore-mmps",
@@ -16,19 +16,19 @@
     },
     {
       "owner": "neckarshore-mmps",
+      "name": "kaze",
+      "visibility": "public",
+      "description": "Kaze (風) — der App-Blocker, der dich rausschickt, den Wind suchen. iOS, kostenlos, Open Source (MIT). Notfallcode per E-Mail statt Abo-Zirkus."
+    },
+    {
+      "owner": "neckarshore-mmps",
       "name": "md-viewer",
       "visibility": "public",
       "description": "Finder Quick Action: split-view Markdown viewer (rendered + syntax-highlighted source), self-contained & offline"
     },
     {
       "owner": "neckarshore-mmps",
-      "name": "mmp-local-seo-performance-hub",
-      "visibility": "public",
-      "description": "A visibility platform for local businesses: rankings, reviews, and citations in one Visibility Score (0–100). Built for small businesses and the agencies that manage them."
-    },
-    {
-      "owner": "neckarshore-mmps",
-      "name": "mmp-prod-or-pretend",
+      "name": "prod-or-pretend",
       "visibility": "public",
       "description": "A constructive quality mirror for tech hype — checks 'built it in a weekend' claims against real production standards (tests, security, scalability, docs). Not a debunker; it helps decision-makers tell substance from air."
     },
@@ -49,6 +49,12 @@
       "name": "imap-mailbox-cleanup",
       "visibility": "public",
       "description": "Safely tidy an overflowing email mailbox — preview every change first, keep an audit trail, and nothing is deleted for good."
+    },
+    {
+      "owner": "neckarshore-skills",
+      "name": "neckarshore-plugins",
+      "visibility": "public",
+      "description": "The Neckarshore AI plugin marketplace for Claude Code — Obsidian Vault Autopilot and more, one /plugin marketplace add away."
     },
     {
       "owner": "neckarshore-skills",
