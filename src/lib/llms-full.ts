@@ -1,7 +1,7 @@
 /**
- * `llms-full.txt` builder — the expanded companion to the curated `public/llms.txt`.
+ * `llms-full.txt` builder — the expanded companion to the derived `/llms.txt` index.
  *
- * `llms.txt` is the hand-curated INDEX (overview + links). `llms-full.txt` is the
+ * `llms.txt` is the derived INDEX (overview + links, see `llms-index.ts`). `llms-full.txt` is the
  * llmstxt.org "full" variant: the same overview followed by the COMPLETE Markdown of
  * every indexable product page that has a source `.md`, so an AI crawler ingests the
  * substance in a single fetch instead of crawling each page.
@@ -18,18 +18,20 @@
  * (where `public/` and `src/content/` exist) and the result is served as a static CDN
  * asset — no runtime compute, no file-tracing, no cookies.
  */
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
-
 import { resolveExport } from "@/lib/export/resolve";
+import { buildLlmsIndexText } from "@/lib/llms-index";
 import { allProductRoutes } from "@/lib/portfolio";
 import { SITE_UPDATED, SITE_URL } from "@/lib/site-config";
 
 const PAGE_SEPARATOR = "\n\n---\n\n";
 
-/** The curated overview, reused verbatim so the index and the full file never diverge. */
+/**
+ * The curated overview, taken from the SAME builder the `/llms.txt` route serves, so the
+ * index and the full file cannot diverge. Until 2026-08-15 this was a `readFileSync` of
+ * the static `public/llms.txt`; that file is gone, and with it the last hand-written copy.
+ */
 function readIndexOverview(): string {
-  return readFileSync(join(process.cwd(), "public", "llms.txt"), "utf8").trim();
+  return buildLlmsIndexText().trim();
 }
 
 export function buildLlmsFullText(): string {
