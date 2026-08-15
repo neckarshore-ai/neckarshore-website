@@ -178,8 +178,11 @@ export default function KiBeratungPage() {
           <p className="font-heading text-sm font-semibold uppercase tracking-wider text-accent">
             KI-Beratung
           </p>
+          {/* H1 = the one-pager's own title, product name first (Founder 2026-08-15, decided
+              against the bare-question variant): the campaign carries "KI-Potenzialanalyse"
+              as its name, so a visitor arriving from a post lands on the words they clicked. */}
           <h1 className="mt-3 font-heading text-4xl font-bold text-primary dark:text-text-primary md:text-5xl">
-            Wo lohnen KI-Agenten in Ihren Prozessen?
+            KI-Potenzialanalyse — Wo lohnen KI-Agenten in Ihren Prozessen?
           </h1>
           <p className="mt-5 text-lg leading-relaxed text-neutral-dark/80 dark:text-text-secondary">
             KI verändert gerade jede Wissensarbeit — aber wo lohnt sie sich in{" "}
@@ -187,7 +190,51 @@ export default function KiBeratungPage() {
             beantwortet genau das: strukturiert, zum Festpreis, mit einem Ergebnis,
             mit dem Sie sofort entscheiden können.
           </p>
+          {/* Hero CTA — SAME route and SAME target as the closing CTA. "One CTA" (plan Wave 1,
+              item 5) means one ROUTE, not one button; TC-CNT-089 therefore asserts that every
+              Calendly link inside <main> points at the identical target, instead of counting
+              links. Counting was the first version of that test and it forbade something the
+              decision never meant. */}
+          <a
+            href={CALENDLY}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track="kiberatung_cta_hero"
+            className="mt-7 inline-flex items-center rounded-lg bg-accent px-6 py-3 font-heading font-semibold text-white transition-colors hover:bg-accent/90 dark:bg-accent-bright dark:text-primary dark:hover:bg-accent-bright/90"
+          >
+            Kostenloses Erstgespräch (20 Minuten)
+          </a>
         </header>
+
+        {/* SECTION ORDER: Liefergegenstände → Grenzen → Preise (Founder 2026-08-15).
+            The first build put the refusal block on the first screen, ahead of the
+            deliverables; the Founder chose the other cut. Both keep the block BEFORE the
+            prices, which is the half that was actually decided on 2026-07-28 — what changed
+            is only whether the reader meets the offer or its limits first. Cheap to swap
+            back if the live page argues otherwise. */}
+        <section aria-labelledby="deliverables-heading" className="mt-16">
+          <h2
+            id="deliverables-heading"
+            className="font-heading text-2xl font-bold text-primary dark:text-text-primary md:text-3xl"
+          >
+            Was Sie bekommen
+          </h2>
+          <ol className="mt-6 grid gap-5 sm:grid-cols-3">
+            {DELIVERABLES.map((item, i) => (
+              <li key={item.head}>
+                <span className="font-heading text-sm font-semibold text-accent dark:text-accent-bright">
+                  {i + 1}
+                </span>
+                <span className="mt-1 block font-heading text-base font-semibold text-primary dark:text-text-primary">
+                  {item.head}
+                </span>
+                <span className="mt-2 block text-[15px] leading-relaxed text-neutral-dark/75 dark:text-text-secondary/85">
+                  {item.body}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </section>
 
         {/* Refusal block — first screen by design, see NON_SCOPE above. */}
         <section
@@ -215,30 +262,6 @@ export default function KiBeratungPage() {
               </div>
             ))}
           </div>
-        </section>
-
-        <section aria-labelledby="deliverables-heading" className="mt-16">
-          <h2
-            id="deliverables-heading"
-            className="font-heading text-2xl font-bold text-primary dark:text-text-primary md:text-3xl"
-          >
-            Was Sie bekommen
-          </h2>
-          <ol className="mt-6 grid gap-5 sm:grid-cols-3">
-            {DELIVERABLES.map((item, i) => (
-              <li key={item.head}>
-                <span className="font-heading text-sm font-semibold text-accent dark:text-accent-bright">
-                  {i + 1}
-                </span>
-                <span className="mt-1 block font-heading text-base font-semibold text-primary dark:text-text-primary">
-                  {item.head}
-                </span>
-                <span className="mt-2 block text-[15px] leading-relaxed text-neutral-dark/75 dark:text-text-secondary/85">
-                  {item.body}
-                </span>
-              </li>
-            ))}
-          </ol>
         </section>
 
         <section aria-labelledby="ladder-heading" className="mt-16">
@@ -330,12 +353,16 @@ export default function KiBeratungPage() {
           >
             Wer das macht
           </h2>
+          {/* The ex-Mercedes-Benz founder anchor deliberately does NOT appear here
+              (Founder 2026-08-15): it belongs on the rauhut.com person anchor, where a CV
+              line is the subject rather than a garnish. It already stands on this domain in
+              the homepage's #founder section, so leaving it out here removes a repetition,
+              not a fact. */}
           <p className="mt-5 max-w-[720px] text-[15px] leading-relaxed text-neutral-dark/80 dark:text-text-secondary">
             Wir sind keine Folien-Berater. Wir betreiben unser eigenes Unternehmen mit
             einer Flotte spezialisierter KI-Agenten — von Softwareentwicklung über
             Dokumentation bis Qualitätssicherung. Was wir empfehlen, praktizieren wir
-            täglich selbst. Gegründet von German Rauhut, ehemals Mercedes-Benz IT, in
-            Stuttgart.
+            täglich selbst.
           </p>
           <p className="mt-4 max-w-[720px] text-[15px] leading-relaxed text-neutral-dark/80 dark:text-text-secondary">
             Nachprüfbar statt behauptet: {tests} geprüfte automatisierte Tests über die
