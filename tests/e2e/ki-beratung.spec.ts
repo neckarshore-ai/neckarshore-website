@@ -13,13 +13,16 @@ import { test, expect } from "@playwright/test";
  * llms-claims guard carries, written here for the same reason.
  */
 test.describe("KI-Beratung offer page", () => {
-  test("TC-CNT-087: /ki-beratung serves 200 with the job-language headline", async ({
+  test("TC-CNT-087: /ki-beratung serves 200 with the campaign's own title as H1", async ({
     page,
   }) => {
+    // Product name first, then the job-language question (Founder 2026-08-15, against the
+    // bare-question variant). The H1 stays byte-identical to the campaign's title so a
+    // visitor arriving from a post lands on the words they clicked.
     const res = await page.goto("/ki-beratung");
     expect(res?.status()).toBe(200);
     await expect(page.locator("h1")).toHaveText(
-      "Wo lohnen KI-Agenten in Ihren Prozessen?",
+      "KI-Potenzialanalyse — Wo lohnen KI-Agenten in Ihren Prozessen?",
     );
   });
 
@@ -39,19 +42,28 @@ test.describe("KI-Beratung offer page", () => {
     await expect(cta).toHaveAttribute("href", "https://calendly.com/rauhut/20min");
   });
 
-  test("TC-CNT-089: exactly one conversion route — no second CTA target", async ({
+  test("TC-CNT-089: one conversion ROUTE — every CTA points at the same target", async ({
     page,
   }) => {
-    // "One CTA" is a decision from the plan (Wave 1, item 5), not a layout preference.
+    // "One CTA" is a decision from the plan (Wave 1, item 5), and it means one ROUTE, not
+    // one button: the page carries a hero CTA and a closing CTA, both to the same link.
     //
-    // SCOPED TO <main> ON PURPOSE: the site-wide Nav carries its own Kennenlerntermin
-    // button (desktop + mobile), so a page-wide count would assert something this test
-    // does not mean. The claim is "the PAGE offers one route", not "the document contains
-    // one link" — the first version of this test conflated the two and went red, which is
-    // how the distinction got written down.
+    // THIS ASSERTION HAS BEEN WRONG TWICE, AND BOTH CORRECTIONS ARE THE POINT.
+    // First it counted links page-wide and caught the Nav's own Kennenlerntermin button —
+    // it asserted "the document contains one link" when the claim was "the page offers one
+    // route". Then it counted links inside <main>, which still forbade a second button to
+    // the SAME destination — a layout rule wearing a decision's clothes. What the decision
+    // actually forbids is a second DESTINATION, so that is what is asserted now.
+    //
+    // SCOPED TO <main> because the Nav's button is site-wide furniture, not this page's
+    // conversion path.
     await page.goto("/ki-beratung");
-    const calendlyLinks = page.locator('main a[href*="calendly.com"]');
-    await expect(calendlyLinks).toHaveCount(1);
+    const targets = await page
+      .locator('main a[href*="calendly.com"]')
+      .evaluateAll((links) => [
+        ...new Set(links.map((l) => (l as HTMLAnchorElement).href)),
+      ]);
+    expect(targets).toEqual(["https://calendly.com/rauhut/20min"]);
   });
 
   test("TC-CNT-090: the pricing guardrail holds — ranges only, never the internals", async ({
