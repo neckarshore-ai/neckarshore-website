@@ -122,8 +122,13 @@ test.describe("KI-Beratung offer page", () => {
     // consultants that does not exist. The named principal and the direct-access promise
     // are the assertion.
     await page.goto("/ki-beratung");
+    // Both assertions sit on Founder-written sentences (round 2, 2026-08-15): the
+    // direct-access promise, and the practise-what-we-recommend claim that replaced my
+    // earlier draft paragraph. Asserted separately because they carry different work — one
+    // says WHO, the other says on what basis.
     const anchor = page.locator('section[aria-labelledby="anchor-heading"]');
     await expect(anchor).toContainText("macht auch die Arbeit");
+    await expect(anchor).toContainText("die wir nicht selbst benutzen");
   });
 
   test("TC-CNT-092: three objections — not five, not two", async ({ page }) => {

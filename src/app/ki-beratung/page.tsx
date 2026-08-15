@@ -333,12 +333,13 @@ export default function KiBeratungPage() {
               invites the question whether stage 1 ALSO carries through onto the
               implementation project. Read plainly it does not — stage 1 has already been
               absorbed into the Workshop-Tag, and the Workshop-Tag is what carries on.
-              THE SIX-MONTH WINDOW HAS NO ANCHOR IN THE FOUNDER WORDING. "nach dem
-              Workshop-Tag" below is MY reading of that gap, not his decision — the plainest
-              of the candidates (workshop / Auswertung / Beauftragung). On a page that sells
-              "keine Nachträge", a credit deadline without a starting point is precisely the
-              clause a Mittelstands-Einkauf argues about later. One word in the voice pass
-              corrects it. */}
+              THE SIX-MONTH WINDOW RUNS FROM THE WORKSHOP-TAG, and that is now decided
+              rather than assumed. The original Founder wording named no starting point;
+              "nach dem Workshop-Tag" was my reading of that gap, flagged as a reading and
+              not as a ruling, because on a page that sells "keine Nachträge" a credit
+              deadline without a starting point is exactly the clause a Mittelstands-Einkauf
+              argues about later. Ratified by the Founder in acceptance round 2 (2026-08-15).
+              Do not soften it back into an open formulation. */}
           <p className="mt-5 max-w-[680px] text-[15px] leading-relaxed text-neutral-dark/80 dark:text-text-secondary">
             <strong>Anrechnung, Stufe 1 auf Stufe 2:</strong> Buchen Sie nach der
             Kompakt-Analyse den Workshop-Tag, wird der Preis der Stufe 1 vollständig
@@ -397,18 +398,22 @@ export default function KiBeratungPage() {
               to speak of a "Flotte spezialisierter KI-Agenten" while leaving open how many
               humans stood behind it — which invited the reader to imagine a bench of
               consultants that does not exist. Naming it is both the honest move and the
-              stronger one: it turns the smallness into the direct-access mechanic. The two
-              sentences below are Founder-approved verbatim; the paragraph after them is my
-              draft, trimmed to remove what his sentence now says better. */}
+              stronger one: it turns the smallness into the direct-access mechanic.
+              BOTH PARAGRAPHS BELOW ARE FOUNDER-WRITTEN VERBATIM as of acceptance round 2
+              (2026-08-15). The second one used to be my trimmed draft; it was replaced
+              wholesale, and the replacement is the better sentence — it drops the negative
+              framing ("keine Folien-Berater", which spends the reader's attention on what we
+              are not) for the buyer-facing form: what you get, and what the analysis answers.
+              If you are editing here, you are editing the Founder's own words. */}
           <p className="mt-5 max-w-[720px] text-[15px] leading-relaxed text-neutral-dark/80 dark:text-text-secondary">
             Wir — das sind German Rauhut und eine Flotte spezialisierter KI-Agenten, die
             unser eigenes Unternehmen täglich betreiben. Im Gespräch und in der Analyse
             sitzen Sie mir gegenüber: Der, mit dem Sie sprechen, macht auch die Arbeit.
           </p>
           <p className="mt-4 max-w-[720px] text-[15px] leading-relaxed text-neutral-dark/80 dark:text-text-secondary">
-            Wir sind keine Folien-Berater: Softwareentwicklung, Dokumentation,
-            Qualitätssicherung — der eigene Betrieb läuft über genau die Agenten, über die
-            wir sprechen. Was wir empfehlen, praktizieren wir selbst.
+            Sie bekommen keine Empfehlung, die wir nicht selbst benutzen. Unsere Agenten
+            entwickeln, dokumentieren und testen unseren eigenen Betrieb — was davon in Ihre
+            Prozesse passt, zeigt die Analyse.
           </p>
           <p className="mt-4 max-w-[720px] text-[15px] leading-relaxed text-neutral-dark/80 dark:text-text-secondary">
             Nachprüfbar statt behauptet: {tests} geprüfte automatisierte Tests über die
