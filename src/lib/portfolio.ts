@@ -153,7 +153,9 @@ export const PORTFOLIO: PortfolioCategory[] = [
         slug: "clearpath",
         tagline: "Eine mentale Firewall gegen kognitive Verzerrungen.",
         status: "live",
-        featured: true,
+        // Unfeatured 2026-08-15 (Founder, #515): Park status = no active investment, so it
+        // leads no longer on the hub. Page stays LIVE and the card stays on the MMP
+        // sub-portal — unfeaturing is a ranking decision, not a retirement.
         href: "/products/clearpath",
         isExternal: false,
         schemaType: "SoftwareApplication",
@@ -166,7 +168,8 @@ export const PORTFOLIO: PortfolioCategory[] = [
         tagline:
           "Neutraler KI-Reality-Check für Online-Coachings und High-Ticket-Angebote.",
         status: "live",
-        featured: true,
+        // Unfeatured 2026-08-15 (Founder, #515) — same call as ClearPath: off the hub,
+        // page + sub-portal card stay live.
         href: "/products/snakeoil-check",
         isExternal: false,
         schemaType: "SoftwareApplication",
@@ -244,14 +247,33 @@ export const PORTFOLIO: PortfolioCategory[] = [
         tagline:
           "Deterministischer Vier-Säulen-Trust-Report für öffentliche GitHub-Repos — Sicherheit, Governance, Community.",
         status: "live",
+        // Featured 2026-08-15 (Founder, #515): Rang 1 of the portfolio ranking leads the hub.
+        featured: true,
         href: "/products/trustscope",
         isExternal: false,
         schemaType: "SoftwareApplication",
         applicationCategory: "DeveloperApplication",
-        // LIVE at trustscope.neckarshore.ai — the only PUBLIC-repo (MIT) MMP. Detail page via the
+        // LIVE at trustscope.neckarshore.ai — a PUBLIC-repo (MIT) MMP. Detail page via the
         // shared ProductDetailPage live branch → excluded from the [slug] skeleton route. Indexable;
         // emits liveSoftwareApplicationSchema (live url, NO Offer — the shared live branch stays
         // offer-free; genuinely free but not claimed as a schema Offer, AD-19 fail-closed).
+        hasOwnPage: true,
+      },
+      {
+        name: "md-viewer",
+        slug: "md-viewer",
+        tagline:
+          "Markdown sofort lesen — Finder-Quick-Action für macOS plus Web-Zwilling, gerendert und Quelltext nebeneinander.",
+        status: "live",
+        // Featured 2026-08-15 (Founder, #515) as the second Rang-1 lead. LIVE at
+        // md.neckarshore.ai (R2 2026-08-06 + 2026-08-15: 200), repo PUBLIC + MIT. Detail page via
+        // the shared ProductDetailPage live branch → excluded from the [slug] skeleton route.
+        // The name stays lowercase: it is the repo name, not a marketing wordmark.
+        featured: true,
+        href: "/products/md-viewer",
+        isExternal: false,
+        schemaType: "SoftwareApplication",
+        applicationCategory: "DeveloperApplication",
         hasOwnPage: true,
       },
     ],

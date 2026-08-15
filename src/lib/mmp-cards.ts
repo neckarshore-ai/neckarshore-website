@@ -76,4 +76,12 @@ export const MMP_CARDS: Record<string, MmpCardData> = {
     repoUrl: "https://github.com/neckarshore-mmps/trustscope",
     liveUrl: "https://trustscope.neckarshore.ai",
   },
+  // Also PUBLIC (MIT) — same note as trustscope: the GitHub link resolves for logged-out
+  // visitors. Grounded in the repo's own README; no claim here that is not in it.
+  "md-viewer": {
+    description:
+      "Markdown sofort lesen, ohne einen Editor zu öffnen. Rechtsklick auf eine .md-Datei im Finder — sie öffnet sich in geteilter Ansicht: links gerendert, rechts der Quelltext mit Syntax-Hervorhebung. Denselben Viewer gibt es als Web-Zwilling, der die Datei vollständig im Browser verarbeitet.",
+    repoUrl: "https://github.com/neckarshore-mmps/md-viewer",
+    liveUrl: "https://md.neckarshore.ai",
+  },
 };
