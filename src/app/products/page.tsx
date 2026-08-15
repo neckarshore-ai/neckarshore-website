@@ -30,10 +30,10 @@ const showOssLaunch = process.env.OSS_LAUNCH_VISIBLE === "true";
  * "Neckarshore tooling" is a descriptive label, NOT a sub-brand — do not invent a suite
  * name here (plan, explicit).
  *
- * COPY STATUS: the German umbrella line is Linus's rendering of the plan's English
- * original ("Your context, kept readable, tidy, and trustworthy.") and is awaiting the
- * Founder's copy decision (open item from the 2026-08-06 Engels session). The three
- * one-liners follow the plan's wording.
+ * COPY STATUS: SETTLED. The German umbrella line began as Linus's rendering of the plan's
+ * English original ("Your context, kept readable, tidy, and trustworthy."); the Founder saw
+ * it live and accepted it on 2026-08-15. It is now decided copy, not a placeholder. The
+ * three one-liners follow the plan's wording.
  */
 const CLUSTER_UMBRELLA = "Dein Kontext — lesbar, aufgeräumt, vertrauenswürdig.";
 
