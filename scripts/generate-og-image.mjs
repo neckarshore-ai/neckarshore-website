@@ -74,7 +74,8 @@ const DESIGN = {
  *   - tagline (string)
  *   - chips: Array<{ text: string, variant?: "dot" | "plain" | "accent" }>
  *
- * Brand block is always "NECKARSHORE.AI" — identical on every card, no variation.
+ * Brand block is always "neckarshore.ai" — identical on every card, no variation.
+ * Lowercase by brand decision (Founder, 2026-08-15); do NOT re-add text-transform: uppercase.
  */
 function renderCard(card) {
   const { width, height, padding, headline, headlineAccent, tagline, chips, accentInline } = card;
@@ -157,7 +158,7 @@ function renderCard(card) {
       font-family: "Space Grotesk", sans-serif;
       font-weight: 600;
       font-size: ${D.wordmarkSize}px;
-      text-transform: uppercase;
+      text-transform: lowercase;
       letter-spacing: -1px;
       color: ${D.color.textSecondary};
       line-height: 1;
@@ -216,9 +217,9 @@ function renderCard(card) {
   </style></head><body>
     <div class="grid"></div>
     <div class="frame">
-      <div class="brand" aria-label="NECKARSHORE.AI">
+      <div class="brand" aria-label="neckarshore.ai">
         <img class="mark" src="${assets.nLogo}" alt="" />
-        <span class="brand-text">ECKARSHORE<span class="dotai">.AI</span></span>
+        <span class="brand-text">eckarshore<span class="dotai">.ai</span></span>
       </div>
       <div>
         <div class="headline">${headlineHtml}</div>

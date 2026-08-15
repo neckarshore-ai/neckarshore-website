@@ -24,7 +24,7 @@ Both are in `~/Developer/projects/neckarshore-website/`:
 1. **`docs/branding/github-social-preview-website.jpg`** — neckarshore.ai positioning, German tagline, "Made in Germany / DSGVO-by-Design / AI-Powered"
 2. **`docs/branding/github-social-preview-vault-autopilot.jpg`** — Product-under-Neckarshore positioning, English tagline, "Skills / Open Source / MIT Licensed"
 
-Open them in Finder Quicklook or your image viewer of choice. Both share an identical brand block (N-tile + `NECKARSHORE.AI`) and differ only in headline/tagline/chips.
+Open them in Finder Quicklook or your image viewer of choice. Both share an identical brand block (N-tile + `neckarshore.ai`) and differ only in headline/tagline/chips.
 
 ---
 
@@ -42,7 +42,7 @@ Open them in Finder Quicklook or your image viewer of choice. Both share an iden
 - Headline + Accent (e.g., "Documentation that" / "writes itself." or similar — your call)
 - Tagline (one sentence, can be German or English — your call based on target audience)
 - 3 chips — suggestions: "Made in Germany" / "DSGVO" / "NestJS" or "Enterprise" / "Self-Hosted" / "AI-Powered" — your call
-- Should the wordmark stay `NECKARSHORE.AI` (product-under-brand) or switch to `OMNOPSIS` as its own wordmark? The current system assumes brand block is fixed — if you want OMNOPSIS standalone, that's a template fork, not a config change. **Recommendation:** keep `NECKARSHORE.AI` for now, switch later if OMNOPSIS gets its own brand system.
+- Should the wordmark stay `neckarshore.ai` (product-under-brand) or switch to `OMNOPSIS` as its own wordmark? The current system assumes brand block is fixed — if you want OMNOPSIS standalone, that's a template fork, not a config change. **Recommendation:** keep `neckarshore.ai` for now, switch later if OMNOPSIS gets its own brand system.
 
 ## Repo 2: Comedy-Execution-Engine
 
