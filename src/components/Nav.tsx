@@ -11,6 +11,20 @@ import { PORTFOLIO } from "@/lib/portfolio";
 const navLinksLead = [
   { href: "/#services", label: "Services", track: "nav_services" },
   { href: "/#why-nearshore", label: "Warum Nearshore", track: "nav_why-nearshore" },
+  // KI-Beratung — the first nav entry that is a ROUTE rather than a homepage anchor.
+  //
+  // THE LABEL IS A GUARDRAIL, NOT JUST A NAME. "KI-Beratung" is offer language. It must
+  // never drift into availability-for-hire language ("Beratung buchen", "Verfügbarkeit",
+  // a person's calendar): the mandate offering publishes exclusively via the private
+  // Erwerbs lane (C4, Founder-decided 2026-08-05), and the nav is the most visible surface
+  // on the domain. Engels made the label an explicit condition of this entry, 2026-08-15.
+  //
+  // WHY IT SHIPS NOW rather than after a measured baseline: `inbound-log.md` has
+  // `series_start: null` — the 8-week LinkedIn window has NOT begun, so anything live
+  // before Serie 1 fires is baseline. Adding this entry later would be a domain-level
+  // change during a running measurement. Deferring does not avoid that risk, it moves it
+  // to the most expensive moment.
+  { href: "/ki-beratung", label: "KI-Beratung", track: "nav_ki-beratung" },
 ];
 
 const navLinksTail = [{ href: "/#founder", label: "Über uns", track: "nav_founder" }];
