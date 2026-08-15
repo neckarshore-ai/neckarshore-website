@@ -32,7 +32,7 @@ config-driven on purpose — every card shares the same visual DNA.
 
 | Element | Value | Source |
 |---|---|---|
-| Brand block | N-Tile JPEG + `ECKARSHORE.AI` Space Grotesk, Uppercase | `public/images/neckarshore-logo-n.jpg`, matches `src/components/Logo.tsx` |
+| Brand block | N-Tile JPEG + `eckarshore.ai` Space Grotesk, lowercase (Founder-Entscheidung 2026-08-15) | `public/images/neckarshore-logo-n.jpg`, matches `src/components/Logo.tsx` |
 | Brand block size | 56px mark height, 46px wordmark | `DESIGN.markHeight`, `DESIGN.wordmarkSize` |
 | Background | Radial cyan glow (bottom-right) + radial primary glow (top-left) + vertical slate gradient | `DESIGN.color.bg1/bg2/bg3` |
 | Grid overlay | 60px × 60px faint slate lines, radial mask | fixed |
