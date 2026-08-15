@@ -96,7 +96,7 @@ const PAGES: { id: string; title: string; text: string; category: string; url: s
     // trusting a hand-kept list, which is why it cannot quietly fall behind.
     id: "page:/ki-beratung",
     title: "KI-Beratung",
-    text: "KI-Potenzialanalyse zum Festpreis: Wo lohnen KI-Agenten in Ihren Prozessen? Use-Case-Map, ein bis zwei Durchstich-Empfehlungen mit Projektpreis-Indikation und Readiness-Notizen. Zwei Einstiegstiefen — Kompakt-Analyse remote oder Workshop-Tag vor Ort, die erste Stufe wird auf die zweite angerechnet. Keine Implementierung, kein Vendor-Vergleich, keine Workshop-Serie.",
+    text: "KI-Potenzialanalyse zum Festpreis: Wo lohnen KI-Agenten in Ihren Prozessen? Use-Case-Map, ein bis zwei Durchstich-Empfehlungen mit Projektpreis-Indikation und Readiness-Notizen. Zwei Einstiegstiefen — Kompakt-Analyse remote oder Workshop-Tag vor Ort, die erste Stufe wird auf die zweite angerechnet, der Workshop-Tag bei Beauftragung der Umsetzung auf das Projekt. Keine Implementierung, kein Vendor-Vergleich, keine Workshop-Serie.",
     category: "Seite",
     url: "/ki-beratung",
   },
