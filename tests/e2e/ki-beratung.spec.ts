@@ -66,7 +66,7 @@ test.describe("KI-Beratung offer page", () => {
     expect(targets).toEqual(["https://calendly.com/rauhut/20min"]);
   });
 
-  test("TC-CNT-090: the pricing guardrail holds — ranges only, never the internals", async ({
+  test("TC-CNT-090: the pricing guardrail holds — published figures only, never the internals", async ({
     page,
   }) => {
     // C6 (Founder 2026-08-07): the pricing FORMULA, the 2x check and the 700-EUR floor
@@ -74,11 +74,34 @@ test.describe("KI-Beratung offer page", () => {
     // cost of getting it wrong is not a broken layout — it is an internal calculation
     // published on the open web.
     await page.goto("/ki-beratung");
+    //
+    // THE POSITIVE HALF IS ROW-SCOPED ON PURPOSE. A page-wide toContain("Einführungspreis")
+    // would still pass if the label drifted into a footnote three sections away, and the
+    // label only does its work while it sits ON the figure it qualifies.
     const body = (await page.locator("body").textContent()) ?? "";
-    expect(body).toContain("2.000–3.000 EUR");
-    expect(body).toContain("3.500–5.000 EUR");
     expect(body).not.toMatch(/700\s*EUR/);
     expect(body).not.toMatch(/\b2x[- ]Check\b/i);
+
+    const kompakt = page.locator("tr", { hasText: "Kompakt-Analyse" });
+    await expect(kompakt).toContainText("1.500 EUR");
+    await expect(kompakt).toContainText("Einführungspreis");
+
+    const workshop = page.locator("tr", { hasText: "Workshop-Tag" });
+    await expect(workshop).toContainText("2.500–3.500 EUR");
+  });
+
+  test("TC-CNT-096: both Anrechnung stages are stated, and the second names its limits", async ({
+    page,
+  }) => {
+    // Stage 2 (Founder 2026-08-15) is a commercial promise on a public page. Two things
+    // make it safe to publish and are therefore asserted — the SIX-MONTH window and the
+    // restriction to implementation rather than further consulting. A stage-2 sentence
+    // that lost either half would be a wider promise than the one that was decided.
+    await page.goto("/ki-beratung");
+    const ladder = page.locator('section[aria-labelledby="ladder-heading"]');
+    await expect(ladder).toContainText("Anrechnung, Stufe 1 auf Stufe 2");
+    await expect(ladder).toContainText("sechs Monaten");
+    await expect(ladder).toContainText("nicht auf weitere Beratung");
   });
 
   test("TC-CNT-091: the non-scope block is present with all three items", async ({
@@ -90,6 +113,17 @@ test.describe("KI-Beratung offer page", () => {
     await expect(section).toContainText("Keine Implementierung");
     await expect(section).toContainText("Kein Vendor-Vergleichs-Marathon");
     await expect(section).toContainText("Keine Workshop-Serie");
+  });
+
+  test("TC-CNT-097: the trust anchor says who stands behind the offer", async ({
+    page,
+  }) => {
+    // Founder 2026-08-15: the page may not leave the reader to imagine a bench of
+    // consultants that does not exist. The named principal and the direct-access promise
+    // are the assertion.
+    await page.goto("/ki-beratung");
+    const anchor = page.locator('section[aria-labelledby="anchor-heading"]');
+    await expect(anchor).toContainText("macht auch die Arbeit");
   });
 
   test("TC-CNT-092: three objections — not five, not two", async ({ page }) => {

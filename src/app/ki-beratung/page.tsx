@@ -31,7 +31,7 @@ import { breadcrumbListSchema } from "@/lib/schema/breadcrumb";
  *     say 30 would re-open honesty fix #4 (2026-07-28, shipped 2026-08-06 in PR #165)
  *     nine days after it landed. Founder-decided 2026-08-15.
  *  2. NO PRICING FORMULA, NO 2x CHECK, NO 700-EUR FLOOR — guardrail C6, Founder 2026-08-07.
- *     Only the published Festpreis RANGES appear here. Do not add the internal one-pager's
+ *     Only the published Festpreise appear here. Do not add the internal one-pager's
  *     calculation to this file, ever.
  *  3. NOTHING THAT READS AS AVAILABILITY-FOR-HIRE — guardrail C4, Founder 2026-08-05. The
  *     mandate offering publishes exclusively via the private Erwerbs lane. This page sells a
@@ -99,19 +99,27 @@ const DELIVERABLES = [
   },
 ];
 
-/** The two entry depths. Festpreis RANGES only — see decision 2 in the file header. */
+/**
+ * The two entry depths. Published Festpreise only — see decision 2 in the file header.
+ * The figures were set by the Founder on 2026-08-15 at live acceptance of this page.
+ *
+ * `hinweis: "Einführungspreis"` is not decoration: the label is part of that ruling, and
+ * TC-CNT-090 asserts it inside this exact row so it cannot quietly fall out of the cell.
+ */
 const LADDER = [
   {
     stufe: "Kompakt-Analyse",
     format: "Remote",
     umfang: "2–3 h strukturiertes Arbeitsgespräch + Auswertung",
-    preis: "2.000–3.000 EUR",
+    preis: "1.500 EUR",
+    hinweis: "Einführungspreis",
   },
   {
     stufe: "Workshop-Tag",
     format: "Vor Ort (Großraum Stuttgart), sonst remote",
     umfang: "Ganztages-Workshop mit Ihrem Team + Auswertung",
-    preis: "3.500–5.000 EUR",
+    preis: "2.500–3.500 EUR",
+    hinweis: null,
   },
 ];
 
@@ -284,8 +292,11 @@ export default function KiBeratungPage() {
                   <th className="py-3 pr-4 font-heading text-sm font-semibold uppercase tracking-wider text-neutral-dark/60 dark:text-text-secondary/70">
                     Umfang
                   </th>
+                  {/* "Festpreis-Rahmen" was accurate while both rows were ranges. Stufe 1 is
+                      now a point price, and a column head promising a "Rahmen" over a single
+                      figure is the small kind of untruth this site keeps getting caught by. */}
                   <th className="py-3 font-heading text-sm font-semibold uppercase tracking-wider text-neutral-dark/60 dark:text-text-secondary/70">
-                    Festpreis-Rahmen
+                    Festpreis
                   </th>
                 </tr>
               </thead>
@@ -306,16 +317,40 @@ export default function KiBeratungPage() {
                     </td>
                     <td className="py-4 font-heading font-semibold text-primary dark:text-text-primary">
                       {row.preis}
+                      {row.hinweis ? (
+                        <span className="mt-1 block font-body text-[13px] font-normal text-neutral-dark/60 dark:text-text-secondary/70">
+                          {row.hinweis}
+                        </span>
+                      ) : null}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          {/* ANRECHNUNG, TWO STAGES (stage 2 new — Founder 2026-08-15).
+              Kept as two plain sequential sentences on purpose: a combined formulation
+              invites the question whether stage 1 ALSO carries through onto the
+              implementation project. Read plainly it does not — stage 1 has already been
+              absorbed into the Workshop-Tag, and the Workshop-Tag is what carries on.
+              THE SIX-MONTH WINDOW HAS NO ANCHOR IN THE FOUNDER WORDING. "nach dem
+              Workshop-Tag" below is MY reading of that gap, not his decision — the plainest
+              of the candidates (workshop / Auswertung / Beauftragung). On a page that sells
+              "keine Nachträge", a credit deadline without a starting point is precisely the
+              clause a Mittelstands-Einkauf argues about later. One word in the voice pass
+              corrects it. */}
           <p className="mt-5 max-w-[680px] text-[15px] leading-relaxed text-neutral-dark/80 dark:text-text-secondary">
-            <strong>Anrechnung:</strong> Buchen Sie nach der Kompakt-Analyse den
-            Workshop-Tag, wird der Preis der Stufe 1 vollständig angerechnet. Der
-            Einstieg ist damit risikofrei — Sie zahlen die Tiefe nur einmal.
+            <strong>Anrechnung, Stufe 1 auf Stufe 2:</strong> Buchen Sie nach der
+            Kompakt-Analyse den Workshop-Tag, wird der Preis der Stufe 1 vollständig
+            angerechnet.
+          </p>
+          <p className="mt-3 max-w-[680px] text-[15px] leading-relaxed text-neutral-dark/80 dark:text-text-secondary">
+            <strong>Und es geht weiter:</strong> Beauftragen Sie innerhalb von sechs
+            Monaten nach dem Workshop-Tag die Umsetzung, rechnen wir den Workshop-Tag
+            vollständig auf das Projekt an — auf die Umsetzung, nicht auf weitere Beratung.
+          </p>
+          <p className="mt-3 max-w-[680px] text-[15px] leading-relaxed text-neutral-dark/80 dark:text-text-secondary">
+            Der Einstieg ist damit risikofrei — Sie zahlen die Tiefe nur einmal.
           </p>
           <p className="mt-2 text-[14px] text-neutral-dark/60 dark:text-text-secondary/70">
             Alle Preise netto, Festpreis — keine Tagessatz-Abrechnung, keine Nachträge.
@@ -358,11 +393,22 @@ export default function KiBeratungPage() {
               line is the subject rather than a garnish. It already stands on this domain in
               the homepage's #founder section, so leaving it out here removes a repetition,
               not a fact. */}
+          {/* THE "WIR" IS NOW SAID OUT LOUD (Founder 2026-08-15, wording his). The page used
+              to speak of a "Flotte spezialisierter KI-Agenten" while leaving open how many
+              humans stood behind it — which invited the reader to imagine a bench of
+              consultants that does not exist. Naming it is both the honest move and the
+              stronger one: it turns the smallness into the direct-access mechanic. The two
+              sentences below are Founder-approved verbatim; the paragraph after them is my
+              draft, trimmed to remove what his sentence now says better. */}
           <p className="mt-5 max-w-[720px] text-[15px] leading-relaxed text-neutral-dark/80 dark:text-text-secondary">
-            Wir sind keine Folien-Berater. Wir betreiben unser eigenes Unternehmen mit
-            einer Flotte spezialisierter KI-Agenten — von Softwareentwicklung über
-            Dokumentation bis Qualitätssicherung. Was wir empfehlen, praktizieren wir
-            täglich selbst.
+            Wir — das sind German Rauhut und eine Flotte spezialisierter KI-Agenten, die
+            unser eigenes Unternehmen täglich betreiben. Im Gespräch und in der Analyse
+            sitzen Sie mir gegenüber: Der, mit dem Sie sprechen, macht auch die Arbeit.
+          </p>
+          <p className="mt-4 max-w-[720px] text-[15px] leading-relaxed text-neutral-dark/80 dark:text-text-secondary">
+            Wir sind keine Folien-Berater: Softwareentwicklung, Dokumentation,
+            Qualitätssicherung — der eigene Betrieb läuft über genau die Agenten, über die
+            wir sprechen. Was wir empfehlen, praktizieren wir selbst.
           </p>
           <p className="mt-4 max-w-[720px] text-[15px] leading-relaxed text-neutral-dark/80 dark:text-text-secondary">
             Nachprüfbar statt behauptet: {tests} geprüfte automatisierte Tests über die
