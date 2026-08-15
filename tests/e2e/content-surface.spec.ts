@@ -62,8 +62,13 @@ test.describe("Content surface — Products index", () => {
     }
   });
 
-  test("TC-CNT-011: ClearPath card links to /products/clearpath", async ({ page }) => {
-    await page.goto("/products");
+  // ClearPath was UNFEATURED on 2026-08-15 (Founder, #515): off the hub, page + card stay
+  // live on the MMP sub-portal. The test moved with the decision rather than being deleted —
+  // "the card links to its detail page" is still the thing worth guarding, just one level down.
+  test("TC-CNT-011: ClearPath card links to /products/clearpath (MMP sub-portal)", async ({
+    page,
+  }) => {
+    await page.goto("/products/mmps");
     await expect(page.locator('a[href="/products/clearpath"]').first()).toBeVisible();
   });
 
@@ -78,12 +83,14 @@ test.describe("Content surface — Products index", () => {
     page,
   }) => {
     await page.goto("/products");
-    // featured MMPs present on the portal teaser (kaze added 2026-08-06, Grundversion)
-    for (const slug of ["clearpath", "snakeoil-check", "phonesis", "kaze"]) {
+    // featured MMPs present on the portal teaser (kaze added 2026-08-06; TrustScope +
+    // md-viewer promoted 2026-08-15 as the two Rang-1 leads, #515)
+    for (const slug of ["phonesis", "kaze", "trustscope", "md-viewer"]) {
       await expect(page.locator(`a[href="/products/${slug}"]`).first()).toBeVisible();
     }
-    // non-featured MMPs are NOT on the teaser (they live on the sub-portal)
-    for (const slug of ["local-seo-hub", "prod-or-pretend"]) {
+    // non-featured MMPs are NOT on the teaser (they live on the sub-portal). ClearPath and
+    // Snakeoil-Check joined this list on 2026-08-15 — unfeatured, NOT retired.
+    for (const slug of ["local-seo-hub", "prod-or-pretend", "clearpath", "snakeoil-check"]) {
       await expect(page.locator(`a[href="/products/${slug}"]`)).toHaveCount(0);
     }
     // the "mehr" tile links to the MMP sub-portal and signals the remainder
