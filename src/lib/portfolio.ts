@@ -207,10 +207,24 @@ export const PORTFOLIO: PortfolioCategory[] = [
         href: "/products/kaze",
         isExternal: false,
         schemaType: "SoftwareApplication",
-        // Grundversion 2026-08-06 (Founder ask): card + [slug] skeleton detail page only.
-        // applicationCategory deliberately unset (schema default) until the Engels scope
-        // pass defines what Kaze publicly claims to be. No hasOwnPage → served by the
-        // skeleton; noindex + held out of the sitemap until real content lands.
+        // 2026-08-20: aus der Skelett-Seite wird eine eigene (src/app/products/kaze),
+        // gespeist aus content/products/kaze.md + product-faqs. Der Inhalt folgt den
+        // von der PM geschriebenen und vom Founder freigegebenen Texten der Kaze-eigenen
+        // Produktseite (kaze#139) — beide Flaechen sagen dasselbe, statt zweimal aehnlich.
+        //
+        // applicationCategory BLEIBT UNGESETZT, und das ist jetzt ein schaerferer Grund
+        // als vorher: die naheliegende Apple-Kategorie waere "Produktivitaet", und genau
+        // dieses Wort ist fuer Kaze gesperrt — die App verspricht Ruhe, nicht Ertrag, und
+        // der Unterschied entscheidet sich im Wortschatz. Eine Kategorie zu setzen, die
+        // dem Text widerspricht, waere eine Falschaussage an eine Maschine. Founder-Frage,
+        // nicht Bauentscheidung.
+        //
+        // noindex BLEIBT, obwohl jetzt echter Inhalt dasteht. Die App ist nicht im App
+        // Store; eine indexierte Seite ueber ein Produkt, das niemand bekommen kann,
+        // sammelt Besucher fuer eine Sackgasse. Das Kennzeichen schaltet Robots-Meta,
+        // Sitemap UND das FAQPage-Schema gemeinsam (AP-1) — wenn es faellt, faellt alles
+        // drei zusammen, und der Zeitpunkt ist eine Founder-Ansage.
+        hasOwnPage: true,
         noindex: true,
       },
       {
