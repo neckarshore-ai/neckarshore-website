@@ -38,6 +38,10 @@ const FORBIDDEN: { pattern: RegExp; why: string }[] = [
     pattern: /exported:\s*"2026-06-22"/,
     why: "frozen export date — SITE_UPDATED was stale for seven weeks",
   },
+  {
+    pattern: /launch\s+planned\s+for/i,
+    why: "public launch-date claim — Founder-decided 2026-08-20: no quarter promises on any surface",
+  },
 ];
 
 /** Facts the surfaces must carry. Absence here means the derivation silently broke. */
@@ -99,3 +103,54 @@ for (const surface of surfaces) {
     );
   });
 }
+
+/**
+ * PUBLIC LAUNCH-DATE GUARD — source-level, and deliberately wider than the two surfaces above.
+ *
+ * WHY IT SCANS SOURCES AND NOT RENDERED TEXT: on 2026-08-20 "Launch geplant Q3 2026" sat in
+ * FOUR places at once — the product page's status pill, the page's timeline line, the FAQ answer,
+ * and the English AI-reader prose. Only the last two are reachable from a built string in this
+ * file; the first two are JSX. A guard that could only see the surfaces it can import would have
+ * caught two of four and reported green, which is the shape this repo already has an open item
+ * about. So this reads the files.
+ *
+ * SCOPE IS NAMED, NOT GLOBAL, and that is a deliberate trade: a repo-wide sweep for /Q[1-4] 20dd/
+ * would red-line any blog post that legitimately names a quarter. These four files are where
+ * product availability is claimed. A new file making the same claim is NOT caught — say so
+ * rather than let the green suggest otherwise.
+ *
+ * Founder decision 2026-08-20: no public launch quarter anywhere. A quarter expires on a fixed
+ * date and nothing in CI notices the day it becomes false; "in Entwicklung" cannot go stale.
+ */
+const CLAIM_SOURCES = [
+  "src/app/products/omnopsis/page.tsx",
+  "src/lib/product-faqs.ts",
+  "src/lib/llms-index.ts",
+  "src/lib/portfolio.ts",
+];
+
+/** Quarter-shaped date claims: "Q3 2026", "Q3/2026", "Q3-2026". */
+const QUARTER = /\bQ[1-4]\s*[\/\-]?\s*20\d{2}\b/;
+
+test("launch-date guard: the scanned files exist and are substantial", () => {
+  // Non-vacuity (#448): a missing or empty file would satisfy every assertion below.
+  for (const file of CLAIM_SOURCES) {
+    const text = readFileSync(file, "utf8");
+    assert.ok(
+      text.length > 500,
+      `${file} is ${text.length} chars — renamed or emptied, so the guard below proves nothing`,
+    );
+  }
+});
+
+test("launch-date guard: no product source claims a launch quarter", () => {
+  for (const file of CLAIM_SOURCES) {
+    const text = readFileSync(file, "utf8");
+    const hit = text.match(QUARTER);
+    assert.ok(
+      hit === null,
+      `${file} carries "${hit?.[0]}" — a public launch quarter expires silently. ` +
+        `Founder-decided 2026-08-20: state "In Entwicklung" without a date.`,
+    );
+  }
+});
