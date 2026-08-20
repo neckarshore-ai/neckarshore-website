@@ -169,18 +169,28 @@ export default function Home() {
                   Unser Portfolio
                 </p>
                 <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight text-text-primary md:text-4xl">
-                  Ein Flagship. Mehrere Produkte. Skills. Eine Bauweise.
+                  Ein Flagship. Diverse Produkte. Skills. Eine Bauweise.
                 </h2>
                 <p className="mt-6 text-lg leading-relaxed text-text-secondary">
-                  Strukturiert gebaut — KI-beschleunigt, DSGVO-by-Design, Made in Germany:
-                  Flagships, MMPs, Skills (&amp; Websites).
+                  Das Flaggschiff ist{" "}
+                  <span className="font-medium text-text-primary">Omnopsis Documentor+X</span> —
+                  unsere KI-first Documentation Engine. Drumherum: MMPs, Skills und Web-Präsenzen.
+                  Alles nach derselben Bauweise — KI-beschleunigt, DSGVO-by-Design, Made in Germany.
                 </p>
-                <Link
-                  href="/products"
-                  className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-secondary transition-colors hover:text-text-primary"
-                >
-                  Alle Produkte ansehen →
-                </Link>
+                <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+                  <Link
+                    href="/products/omnopsis"
+                    className="inline-flex items-center gap-1 text-sm font-medium text-secondary transition-colors hover:text-text-primary"
+                  >
+                    Omnopsis ansehen →
+                  </Link>
+                  <Link
+                    href="/products"
+                    className="inline-flex items-center gap-1 text-sm font-medium text-secondary transition-colors hover:text-text-primary"
+                  >
+                    Alle Produkte ansehen →
+                  </Link>
+                </div>
               </div>
 
               {/* Stats grid — renders instantly with fallback, fetches live data in background */}

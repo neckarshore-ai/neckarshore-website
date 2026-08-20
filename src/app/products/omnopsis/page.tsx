@@ -72,7 +72,7 @@ export default function OmnopsisPage() {
 
           <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary/5 px-4 py-1.5 text-sm font-medium text-muted dark:bg-text-secondary/10 dark:text-text-tertiary">
             <span className="h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
-            In Entwicklung · Launch geplant Q3 2026
+            In Entwicklung
           </div>
 
           <section className="mt-12">
@@ -140,8 +140,6 @@ export default function OmnopsisPage() {
                 Born
               </ImageModal>{" "}
               March 22, 2026 in Stuttgart.
-              <br />
-              Launch geplant Q3 2026.
             </p>
           </section>
 
