@@ -14,7 +14,12 @@
   --color-neutral-dark: #1E2937;
   --color-success: #10B981;
   --color-error: #EF4444;
-  --color-muted: #64748B;
+  /* Body-Grau. Von #64748B auf slate-600 gezogen (2026-08-21): #64748B lag auf allen
+     fuenf hellen Flaechentoenen zwischen 3.96 und 4.34 gegen die geforderten 4.5 —
+     immer nur knapp daneben, auf 239 Textstellen. #5A6779 haette mit 4.79 heute
+     bestanden und beim naechsten neuen Flaechenton wieder nicht; #475569 haelt den
+     schlechtesten Fall bei 6.31. */
+  --color-muted: #475569;
 
   /* Dark Mode */
   --color-deep-space: #0F172A;
