@@ -147,7 +147,7 @@ export default function ClearPathPage() {
                           href={bias.wikipediaUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="whitespace-nowrap text-accent transition-colors hover:underline"
+                          className="whitespace-nowrap text-accent transition-colors hover:underline dark:text-accent-bright"
                         >
                           Wikipedia ↗
                         </a>

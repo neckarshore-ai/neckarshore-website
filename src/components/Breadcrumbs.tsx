@@ -21,7 +21,7 @@ export function Breadcrumbs({ trail }: { trail: BreadcrumbCrumb[] }) {
       <JsonLd data={breadcrumbListSchema(trail)} id="schema-breadcrumb" />
       <nav
         aria-label="Brotkrumen"
-        className="mb-8 text-sm text-muted dark:text-text-secondary/60"
+        className="mb-8 text-sm text-muted dark:text-text-tertiary"
       >
         {trail.map((crumb, index) => (
           <Fragment key={`${crumb.name}-${index}`}>
