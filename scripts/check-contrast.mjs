@@ -208,6 +208,29 @@ async function measure(browser, paths, findings, seenBackgrounds) {
           );
         }
 
+        // SETTLE BEFORE MEASURING — and again as a proof, not as a duration.
+        //
+        // The colour mode is set by a client effect that adds a class to <html>. Every
+        // element carrying `transition-colors` or `transition-all` therefore ANIMATES
+        // from its light value to its dark one, and axe injected during that window
+        // reads an interpolated colour that no user ever sees in a settled state. That
+        // is not theory: three consecutive runs of this command reported DIFFERENT
+        // colour pairs on the same unchanged build — backgrounds of #575f69, #989da4,
+        // #abb6c1, all of them points on the fade between #ffffff and #1e2937.
+        //
+        // A watcher whose findings move on an unchanged build cannot become a hard
+        // gate, because "zero" would never be reachable and "fewer than last time" is
+        // not a threshold. So we wait for each running animation's OWN finished
+        // promise. Infinite animations (a ticker, a pulse) are excluded by name rather
+        // than by timeout — they never finish, and waiting on one would hang the run.
+        await page.evaluate(async () => {
+          const finite = document.getAnimations().filter((a) => {
+            const timing = a.effect && a.effect.getComputedTiming && a.effect.getComputedTiming();
+            return !timing || timing.iterations !== Infinity;
+          });
+          await Promise.all(finite.map((a) => a.finished.catch(() => {})));
+        });
+
         const background = toHex(
           await page.evaluate(() => getComputedStyle(document.body).backgroundColor),
         );
