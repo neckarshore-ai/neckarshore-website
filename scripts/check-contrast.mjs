@@ -20,6 +20,18 @@
  * reported nothing for months. This reads the same source the sitemap is built from — a
  * new page is checked because it exists, not because someone remembered to add it.
  *
+ * THE NODE COUNT IS NOT STABLE BETWEEN RUNS, AND THAT IS A PROPERTY, NOT A BUG.
+ * Two runs against the same live site minutes apart returned 543 nodes on 41 colour
+ * pairs and 602 on 39. Nothing in the measurement changed between them; composited
+ * background colours depend on what has rendered, hovered or settled at the moment axe
+ * looks, so the same underlying defect can surface as slightly different pairs.
+ *
+ * The consequence for how this is used: DO NOT read "the number fell" as proof that a
+ * repair worked — a swing of sixty is within noise. The stable signals are the TOP ROWS,
+ * which reproduce exactly, and ZERO, which is unambiguous. That is also why this becomes
+ * a hard gate only after the repair: "zero violations" is a threshold that does not
+ * wobble, and "fewer than last time" is not a threshold at all.
+ *
  * WHY BOTH COLOUR MODES, AND WHY THE MODE IS VERIFIED RATHER THAN ASSUMED.
  * The light mode turned out six times more affected than the dark (305 nodes against
  * 50), and the reason nobody knew is that the existing automated check measures dark.
@@ -35,7 +47,12 @@ import { createRequire } from "node:module";
 import { spawn, execFileSync } from "node:child_process";
 import process from "node:process";
 import sitemapModule from "../src/app/sitemap.ts";
-import { groupFindings, formatReport, parseExpected } from "./contrast-grouping.mjs";
+import {
+  groupFindings,
+  formatReport,
+  parseExpected,
+  parseRatio,
+} from "./contrast-grouping.mjs";
 
 const require = createRequire(import.meta.url);
 const AXE_PATH = require.resolve("axe-core");
@@ -92,22 +109,81 @@ function toHex(rgb) {
   return "#" + m.slice(1, 4).map((n) => Number(n).toString(16).padStart(2, "0")).join("");
 }
 
+/**
+ * Wait until the server ANSWERS — the same rule the page loads follow, one level up.
+ *
+ * A fixed sleep here would contradict this file's own principle in its very first
+ * paragraph: a delay that is long enough on this machine is a failed run on a slower one,
+ * and the failure would surface as a contrast run exiting on a navigation error, which is
+ * about the least informative way this command could break.
+ */
+async function waitForServer(url, timeoutMs = 60000) {
+  const deadline = Date.now() + timeoutMs;
+  for (;;) {
+    try {
+      const probe = await fetch(url, { method: "HEAD" });
+      if (probe.status < 500) return;
+    } catch {
+      // not listening yet — keep waiting until the deadline, then say so plainly
+    }
+    if (Date.now() > deadline) {
+      throw new Error(`Server auf ${url} antwortet nicht innerhalb von ${timeoutMs / 1000}s`);
+    }
+    await new Promise((r) => setTimeout(r, 500));
+  }
+}
+
+/**
+ * Stop the server we started — including the process it started.
+ *
+ * `npm run start` is a wrapper: the Next server is its CHILD. Signalling only the npm
+ * process leaves that child holding port 3000, and the next run of this command fails
+ * against a stale server still serving the previous build — a wrong measurement that
+ * looks exactly like a right one. Spawning detached puts both into their own process
+ * group, so negating the pid signals the group.
+ */
+function stopServer(server) {
+  if (!server || server.killed) return;
+  try {
+    process.kill(-server.pid, "SIGTERM");
+  } catch {
+    try {
+      server.kill("SIGTERM");
+    } catch {
+      // already gone — nothing to clean up
+    }
+  }
+}
+
 async function main() {
   let server;
-  if (!QUICK && BASE.includes("localhost")) {
-    log("Produktionsbau...");
-    execFileSync("npm", ["run", "build"], { stdio: "inherit" });
-    log("Server startet...");
-    server = spawn("npm", ["run", "start"], { stdio: "ignore", detached: false });
-    await new Promise((r) => setTimeout(r, 4000));
-  }
-
-  const paths = routes();
-  const browser = await chromium.launch();
+  let browser;
   const findings = [];
   const seenBackgrounds = new Map();
 
+  // The try opens BEFORE the browser launch and the route derivation on purpose: both can
+  // throw, and a throw between spawning the server and entering a later try would leave
+  // the server running with nothing left to stop it.
   try {
+    if (!QUICK && BASE.includes("localhost")) {
+      log("Produktionsbau...");
+      execFileSync("npm", ["run", "build"], { stdio: "inherit" });
+      log("Server startet...");
+      server = spawn("npm", ["run", "start"], { stdio: "ignore", detached: true });
+      await waitForServer(BASE + "/");
+    }
+
+    const paths = routes();
+    browser = await chromium.launch();
+    return await measure(browser, paths, findings, seenBackgrounds);
+  } finally {
+    if (browser) await browser.close();
+    stopServer(server);
+  }
+}
+
+async function measure(browser, paths, findings, seenBackgrounds) {
+  {
     for (const mode of MODES) {
       const context = await browser.newContext({ colorScheme: mode.colorScheme });
       const page = await context.newPage();
@@ -156,7 +232,10 @@ async function main() {
               mode: mode.name,
               fg: data.fgColor,
               bg: data.bgColor,
-              ratio: Number(data.contrastRatio),
+              // parseRatio, not Number(): axe already surprised us once by stating the
+              // REQUIREMENT as "4.5:1". If it ever does the same for the measurement,
+              // this refuses loudly instead of printing NaN in the column that decides.
+              ratio: parseRatio(data.contrastRatio),
               expected: parseExpected(data.expectedContrastRatio),
               selector: Array.isArray(node.target) ? String(node.target[0]) : String(node.target),
             });
@@ -166,9 +245,6 @@ async function main() {
 
       await context.close();
     }
-  } finally {
-    await browser.close();
-    if (server) server.kill("SIGTERM");
   }
 
   // THE PROOF THAT BOTH MODES ACTUALLY RENDERED DIFFERENTLY. Without this, a change to
@@ -182,7 +258,7 @@ async function main() {
     log("ABBRUCH: heller und dunkler Durchlauf zeigen dieselbe Hintergrundfarbe " + overlap.join(", "));
     log("Der Farbmodus hat nicht gegriffen — dieser Lauf haette die halbe Seite gemessen");
     log("und trotzdem ausgesehen wie ein vollstaendiger. Kein Ergebnis ist besser als das.");
-    process.exit(2);
+    return 2;
   }
 
   const groups = groupFindings(findings);
@@ -191,10 +267,23 @@ async function main() {
   log("");
   log(`Hintergruende: hell ${light.join(", ")} / dunkel ${dark.join(", ")}`);
 
-  process.exit(groups.length > 0 ? 1 : 0);
+  return groups.length > 0 ? 1 : 0;
 }
 
-main().catch((error) => {
-  log("Fehlgeschlagen: " + error.message);
-  process.exit(2);
-});
+/**
+ * `process.exitCode` and NOT `process.exit`.
+ *
+ * `process.exit` tears the process down before pending stdout writes have flushed, and
+ * stdout is a pipe whenever this runs in CI or through a `| tail`. The report IS the
+ * entire output of this command — truncating it to save a few milliseconds would throw
+ * away the only thing the run produced. Setting the code lets node exit on its own once
+ * the writes are done.
+ */
+main()
+  .then((code) => {
+    process.exitCode = code;
+  })
+  .catch((error) => {
+    log("Fehlgeschlagen: " + error.message);
+    process.exitCode = 2;
+  });
