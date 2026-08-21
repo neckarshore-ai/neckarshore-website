@@ -9,9 +9,9 @@ import Logo from "./Logo";
 export default function Footer() {
   return (
     <footer className="border-t border-primary/5 bg-white px-4 py-10 md:px-6 dark:border-text-secondary/10 dark:bg-surface">
-      <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-4 text-sm text-muted dark:text-text-secondary/60 md:flex-row md:justify-between">
+      <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-4 text-sm text-muted dark:text-text-tertiary md:flex-row md:justify-between">
         <Link href="/">
-          <Logo size="text-xl" className="opacity-60" />
+          <Logo size="text-xl" />
         </Link>
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
           <Link href="/products" className="transition-colors hover:text-accent">
