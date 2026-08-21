@@ -31,7 +31,7 @@
     "check:contrast": "node --import tsx scripts/check-contrast.mjs"
   },
   "dependencies": {
-    "@upstash/redis": "1.37.0",
+    "@upstash/redis": "1.38.2",
     "gray-matter": "4.0.3",
     "lucide-react": "1.7.0",
     "marked": "18.0.9",
