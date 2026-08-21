@@ -5,12 +5,18 @@
  * arguments, which is why it can be unit-tested (tests/unit/contrast-grouping.test.mjs)
  * while the runner that drives Playwright cannot.
  *
- * THE PROBLEM THIS SOLVES. A full-site axe run over neckarshore.ai returned 355
- * color-contrast nodes (2026-08-21, 28 routes, both colour modes). Printed one per line
- * that is 355 lines, which nobody reads and which therefore gets switched off. The same
- * 355 nodes trace back to 14 distinct foreground/background pairs — and a colour pair is
- * a DECISION, not an occurrence. 14 lines with foreground, background, actual, required,
- * occurrences and one example address is a finding you can act on before lunch.
+ * THE PROBLEM THIS SOLVES. A full-site axe run over neckarshore.ai returned 543
+ * color-contrast nodes (2026-08-21, 28 routes, both colour modes, via this very
+ * command). Printed one per line that is 543 lines, which nobody reads and which
+ * therefore gets switched off. The same 543 nodes trace back to 41 distinct
+ * foreground/background pairs — and a colour pair is a DECISION, not an occurrence. 41
+ * lines with foreground, background, actual, required, occurrences and one example
+ * address is a finding you can act on before lunch.
+ *
+ * (An earlier ad-hoc script the same day reported 355 nodes on 14 pairs. That run is not
+ * reproducible and its colour mode was never proven; these numbers come from the command
+ * in this repository and are the ones to quote. The discrepancy is recorded rather than
+ * resolved in the author's favour.)
  *
  * WHAT THE KEY IS, AND WHY EACH PART OF IT EARNS ITS PLACE:
  *   mode      — light and dark are different renderings; merging them hides that light
@@ -73,12 +79,31 @@ export function parseExpected(value) {
 }
 
 /**
+ * Read the MEASURED ratio — and refuse rather than guess.
+ *
+ * The asymmetry with `normalizeColor`, which degrades quietly on junk, is deliberate.
+ * A colour is a LABEL: getting it wrong costs a reader some clarity. The ratio is the
+ * MEASUREMENT: it decides severity, it decides sort order, and it decides whether
+ * anything is broken at all. `Math.min(x, NaN)` is NaN for good, a comparator that
+ * returns NaN leaves the sort order undefined, and the "Ist" column then prints NaN —
+ * the identical dead-column failure this module already documents one column to the
+ * right. A watcher that invents a measurement is worse than one that stops.
+ */
+export function parseRatio(value) {
+  const parsed = typeof value === "number" ? value : Number.parseFloat(String(value));
+  if (!Number.isFinite(parsed)) {
+    throw new Error(`Kontrastwert nicht lesbar: ${JSON.stringify(value)}`);
+  }
+  return parsed;
+}
+
+/**
  * Group findings by colour pair.
  *
  * Sorted by ACTUAL RATIO ASCENDING — worst first — deliberately, and not by occurrence
  * count. The single most serious finding on this site is text at 1.03, which is text in
  * effectively its own background colour and occurs twice; sorting by count would bury it
- * under 239 near misses that are all merely a little too light. Severity is what the
+ * under 184 near misses that are all merely a little too light. Severity is what the
  * reader needs at the top.
  *
  * @param {Array<{route: string, mode: string, fg: string, bg: string, ratio: number,
@@ -90,6 +115,9 @@ export function groupFindings(findings) {
   for (const f of findings) {
     const fg = normalizeColor(f.fg);
     const bg = normalizeColor(f.bg);
+    // Checked HERE and not only at the call site, so no future caller can smuggle an
+    // unreadable measurement into a group and quietly undefine the severity order.
+    const ratio = parseRatio(f.ratio);
     const key = `${f.mode}|${fg}|${bg}|${f.expected}`;
 
     let group = byKey.get(key);
@@ -99,7 +127,7 @@ export function groupFindings(findings) {
         fg,
         bg,
         expected: f.expected,
-        ratio: f.ratio,
+        ratio,
         count: 0,
         routes: new Set(),
         // Kept so the example can be drawn from the FIRST route alphabetically rather
@@ -111,7 +139,7 @@ export function groupFindings(findings) {
     }
 
     group.count += 1;
-    group.ratio = Math.min(group.ratio, f.ratio);
+    group.ratio = Math.min(group.ratio, ratio);
     group.routes.add(f.route);
     if (!group.selectorByRoute.has(f.route)) group.selectorByRoute.set(f.route, f.selector);
   }

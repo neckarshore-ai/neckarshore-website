@@ -19,6 +19,7 @@ import assert from "node:assert/strict";
 import {
   normalizeColor,
   parseExpected,
+  parseRatio,
   groupFindings,
   formatReport,
 } from "../../scripts/contrast-grouping.mjs";
@@ -73,6 +74,37 @@ test("parseExpected: plain numbers pass through, junk falls back to the body-tex
   // which is the number that decides, is untouched.
   assert.equal(parseExpected(undefined), 4.5);
   assert.equal(parseExpected("weiss nicht"), 4.5);
+});
+
+test("parseRatio: the MEASUREMENT is read like the requirement, string form included", () => {
+  assert.equal(parseRatio(4.34), 4.34);
+  assert.equal(parseRatio("4.34"), 4.34);
+  assert.equal(parseRatio("4.34:1"), 4.34);
+});
+
+test("parseRatio REFUSES rather than guesses — and that is deliberately unlike the colours", () => {
+  // normalizeColor degrades on junk; this throws on it. The difference is not taste.
+  // A colour is a LABEL: getting it wrong costs readability. The ratio is the
+  // MEASUREMENT: it decides severity, sort order and whether something is broken at all.
+  // A watcher that invents a measurement is worse than one that stops, which is the same
+  // reasoning that makes the runner abort when it cannot prove its colour mode.
+  assert.throws(() => parseRatio("weiss nicht"), /Kontrastwert/);
+  assert.throws(() => parseRatio(undefined), /Kontrastwert/);
+  assert.throws(() => parseRatio(Number.NaN), /Kontrastwert/);
+});
+
+test("a NaN ratio can never be smuggled into a group and poison its sort order", () => {
+  // Math.min(x, NaN) is NaN for good, the comparator then returns NaN, and the severity
+  // order — the whole point of the report — silently becomes undefined. Same dead-column
+  // class as the 'Soll' bug, one column to the left.
+  assert.throws(
+    () =>
+      groupFindings([
+        { route: "/", mode: "light", fg: "#64748b", bg: "#fff", ratio: Number.NaN,
+          expected: 4.5, selector: "p" },
+      ]),
+    /Kontrastwert/,
+  );
 });
 
 test("NaN never reaches the report, whatever axe hands over", () => {
