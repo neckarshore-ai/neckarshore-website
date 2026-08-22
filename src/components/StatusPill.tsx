@@ -23,7 +23,7 @@
  */
 export function StatusPill({ label }: { label: string }) {
   return (
-    <span className="shrink-0 rounded-full bg-primary/5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-muted dark:bg-text-secondary/10 dark:text-text-tertiary">
+    <span className="shrink-0 rounded-full bg-primary/5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-muted dark:bg-text-secondary/10 dark:text-text-secondary">
       {label}
     </span>
   );

@@ -183,7 +183,7 @@ export default function KiBeratungPage() {
 
       <main className="mx-auto max-w-[960px] px-4 pt-40 pb-20 md:px-6">
         <header className="max-w-[680px]">
-          <p className="font-heading text-sm font-semibold uppercase tracking-wider text-accent">
+          <p className="font-heading text-sm font-semibold uppercase tracking-wider text-accent dark:text-accent-bright">
             KI-Beratung
           </p>
           {/* H1 = the one-pager's own title, product name first (Founder 2026-08-15, decided
@@ -283,19 +283,19 @@ export default function KiBeratungPage() {
             <table className="w-full min-w-[640px] border-collapse text-left text-[15px]">
               <thead>
                 <tr className="border-b border-primary/15 dark:border-text-secondary/20">
-                  <th className="py-3 pr-4 font-heading text-sm font-semibold uppercase tracking-wider text-neutral-dark/60 dark:text-text-secondary/70">
+                  <th className="py-3 pr-4 font-heading text-sm font-semibold uppercase tracking-wider text-muted dark:text-text-tertiary">
                     Stufe
                   </th>
-                  <th className="py-3 pr-4 font-heading text-sm font-semibold uppercase tracking-wider text-neutral-dark/60 dark:text-text-secondary/70">
+                  <th className="py-3 pr-4 font-heading text-sm font-semibold uppercase tracking-wider text-muted dark:text-text-tertiary">
                     Format
                   </th>
-                  <th className="py-3 pr-4 font-heading text-sm font-semibold uppercase tracking-wider text-neutral-dark/60 dark:text-text-secondary/70">
+                  <th className="py-3 pr-4 font-heading text-sm font-semibold uppercase tracking-wider text-muted dark:text-text-tertiary">
                     Umfang
                   </th>
                   {/* "Festpreis-Rahmen" was accurate while both rows were ranges. Stufe 1 is
                       now a point price, and a column head promising a "Rahmen" over a single
                       figure is the small kind of untruth this site keeps getting caught by. */}
-                  <th className="py-3 font-heading text-sm font-semibold uppercase tracking-wider text-neutral-dark/60 dark:text-text-secondary/70">
+                  <th className="py-3 font-heading text-sm font-semibold uppercase tracking-wider text-muted dark:text-text-tertiary">
                     Festpreis
                   </th>
                 </tr>
@@ -318,7 +318,7 @@ export default function KiBeratungPage() {
                     <td className="py-4 font-heading font-semibold text-primary dark:text-text-primary">
                       {row.preis}
                       {row.hinweis ? (
-                        <span className="mt-1 block font-body text-[13px] font-normal text-neutral-dark/60 dark:text-text-secondary/70">
+                        <span className="mt-1 block font-body text-[13px] font-normal text-muted dark:text-text-tertiary">
                           {row.hinweis}
                         </span>
                       ) : null}
@@ -353,7 +353,7 @@ export default function KiBeratungPage() {
           <p className="mt-3 max-w-[680px] text-[15px] leading-relaxed text-neutral-dark/80 dark:text-text-secondary">
             Der Einstieg ist damit risikofrei — Sie zahlen die Tiefe nur einmal.
           </p>
-          <p className="mt-2 text-[14px] text-neutral-dark/60 dark:text-text-secondary/70">
+          <p className="mt-2 text-[14px] text-muted dark:text-text-tertiary">
             Alle Preise netto, Festpreis — keine Tagessatz-Abrechnung, keine Nachträge.
           </p>
         </section>

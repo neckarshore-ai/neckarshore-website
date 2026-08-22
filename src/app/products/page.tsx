@@ -107,7 +107,7 @@ export default function ProductsIndex() {
       <JsonLd data={breadcrumbSchema} id="schema-breadcrumb-products" />
       <main className="mx-auto max-w-[960px] px-4 pt-40 pb-20 md:px-6">
         <header className="max-w-[640px]">
-          <p className="font-heading text-sm font-semibold uppercase tracking-wider text-accent">
+          <p className="font-heading text-sm font-semibold uppercase tracking-wider text-accent dark:text-accent-bright">
             Produkte
           </p>
           <h1 className="mt-3 font-heading text-4xl font-bold text-primary dark:text-text-primary md:text-5xl">
