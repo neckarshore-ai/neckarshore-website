@@ -58,7 +58,7 @@ export default function OmnopsisPage() {
 
         <article>
           <header className="mb-6">
-            <p className="text-sm font-semibold uppercase tracking-widest text-accent">
+            <p className="text-sm font-semibold uppercase tracking-widest text-accent dark:text-accent-bright">
               Unser Flaggschiff
             </p>
             <h1 className="mt-3 font-heading text-4xl font-bold text-accent md:text-5xl">
@@ -126,7 +126,7 @@ export default function OmnopsisPage() {
               <ImageModal
                 src="/images/omnixis-conceived-whiteboard-2024-12-11.jpg"
                 alt={`${BRAND.PRODUCT_SHORT} Whiteboard-Skizze, Sindelfingen, Dezember 2024`}
-                className="inline-flex min-h-[24px] items-center cursor-pointer text-accent underline decoration-accent/30 underline-offset-2 transition-colors hover:text-accent-hover hover:decoration-accent"
+                className="inline-flex min-h-[24px] items-center cursor-pointer text-accent underline decoration-accent/30 underline-offset-2 transition-colors hover:text-accent-hover hover:decoration-accent dark:text-accent-bright"
               >
                 Conceived
               </ImageModal>{" "}
@@ -135,7 +135,7 @@ export default function OmnopsisPage() {
               <ImageModal
                 src="/images/omnixis-born-first-session-2026-03-22.png"
                 alt={`Erste ${BRAND.PRODUCT_SHORT} Claude Code Session, März 2026`}
-                className="inline-flex min-h-[24px] items-center cursor-pointer text-accent underline decoration-accent/30 underline-offset-2 transition-colors hover:text-accent-hover hover:decoration-accent"
+                className="inline-flex min-h-[24px] items-center cursor-pointer text-accent underline decoration-accent/30 underline-offset-2 transition-colors hover:text-accent-hover hover:decoration-accent dark:text-accent-bright"
               >
                 Born
               </ImageModal>{" "}

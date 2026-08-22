@@ -47,7 +47,7 @@ export default function Datenschutz() {
       <PageSchema path="/datenschutz" name="Datenschutzerklärung — neckarshore.ai" />
       <main className="mx-auto max-w-[800px] px-4 pt-40 pb-20 md:px-6">
         <h1 className="font-heading text-3xl font-bold text-accent md:text-5xl">Datenschutzerklärung</h1>
-        <p className="mt-2 text-sm text-muted dark:text-text-secondary/60">Stand: Juli 2026</p>
+        <p className="mt-2 text-sm text-muted dark:text-text-tertiary">Stand: Juli 2026</p>
 
         <div className="mt-10 space-y-8 text-neutral-dark/80 leading-relaxed dark:text-text-secondary">
           <section>
@@ -129,7 +129,7 @@ export default function Datenschutz() {
                 href="https://vercel.com/legal/privacy-policy"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-accent hover:text-accent-hover"
+                className="text-accent hover:text-accent-hover dark:text-accent-bright"
               >
                 https://vercel.com/legal/privacy-policy
               </a>
@@ -222,7 +222,7 @@ export default function Datenschutz() {
                 href="https://calendly.com/privacy"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-accent hover:text-accent-hover"
+                className="text-accent hover:text-accent-hover dark:text-accent-bright"
               >
                 https://calendly.com/privacy
               </a>
@@ -270,7 +270,7 @@ export default function Datenschutz() {
                 href="https://www.cloudflare.com/privacypolicy/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-accent hover:text-accent-hover"
+                className="text-accent hover:text-accent-hover dark:text-accent-bright"
               >
                 https://www.cloudflare.com/privacypolicy/
               </a>
@@ -372,7 +372,7 @@ export default function Datenschutz() {
                 href="https://www.baden-wuerttemberg.datenschutz.de"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-accent hover:text-accent-hover"
+                className="text-accent hover:text-accent-hover dark:text-accent-bright"
               >
                 https://www.baden-wuerttemberg.datenschutz.de
               </a>
@@ -391,15 +391,15 @@ export default function Datenschutz() {
       </main>
 
       <footer className="border-t border-primary/5 bg-white px-4 py-10 md:px-6 dark:border-text-secondary/10 dark:bg-surface">
-        <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-4 text-sm text-muted dark:text-text-secondary/60 md:flex-row md:justify-between">
+        <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-4 text-sm text-muted dark:text-text-tertiary md:flex-row md:justify-between">
           <Link href="/">
-            <Logo size="text-xl" className="opacity-60" />
+            <Logo size="text-xl" />
           </Link>
           <div className="flex gap-6">
             <a href="/impressum" className="transition-colors hover:text-accent">
               Impressum
             </a>
-            <span className="font-medium text-primary/60">Datenschutz</span>
+            <span className="font-medium text-muted dark:text-text-tertiary">Datenschutz</span>
           </div>
           <p>&copy; 2026 neckarshore.ai</p>
         </div>

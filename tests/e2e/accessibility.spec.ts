@@ -1,57 +1,81 @@
 import { test, expect } from "@playwright/test";
-import { PAGES } from "./helpers";
+import { ALL_ROUTES } from "./helpers";
 
-// Hardcoded stable IDs — 5 tests per page
-const IDS: Record<string, [string, string, string, string, string]> = {
-  "/":            ["TC-A11Y-001", "TC-A11Y-002", "TC-A11Y-003", "TC-A11Y-004", "TC-A11Y-005"],
-  "/impressum":   ["TC-A11Y-006", "TC-A11Y-007", "TC-A11Y-008", "TC-A11Y-009", "TC-A11Y-010"],
-  "/datenschutz": ["TC-A11Y-011", "TC-A11Y-012", "TC-A11Y-013", "TC-A11Y-014", "TC-A11Y-015"],
-};
-
+/**
+ * Barrierefreiheit auf JEDER Adresse — nicht auf drei.
+ *
+ * WAS SICH GEAENDERT HAT UND WARUM. Dieses Spec verdrahtete bis zum 22.08.2026 drei
+ * Adressen fest ("/", "/impressum", "/datenschutz") und war damit auf 25 von 28 blind.
+ * Genau diese Blindheit ist der Grund, warum ein Kontrast-Verstoss monatelang unbemerkt
+ * live stand: geprueft wurde, woran jemand gedacht hatte, nicht, was es gibt. Die
+ * Adressen kommen jetzt aus derselben Quelle wie beim Kontrast-Waechter (`ALL_ROUTES`,
+ * abgeleitet aus dem sitemap-Modul) — eine neue Seite wird geprueft, weil sie existiert.
+ *
+ * WAS DIE AUSWEITUNG GEFUNDEN HAT: nichts. Alle 28 Adressen bestehen alle fuenf Regeln,
+ * gemessen gegen einen Produktionsbau vor dem Bau dieses Specs. Das ist die ehrliche
+ * Fassung — die Blindheit war real, der Schaden aus IHR ist heute null. Der Wert liegt
+ * ab jetzt in der Zukunft: die naechste Seite mit zwei H1 oder ohne Alt-Text faellt auf,
+ * statt zu warten, bis jemand zufaellig hinsieht.
+ *
+ * WARUM DIE PRUEFNUMMERN JETZT DEN PFAD TRAGEN. Die alten festen Nummern (TC-A11Y-001
+ * bis -015) waren an drei Adressen gebunden. Bei einer abgeleiteten Liste gibt es keine
+ * stabile Nummer mehr: jede neue Seite wuerde alle folgenden Nummern verschieben, und
+ * eine verschobene Nummer in einem Protokoll ist schlimmer als gar keine. Der Pfad ist
+ * der stabile Bezeichner — `TC-A11Y-/products/omnopsis-alt` benennt genau eine Pruefung
+ * auf genau einer Seite. Alte Protokollzeilen mit TC-A11Y-006 beschreiben vergangene
+ * Laeufe und bleiben gueltig.
+ *
+ * FUENF GETRENNTE PRUEFUNGEN JE ADRESSE, nicht eine gebuendelte: die Fehlermeldung IST
+ * die Diagnose. Eine gebuendelte Pruefung sagt "Seite X ist kaputt", fuenf getrennte
+ * sagen "Seite X hat zwei H1" — und nur die zweite Auskunft erspart die Suche.
+ */
 test.describe("Accessibility", () => {
-  for (const path of PAGES) {
-    const [idH1, idSkip, idLang, idAlt, idAria] = IDS[path];
-
-    test(`${idH1}: ${path} has exactly one H1`, async ({ page }) => {
+  for (const path of ALL_ROUTES) {
+    test(`TC-A11Y-${path}-h1: ${path} hat genau eine H1`, async ({ page }) => {
       await page.goto(path);
-      expect(await page.locator("h1").count(), `${path} should have exactly 1 H1`).toBe(1);
+      expect(await page.locator("h1").count(), `${path} sollte genau 1 H1 haben`).toBe(1);
     });
 
-    test(`${idSkip}: ${path} has no heading level skips`, async ({ page }) => {
+    test(`TC-A11Y-${path}-headings: ${path} ueberspringt keine Ueberschriften-Ebene`, async ({
+      page,
+    }) => {
       await page.goto(path);
-      const headings = await page.locator("h1, h2, h3, h4, h5, h6").all();
-      let lastLevel = 0;
+      const levels = await page.$$eval("h1, h2, h3, h4, h5, h6", (els) =>
+        els.map((el) => Number(el.tagName.slice(1))),
+      );
 
-      for (const heading of headings) {
-        const level = parseInt((await heading.evaluate((el) => el.tagName)).replace("H", ""));
-        if (lastLevel > 0) {
-          expect(level <= lastLevel + 1, `${path}: H${lastLevel} → H${level} (skip)`).toBe(true);
+      let last = 0;
+      for (const level of levels) {
+        if (last > 0) {
+          expect(level <= last + 1, `${path}: H${last} → H${level} (Sprung)`).toBe(true);
         }
-        lastLevel = level;
+        last = level;
       }
     });
 
-    test(`${idLang}: ${path} has lang attribute on html`, async ({ page }) => {
+    test(`TC-A11Y-${path}-lang: ${path} traegt das Sprach-Attribut`, async ({ page }) => {
       await page.goto(path);
       expect(await page.locator("html").getAttribute("lang")).toBe("de");
     });
 
-    test(`${idAlt}: ${path} — all images have alt text`, async ({ page }) => {
+    test(`TC-A11Y-${path}-alt: ${path} — jedes Bild hat einen Alt-Text`, async ({ page }) => {
       await page.goto(path);
-      const images = await page.locator("img").all();
-      for (const img of images) {
-        const src = await img.getAttribute("src");
-        expect(await img.getAttribute("alt"), `Image ${src} on ${path} missing alt`).toBeTruthy();
-      }
+      const missing = await page.$$eval("img", (imgs) =>
+        imgs.filter((img) => !img.getAttribute("alt")).map((img) => img.getAttribute("src")),
+      );
+      expect(missing, `${path}: Bilder ohne Alt-Text: ${missing.join(", ")}`).toEqual([]);
     });
 
-    test(`${idAria}: ${path} — nav buttons have accessible names`, async ({ page }) => {
+    test(`TC-A11Y-${path}-aria: ${path} — Schaltflaechen in der Navigation haben einen Namen`, async ({
+      page,
+    }) => {
       await page.goto(path);
-      const buttons = await page.locator("nav button").all();
-      for (const button of buttons) {
-        const name = (await button.getAttribute("aria-label")) || (await button.textContent())?.trim();
-        expect(name, `Button on ${path} without accessible name`).toBeTruthy();
-      }
+      const unnamed = await page.$$eval(
+        "nav button",
+        (buttons) =>
+          buttons.filter((b) => !(b.getAttribute("aria-label") || b.textContent?.trim())).length,
+      );
+      expect(unnamed, `${path}: Schaltflaechen ohne zugaenglichen Namen`).toBe(0);
     });
   }
 });
