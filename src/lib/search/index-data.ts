@@ -69,6 +69,13 @@ const PAGES: { id: string; title: string; text: string; category: string; url: s
     url: "/products",
   },
   {
+    id: "page:/commits",
+    title: "Commit-Aktivität",
+    text: "Wie dieser Code-Bestand entstanden ist: Commit-Aktivität pro Woche und Monat seit dem ersten Commit im März 2026, aufgeschlüsselt nach Bereichen — Infrastruktur, Omnopsis, Websites, MMPs, Skills. Die Story hinter der Commits-Kachel, täglich automatisch aus GitHub statt aus einer gepflegten Liste.",
+    category: "Seite",
+    url: "/commits",
+  },
+  {
     id: "page:/repositories",
     title: "Unsere Repositories",
     text: "Der gesamte Code-Bestand hinter unseren Produkten, Skills und Websites. Öffentliche Repositories listen wir einzeln mit Beschreibung, nach Typ gruppiert; private zählen wir nur — ohne Namen. Täglich automatisch mit GitHub abgeglichen, nicht von Hand gepflegt.",
@@ -81,6 +88,17 @@ const PAGES: { id: string; title: string; text: string; category: string; url: s
     text: "Wie wir unser Test-Estate zählen und prüfen: jede Zahl kommt vom Test-Runner selbst, nie geschätzt oder gegrep't, unabhängig gegengeprüft und nach unten gerundet. Die Story hinter der Automatisierte-Tests-Kachel — nachprüfbar statt nach Bauchgefühl.",
     category: "Seite",
     url: "/test-management",
+  },
+  {
+    // Added with the page itself — `test:search:unit` asserts that EVERY static app route
+    // has an index entry, and it caught this one missing before the page ever shipped.
+    // Worth naming: that guard derives its expectation from the routes on disk instead of
+    // trusting a hand-kept list, which is why it cannot quietly fall behind.
+    id: "page:/ki-beratung",
+    title: "KI-Beratung",
+    text: "KI-Potenzialanalyse zum Festpreis: Wo lohnen KI-Agenten in Ihren Prozessen? Use-Case-Map, ein bis zwei Durchstich-Empfehlungen mit Projektpreis-Indikation und Readiness-Notizen. Zwei Einstiegstiefen — Kompakt-Analyse remote oder Workshop-Tag vor Ort, die erste Stufe wird auf die zweite angerechnet, der Workshop-Tag bei Beauftragung der Umsetzung auf das Projekt. Keine Implementierung, kein Vendor-Vergleich, keine Workshop-Serie.",
+    category: "Seite",
+    url: "/ki-beratung",
   },
   {
     id: "page:/impressum",

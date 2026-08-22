@@ -248,6 +248,7 @@ test.describe("SEO Basics", () => {
     "local-seo-hub",
     "prod-or-pretend",
     "trustscope",
+    "md-viewer",
     "obsidian-vault-autopilot",
     "social-scrapers",
     "imap-mailbox-cleanup",

@@ -51,7 +51,7 @@ const faqItems = [
   },
   {
     q: "Was kostet Nearshore-Entwicklung bei neckarshore.ai?",
-    a: "Wir sind deutlich kosteneffektiver als Big-4-Consultancies bei vergleichbarer Qualität. Durch KI-Beschleunigung liefert ein kleines Team, wofür andere deutlich mehr Leute brauchen. Konkrete Preise besprechen wir im 15-Minuten Kennenlerntermin.",
+    a: "Wir sind deutlich kosteneffektiver als Big-4-Consultancies bei vergleichbarer Qualität. Durch KI-Beschleunigung liefert ein kleines Team, wofür andere deutlich mehr Leute brauchen. Konkrete Preise besprechen wir im 20-Minuten Kennenlerntermin.",
   },
   {
     q: "Wo sitzt neckarshore.ai?",
@@ -107,7 +107,7 @@ export default function Home() {
               <br />
               Closer to Home.
             </h1>
-            <p className="mt-3 text-sm font-medium text-muted dark:text-text-secondary/70">
+            <p className="mt-3 text-sm font-medium text-muted dark:text-text-tertiary">
               <strong>Neckarshore AI</strong> — KI-beschleunigte Nearshore-Softwareentwicklung aus Stuttgart.
             </p>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-neutral-dark/80 md:text-xl dark:text-text-secondary">
@@ -132,7 +132,7 @@ export default function Home() {
                 Unsere Services
               </a>
             </div>
-            <div className="mt-10 flex flex-wrap gap-6 text-sm font-medium tracking-wide text-muted dark:text-text-secondary/60">
+            <div className="mt-10 flex flex-wrap gap-6 text-sm font-medium tracking-wide text-muted dark:text-text-tertiary">
               <span className="flex items-center gap-2">
                 <Shield size={16} className="text-accent" />
                 DSGVO-by-Design
@@ -169,18 +169,28 @@ export default function Home() {
                   Unser Portfolio
                 </p>
                 <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight text-text-primary md:text-4xl">
-                  Ein Flagship. Mehrere Produkte. Skills. Eine Bauweise.
+                  Ein Flagship. Diverse Produkte. Skills. Eine Bauweise.
                 </h2>
                 <p className="mt-6 text-lg leading-relaxed text-text-secondary">
-                  Strukturiert gebaut — KI-beschleunigt, DSGVO-by-Design, Made in Germany:
-                  Flagships, MMPs, Skills (&amp; Websites).
+                  Das Flaggschiff ist{" "}
+                  <span className="font-medium text-text-primary">Omnopsis Documentor+X</span> —
+                  unsere KI-first Documentation Engine. Drumherum: MMPs, Skills und Web-Präsenzen.
+                  Alles nach derselben Bauweise — KI-beschleunigt, DSGVO-by-Design, Made in Germany.
                 </p>
-                <Link
-                  href="/products"
-                  className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-secondary transition-colors hover:text-text-primary"
-                >
-                  Alle Produkte ansehen →
-                </Link>
+                <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+                  <Link
+                    href="/products/omnopsis"
+                    className="inline-flex items-center gap-1 text-sm font-medium text-secondary transition-colors hover:text-text-primary"
+                  >
+                    Omnopsis ansehen →
+                  </Link>
+                  <Link
+                    href="/products"
+                    className="inline-flex items-center gap-1 text-sm font-medium text-secondary transition-colors hover:text-text-primary"
+                  >
+                    Alle Produkte ansehen →
+                  </Link>
+                </div>
               </div>
 
               {/* Stats grid — renders instantly with fallback, fetches live data in background */}
@@ -213,12 +223,12 @@ export default function Home() {
                   icon: Users,
                   title: "vs. Freelancers",
                   subtitle: "Die Verlässlichkeit einer Agentur, die Agilität eines Startups.",
-                  text: "Skalierbar, nicht einzelne Person. Strukturierte Prozesse, nicht ad-hoc. Volle Projektverantwortung mit konsistenten Qualitätsstandards.",
+                  text: "Ein strukturierter Engineering-Prozess statt Ad-hoc-Arbeit. Volle Projektverantwortung mit konsistenten Qualitätsstandards — Enterprise-Qualität ohne Enterprise-Headcount.",
                 },
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="group rounded-xl border-l-4 border-accent bg-neutral-light p-8 shadow-sm transition-all duration-250 hover:-translate-y-0.5 hover:shadow-md dark:bg-deep-space"
+                  className="group rounded-xl border-l-4 border-accent bg-neutral-light p-8 shadow-sm transition-[transform,box-shadow] duration-250 hover:-translate-y-0.5 hover:shadow-md dark:bg-deep-space"
                 >
                   <item.icon size={32} className="text-secondary" />
                   <h3 className="mt-4 font-heading text-xl font-semibold text-primary md:text-2xl dark:text-text-primary">
@@ -244,7 +254,7 @@ export default function Home() {
                   icon: Cpu,
                   title: "AI-Powered Development",
                   subtitle: "Software, schneller gebaut.",
-                  text: "Wir bauen eure Software mit KI-Beschleunigung. Ein kleines Team mit modernen AI-Tools liefert, wofür andere 3x so viele Leute brauchen. NestJS, TypeScript, PostgreSQL — kein Spielzeug, sondern Production-Stack.",
+                  text: "Wir bauen eure Software mit KI-Beschleunigung. Ein Senior-Architekt mit einem KI-gestützten Expertensystem liefert Delivery-Geschwindigkeit und -Breite, die normalerweise ein ganzes Team erfordert. NestJS, TypeScript, PostgreSQL — kein Spielzeug, sondern Production-Stack.",
                 },
                 {
                   icon: FileText,
@@ -279,7 +289,7 @@ export default function Home() {
               ].map((service) => (
                 <div
                   key={service.title}
-                  className="group rounded-xl bg-white p-8 shadow-[0_10px_30px_rgba(10,37,64,0.08)] transition-all duration-250 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(10,37,64,0.14)] dark:bg-surface dark:shadow-none dark:hover:shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+                  className="group rounded-xl bg-white p-8 shadow-[0_10px_30px_rgba(10,37,64,0.08)] transition-[transform,box-shadow] duration-250 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(10,37,64,0.14)] dark:bg-surface dark:shadow-none dark:hover:shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
                 >
                   <service.icon size={32} className="text-secondary" />
                   <h3 className="mt-4 font-heading text-lg font-semibold text-primary md:text-xl dark:text-text-primary">
@@ -441,7 +451,7 @@ export default function Home() {
 
       {/* ===== FOOTER ===== */}
       <footer className="border-t border-primary/5 bg-white px-4 py-10 md:px-6 dark:border-text-secondary/10 dark:bg-surface">
-        <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-4 text-sm text-muted md:flex-row md:justify-between dark:text-text-secondary/60">
+        <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-4 text-sm text-muted md:flex-row md:justify-between dark:text-text-tertiary">
           <Logo size="text-xl" className="text-primary/70 dark:text-text-secondary" />
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             <Link href="/products" className="transition-colors hover:text-accent">

@@ -3,7 +3,11 @@ import SubPortal from "@/components/SubPortal";
 import { SkillCard } from "@/components/SkillCard";
 import { ProductCard } from "@/components/ProductCard";
 import { pageMetadata } from "@/lib/seo";
-import { PORTFOLIO, categoryMetaTitle } from "@/lib/portfolio";
+import {
+  PORTFOLIO,
+  categoryMetaTitle,
+  groupItemsByStatus,
+} from "@/lib/portfolio";
 import { SKILL_CARDS } from "@/lib/skill-cards";
 
 const category = PORTFOLIO.find((c) => c.id === "skills")!;
@@ -23,7 +27,9 @@ export const metadata: Metadata = pageMetadata({
  * update) has a page AND stays noindex, so it must still link off-page, not to an anchor.
  * Any future skeleton skill without a page falls back to the in-page card anchor (`#slug`).
  */
-function detailHrefFor(item: (typeof category.items)[number]): string | undefined {
+function detailHrefFor(
+  item: (typeof category.items)[number],
+): string | undefined {
   return !item.isExternal && item.hasOwnPage ? item.href : undefined;
 }
 
@@ -101,7 +107,9 @@ export default function SkillsPage() {
                       href={row.href}
                       className="font-medium text-accent underline-offset-2 hover:underline dark:text-accent-bright"
                       data-track={
-                        row.hasDetail ? `skills_detail_${row.slug}` : `skills_jump_${row.slug}`
+                        row.hasDetail
+                          ? `skills_detail_${row.slug}`
+                          : `skills_jump_${row.slug}`
                       }
                     >
                       {row.title}
@@ -146,22 +154,36 @@ export default function SkillsPage() {
           Grid breakpoint is lg (1024px), NOT md: at tablet-portrait width (768px) two
           rich cards get cramped, so we stay single-column there (full-width, readable)
           and only split into two columns at tablet-landscape / desktop. */}
-      <div className="mt-8 grid gap-6 lg:grid-cols-2">
-        {category.items.map((item) => {
-          const card = SKILL_CARDS[item.slug];
-          return card ? (
-            <SkillCard
-              key={item.slug}
-              card={card}
-              headingLevel="h2"
-              id={item.slug}
-              detailHref={detailHrefFor(item)}
-            />
-          ) : (
-            <ProductCard key={item.slug} item={item} headingLevel="h2" />
-          );
-        })}
-      </div>
+      {/* Live first under a sub-header, in-development below — each A→Z (2026-08-06). */}
+      {groupItemsByStatus(category.items).map((group, idx, groups) => (
+        <div key={group.label}>
+          {groups.length > 1 && (
+            <p
+              className={`${idx === 0 ? "mt-8" : "mt-10"} text-xs font-semibold uppercase tracking-wider text-muted dark:text-text-tertiary`}
+            >
+              {group.label}
+            </p>
+          )}
+          <div
+            className={`${groups.length > 1 ? "mt-3" : "mt-8"} grid gap-6 lg:grid-cols-2`}
+          >
+            {group.items.map((item) => {
+              const card = SKILL_CARDS[item.slug];
+              return card ? (
+                <SkillCard
+                  key={item.slug}
+                  card={card}
+                  headingLevel="h2"
+                  id={item.slug}
+                  detailHref={detailHrefFor(item)}
+                />
+              ) : (
+                <ProductCard key={item.slug} item={item} headingLevel="h2" />
+              );
+            })}
+          </div>
+        </div>
+      ))}
     </SubPortal>
   );
 }

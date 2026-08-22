@@ -34,7 +34,7 @@ export const PRODUCT_FAQS: Record<string, FaqItem[]> = {
     },
     {
       q: "Wann ist Omnopsis verfügbar?",
-      a: "Omnopsis ist in Entwicklung — der Launch ist für Q3 2026 geplant. Für einen frühen Austausch oder eine Pilot-Anfrage lässt sich ein Kennenlerntermin buchen.",
+      a: "Omnopsis ist in Entwicklung. Einen öffentlichen Launch-Termin nennen wir erst, wenn er belastbar ist — lieber kein Datum als ein gerissenes. Für einen frühen Austausch oder eine Pilot-Anfrage lässt sich ein Kennenlerntermin buchen.",
     },
   ],
 
@@ -53,7 +53,7 @@ export const PRODUCT_FAQS: Record<string, FaqItem[]> = {
     },
     {
       q: "Woher kommen die Verzerrungen?",
-      a: "Die Bias-Bibliothek folgt Rolf Dobellis Katalog der Denkfehler. Der aktuelle v0.1-Prototyp deckt 18 Verzerrungen ab; geplant sind unter anderem ein Decision-Cemetery, ein Strategic Deep-Dive und ein Pre-Mortem-Generator.",
+      a: "Die Bias-Bibliothek folgt Rolf Dobellis Katalog der Denkfehler. Der aktuelle v0.1-Prototyp deckt 18 Verzerrungen ab.",
     },
   ],
 
@@ -74,6 +74,50 @@ export const PRODUCT_FAQS: Record<string, FaqItem[]> = {
     {
       q: "Was kostet es, und wo finde ich es?",
       a: "Snakeoil-Check ist live unter snakeoil.neckarshore.ai. Zum Start gibt es einen kostenlosen Check pro Person; weitere Prüfungen lassen sich als Shot-Pakete dazubuchen.",
+    },
+  ],
+
+  /**
+   * KAZE — zwei Grenzen, die hier schaerfer sind als bei den uebrigen Eintraegen.
+   *
+   * 1. KEINE AUSSAGE ZU DEN OFFENEN KAUFMAENNISCHEN FRAGEN, weder zusagend noch
+   *    verneinend, solange sie offen sind (kaze#124, #109). Das ist eine
+   *    PRODUKT-Grenze und keine Repo-Grenze: das Kaze-Repo erzwingt sie mit einem
+   *    eigenen Test, dieses hier hat keinen — die Regel gilt trotzdem, und dass sie
+   *    hier nur als Kommentar steht, ist ein bekannter Unterschied und kein Versehen.
+   *    Der naheliegendste Verkaufssatz fehlt deshalb bewusst.
+   * 2. KEIN VEROEFFENTLICHUNGSDATUM. Kaze ist nicht im App Store; ein genanntes Datum
+   *    waere ein Versprechen, das niemand gedeckt hat.
+   *
+   * Alle Verhaltensaussagen sind an der gebauten App gemessen (Simulator-Durchlauf und
+   * Quelltext-Lesung, 20.08.2026), nicht aus dem Gedaechtnis geschrieben. Der Wortlaut
+   * folgt der Produktseite unter kaze.neckarshore.ai, damit beide Flaechen dasselbe
+   * sagen statt zweimal aehnlich.
+   */
+  kaze: [
+    {
+      q: "Was ist Kaze?",
+      a: "Kaze ist eine iOS-App, die ausgewählte Apps für einen selbst gesetzten Zeitraum sperrt. Man wählt die Apps, stellt eine Dauer zwischen einer und vierundzwanzig Stunden ein und schiebt den Riegel zu — danach sind sie weg, bis die Zeit abgelaufen ist. Kaze zählt dabei nichts mit: keine Auswertung, keine Serie, kein Punktestand, kein Konto. Es ist unser erstes iOS-Produkt.",
+    },
+    {
+      q: "Warum kann ich eine Sperre nicht einfach abbrechen?",
+      a: "Weil ein Abbrechen-Knopf genau das wäre, was man in dem Moment drückt. Kaze ist absichtlich unsymmetrisch: Verlängern geht sofort mit einer Drehung am Zifferblatt, ohne Umweg. Verkürzen gibt es nicht — nur das vollständige Entriegeln, und dafür braucht es einen Notfallcode, den Kaze per E-Mail schickt. Davor liegt eine Nachdenkpause von fünfzehn Sekunden. Zusammen etwa eine Minute: klein genug für einen echten Notfall, groß genug gegen „nur kurz“.",
+    },
+    {
+      q: "Sieht Kaze, welche Apps ich sperre?",
+      a: "Nein, und das ist keine Einstellung, sondern die Bauweise. Die Auswahl läuft über Apples eigenes Auswahlfenster; was Kaze von iOS zurückbekommt, sind unlesbare Kennungen. Namen und Symbole zeichnet iOS selbst, Kaze bekommt sie nie zu sehen. Auch die Notfallcode-Mail verrät nichts: im Betreff steht „1 App“ oder „3 Apps“, nie ein App-Name.",
+    },
+    {
+      q: "Was schickt Kaze an Server?",
+      a: "Nur das, was für die Notfallcode-Mail nötig ist — der Versand braucht eine E-Mail-Adresse und einen Code. Es gibt kein Konto, keine Anmeldung, keine Nutzungsauswertung und keine Gerätedaten. Welche Apps gesperrt sind, erfährt kein Server, weil Kaze es selbst nicht weiß.",
+    },
+    {
+      q: "Warum baut eine Softwareschmiede eine solche App?",
+      a: "Kaze hat keinen Firmenkunden und kein Lastenheft — und ist trotzdem kein Nebenprodukt. Es ist der Ort, an dem wir eine Haltung, die wir in Kundenprojekten dauernd vertreten, einmal ohne Kompromiss durchziehen: dass Weglassen eine Entscheidung ist und keine Lücke, dass eine Anwendung nicht sammeln muss, was sie nicht braucht, und dass „das könnten wir auch noch einbauen“ die teuerste Frage in jedem Produkt ist.",
+    },
+    {
+      q: "Wann ist Kaze verfügbar?",
+      a: "Kaze ist in Entwicklung und noch nicht im App Store. Ein Veröffentlichungsdatum nennen wir erst, wenn es belastbar ist — lieber keines als ein gerissenes. Die Produktseite liegt unter kaze.neckarshore.ai.",
     },
   ],
 

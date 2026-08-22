@@ -50,7 +50,7 @@ export default function Impressum() {
 
         <div className="prose-neckarshore mt-10 space-y-8 text-neutral-dark/80 leading-relaxed dark:text-text-secondary">
           <section>
-            <p className="text-sm text-muted dark:text-text-secondary/60">Angaben gemäß § 5 DDG</p>
+            <p className="text-sm text-muted dark:text-text-tertiary">Angaben gemäß § 5 DDG</p>
             <h2 className="mt-4 font-heading text-xl font-semibold text-primary dark:text-text-primary">Diensteanbieter</h2>
             <p>
               German Rauhut
@@ -105,7 +105,7 @@ export default function Impressum() {
                 href="https://ec.europa.eu/consumers/odr/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-accent hover:text-accent-hover"
+                className="text-accent hover:text-accent-hover dark:text-accent-bright"
               >
                 https://ec.europa.eu/consumers/odr/
               </a>
@@ -149,12 +149,12 @@ export default function Impressum() {
       </main>
 
       <footer className="border-t border-primary/5 bg-white px-4 py-10 md:px-6 dark:border-text-secondary/10 dark:bg-surface">
-        <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-4 text-sm text-muted dark:text-text-secondary/60 md:flex-row md:justify-between">
+        <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-4 text-sm text-muted dark:text-text-tertiary md:flex-row md:justify-between">
           <Link href="/">
-            <Logo size="text-xl" className="opacity-60" />
+            <Logo size="text-xl" />
           </Link>
           <div className="flex gap-6">
-            <span className="font-medium text-primary/60">Impressum</span>
+            <span className="font-medium text-muted dark:text-text-tertiary">Impressum</span>
             <a href="/datenschutz" className="transition-colors hover:text-accent">
               Datenschutz
             </a>

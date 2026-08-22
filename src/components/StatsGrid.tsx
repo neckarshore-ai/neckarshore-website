@@ -94,28 +94,64 @@ export default function StatsGrid({
   // (repos-with-tests) differs from the "Repositories" tile (all repos), and two repo counts
   // on one screen read as a contradiction. The whole tile is already the link; "mehr →" is
   // only the visual cue that there is more behind it. No per-type split either.
-  const testsMoreCue = "mehr →";
+  const moreCue = "mehr →";
 
   const tiles: {
     icon: ComponentType<{ size?: number; className?: string }>;
     value: string;
     label: string;
     sub?: string | null;
-    /** When set, the whole tile is a link (the Tests tile → /test-management detail, #245). */
+    /** When set, the whole tile is a link into the matching detail page. */
     href?: string;
+    /** Analytics id + test hook. Tile-specific so two linked tiles stay distinguishable. */
+    track?: string;
+    testId?: string;
   }[] = [
-    { icon: CalendarDays, value: String(devDays), label: "Days since First Commit" },
-    { icon: GitCommit, value: formatDE(commits), label: "Commits" },
+    // Days and Commits both link to /commits (Founder, 2026-08-12, with a marked
+    // screenshot): they are the two TIME facts in the grid, and the timeline is the
+    // page that explains both. Repositories -> /repositories, Tests -> /test-management.
+    // Endpoints has nothing behind it yet and therefore no cue.
+    {
+      icon: CalendarDays,
+      value: String(devDays),
+      label: "Days since First Commit",
+      sub: moreCue,
+      href: "/commits",
+      track: "stats_days_detail",
+      testId: "days-subline",
+    },
+    {
+      icon: GitCommit,
+      value: formatDE(commits),
+      label: "Commits",
+      sub: moreCue,
+      href: "/commits",
+      track: "stats_commits_detail",
+      testId: "commits-subline",
+    },
     {
       icon: FlaskConical,
       value: formatDE(tests) + testsSuffix,
       label: "Automatisierte Tests",
-      sub: testsMoreCue,
+      sub: moreCue,
       href: "/test-management",
+      track: "stats_tests_detail",
+      testId: "tests-subline",
     },
     { icon: Layers, value: String(endpoints), label: "REST Endpoints" },
     { icon: Code2, value: formatDE(linesOfCode), label: "Zeilen Code" },
-    { icon: FolderGit2, value: String(repos), label: "Repositories" },
+    {
+      icon: FolderGit2,
+      value: String(repos),
+      label: "Repositories",
+      // Second linked tile (Founder ask 2026-08-12). /repositories has existed and
+      // returned 200 since #94 — it was simply never linked from anywhere except a
+      // sentence on /test-management, so the inventory was effectively unreachable.
+      sub: moreCue,
+      href: "/repositories",
+      track: "stats_repos_detail",
+      testId: "repos-subline",
+    },
   ];
 
   return (
@@ -129,12 +165,14 @@ export default function StatsGrid({
                 {stat.value}
               </p>
               <p className="mt-1 text-xs text-text-secondary">{stat.label}</p>
-              {/* sub-line only ever set on the Tests tile → the testid is tile-specific.
-                  Accent-coloured so the "mehr →" reads as a link cue (the whole tile links). */}
+              {/* Sub-line = the "mehr →" cue on a tile that links. The testid comes from
+                  the tile, not from this component: with two linked tiles a shared id
+                  would make an e2e assertion pass on the wrong one. Accent-coloured so
+                  the cue reads as a link (the whole tile is the link). */}
               {stat.sub && (
                 <p
-                  data-testid="tests-subline"
-                  className="mt-1 text-xs font-medium leading-tight text-accent"
+                  data-testid={stat.testId}
+                  className="mt-1 text-xs font-medium leading-tight text-accent-bright"
                 >
                   {stat.sub}
                 </p>
@@ -145,7 +183,7 @@ export default function StatsGrid({
             <Link
               key={stat.label}
               href={stat.href}
-              data-track="stats_tests_detail"
+              data-track={stat.track}
               className="rounded-xl bg-surface p-5 text-center transition-all duration-150 hover:bg-surface/80 hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
             >
               {inner}

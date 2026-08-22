@@ -45,12 +45,42 @@ test("GREEN: the committed public/ surface has no private slug (gate passes)", (
   assert.equal(res.status, 0, `gate should pass on the committed tree:\n${res.stdout}\n${res.stderr}`);
 });
 
+/**
+ * DERIVED, NOT PINNED. This fixture used to hardcode `neckarshore-ai/observatory`,
+ * and on 2026-08-12 that repo was archived and dropped from stats-config — so the
+ * test went red for a reason that had nothing to do with the gate it guards. A test
+ * pinned to one slug measures the slug's continued existence, not the behaviour.
+ *
+ * Derived here from the same two sources the gate itself uses, so it follows every
+ * future rename, archive and addition. The emptiness assert is the point: an empty
+ * derived set would make the whole test vacuous and it would still report green
+ * (backlog #448 — vacuity guards must be CODE, not prose).
+ */
+function aKnownPrivateSlug() {
+  const config = JSON.parse(fs.readFileSync(path.join(ROOT, "stats-config.json"), "utf-8"));
+  const inventory = JSON.parse(
+    fs.readFileSync(path.join(ROOT, "public/repositories.json"), "utf-8"),
+  );
+  const livePublic = new Set(inventory.repos.map((r) => `${r.owner}/${r.name}`));
+  const known = config.repos
+    .map((r) => `${r.owner}/${r.name}`)
+    .filter((slug) => !livePublic.has(slug))
+    .sort();
+  assert.ok(
+    known.length > 0,
+    "Vorbedingung verletzt: die abgeleitete known-private-Menge ist LEER. " +
+      "Ohne sie prueft dieser Test nichts und wuerde trotzdem gruen melden.",
+  );
+  return known[0];
+}
+
 test("DETECTS: a known-private slug in a served file fails the gate (exit 1)", () => {
-  const dir = fixtureDir('{"per_repo":[{"repo":"neckarshore-ai/observatory","total":30}]}');
+  const slug = aKnownPrivateSlug();
+  const dir = fixtureDir(JSON.stringify({ per_repo: [{ repo: slug, total: 30 }] }));
   try {
     const res = runGate(dir);
-    assert.equal(res.status, 1, "a private slug in a served file must fail the gate");
-    assert.match(res.stderr, /neckarshore-ai\/observatory/, "the offending slug is reported");
+    assert.equal(res.status, 1, `a private slug (${slug}) in a served file must fail the gate`);
+    assert.ok(res.stderr.includes(slug), `the offending slug is reported: ${slug}`);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }

@@ -31,4 +31,4 @@ export const SITE_URL = "https://neckarshore.ai";
  * shallow clone, so `git log` collapses to the single deploy commit and the per-page
  * signal is lost. Frontmatter dates are the robust path when the value justifies it.
  */
-export const SITE_UPDATED = "2026-06-22";
+export const SITE_UPDATED = "2026-08-15";

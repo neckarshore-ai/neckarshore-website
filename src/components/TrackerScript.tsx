@@ -4,12 +4,22 @@ import { useEffect, useRef } from "react";
 import { onCLS, onFCP, onINP, onLCP, onTTFB, type Metric } from "web-vitals";
 import { BRAND } from "@/lib/brand";
 
-/** Extract UTM parameters from current URL (once per page load). */
+/**
+ * Extract campaign parameters from the current URL (once per page load).
+ *
+ * `ref` rides along with the five UTM keys because the rauhut.com person anchor links to
+ * /ki-beratung as `?ref=rauhut` (decided 2026-08-15). It is CAPTURED on the raw event but
+ * NOT aggregated: `/api/track` only rolls up utm_source/medium/campaign. If that link's
+ * traffic needs to show up in the aggregate view, the honest fix is to use
+ * `utm_source=rauhut` on the link itself — that path is instrumented end to end today.
+ * Noted rather than silently assumed, because "the param is captured" and "the param is
+ * visible in the numbers" are two different claims.
+ */
 function getUtmParams(): Record<string, string> {
   try {
     const params = new URLSearchParams(window.location.search);
     const utm: Record<string, string> = {};
-    for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"]) {
+    for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "ref"]) {
       const val = params.get(key);
       if (val) utm[key] = val;
     }

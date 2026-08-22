@@ -50,14 +50,22 @@ export const MMP_CARDS: Record<string, MmpCardData> = {
       "Ein Archiv echter menschlicher Stimmen für Familien und Institutionen. Geführte Aufnahme, Consent-first, sicher verwahrt — eine Stimme, die bleibt, für die Menschen, die nach uns kommen.",
     repoUrl: "https://github.com/neckarshore-mmps/phonesis-voicebank",
   },
+  // Grundversion 2026-08-06: scope is being defined (Engels pass) — the description stays
+  // deliberately claim-free until it lands. repoUrl per Founder decision 2026-08-06.
+  kaze: {
+    description:
+      "Das erste iOS-Produkt von Neckarshore AI. Der Produkt-Scope wird gerade geschärft — diese Seite füllt sich, sobald er steht. Gebaut nach derselben Arbeitsweise wie alles hier: KI-beschleunigt, DSGVO-by-Design, Made in Germany.",
+    repoUrl: "https://github.com/neckarshore-mmps/kaze",
+  },
   "local-seo-hub": {
     description:
       "AI-first Sichtbarkeits-Plattform für lokale Unternehmen. Rankings, Reviews und Citations fließen in einen einzigen Visibility Score (0–100) — gebaut für kleine Betriebe und die Agenturen, die sie betreuen.",
-    repoUrl: "https://github.com/neckarshore-mmps/mmp-local-seo-performance-hub",
+    repoUrl:
+      "https://github.com/neckarshore-mmps/mmp-local-seo-performance-hub",
   },
   "prod-or-pretend": {
     description:
-      "Ein konstruktiver Qualitäts-Spiegel für Tech-Hype. Prüft „an-einem-Wochenende-gebaut\"-Claims gegen echte Produktionsstandards — Tests, Security, Skalierbarkeit, Doku. Kein Debunker, sondern eine Substanz-von-Luft-Unterscheidung für Entscheider.",
+      'Ein konstruktiver Qualitäts-Spiegel für Tech-Hype. Prüft „an-einem-Wochenende-gebaut"-Claims gegen echte Produktionsstandards — Tests, Security, Skalierbarkeit, Doku. Kein Debunker, sondern eine Substanz-von-Luft-Unterscheidung für Entscheider.',
     repoUrl: "https://github.com/neckarshore-mmps/mmp-prod-or-pretend",
   },
   // NOTE: unlike the other MMP repos above, trustscope is PUBLIC (MIT) — the GitHub link
@@ -67,5 +75,13 @@ export const MMP_CARDS: Record<string, MmpCardData> = {
       "Ein deterministischer Vier-Säulen-Trust-Report für öffentliche Open-Source-Projekte. Du gibst ein GitHub-Repo an — TrustScope prüft Sicherheit & Lieferkette, Governance und Community auf Basis der OpenSSF Scorecard und legt die Kompromisse offen, statt sie hinter einer einzigen Punktzahl zu verstecken.",
     repoUrl: "https://github.com/neckarshore-mmps/trustscope",
     liveUrl: "https://trustscope.neckarshore.ai",
+  },
+  // Also PUBLIC (MIT) — same note as trustscope: the GitHub link resolves for logged-out
+  // visitors. Grounded in the repo's own README; no claim here that is not in it.
+  "md-viewer": {
+    description:
+      "Markdown sofort lesen, ohne einen Editor zu öffnen. Rechtsklick auf eine .md-Datei im Finder — sie öffnet sich in geteilter Ansicht: links gerendert, rechts der Quelltext mit Syntax-Hervorhebung. Denselben Viewer gibt es als Web-Zwilling, der die Datei vollständig im Browser verarbeitet.",
+    repoUrl: "https://github.com/neckarshore-mmps/md-viewer",
+    liveUrl: "https://md.neckarshore.ai",
   },
 };

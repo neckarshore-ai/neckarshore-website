@@ -111,6 +111,81 @@ test.describe("Stats Tiles @smoke", () => {
     await expect(subline).not.toContainText("Repositories");
   });
 
+  test("TC-STAT-010: Repositories tile links into the inventory and matches repositories.json", async ({
+    page,
+  }) => {
+    // Two things at once, because they failed together on 2026-08-12: the tile
+    // showed a number nobody could check (34, from a hand-maintained list), and
+    // there was no way to click through to the list itself. The count assertion
+    // is derived from the served artifact — never a literal, or this test becomes
+    // the next hand-maintained number.
+    const res = await page.request.get("/repositories.json");
+    expect(res.status()).toBe(200);
+    const inventory = await res.json();
+    const expected = inventory.repos.length + inventory.privateCount;
+
+    await page.goto("/");
+    await page.waitForTimeout(1500); // animated counter settles
+
+    const value = await getStatValue(page, "Repositories");
+    expect(value).toBe(String(expected));
+
+    const subline = page.getByTestId("repos-subline");
+    await expect(subline).toBeVisible();
+    await expect(subline).toContainText("mehr");
+
+    const link = page.locator('a[data-track="stats_repos_detail"]');
+    await expect(link).toHaveAttribute("href", "/repositories");
+    await link.click();
+    await expect(page).toHaveURL(/\/repositories$/);
+  });
+
+  test("TC-STAT-011: Days and Commits tiles both lead to the commit timeline", async ({
+    page,
+  }) => {
+    // Founder decision 2026-08-12: the two TIME facts in the grid share one detail page.
+    // Asserted as a pair on purpose — the failure mode worth catching is one of them
+    // silently losing its link, which no single-tile test would notice.
+    await page.goto("/");
+    await page.waitForTimeout(1500); // animated counters settle
+
+    for (const testId of ["days-subline", "commits-subline"]) {
+      const subline = page.getByTestId(testId);
+      await expect(subline).toBeVisible();
+      await expect(subline).toContainText("mehr");
+    }
+
+    for (const track of ["stats_days_detail", "stats_commits_detail"]) {
+      await expect(page.locator(`a[data-track="${track}"]`)).toHaveAttribute("href", "/commits");
+    }
+
+    await page.locator('a[data-track="stats_commits_detail"]').click();
+    await expect(page).toHaveURL(/\/commits$/);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Commit-Aktivität");
+  });
+
+  test("TC-STAT-012: the timeline page never publishes a second commits total", async ({
+    page,
+  }) => {
+    // The one rule /commits obeys. GitHub's weekly statistics are a cached snapshot that
+    // lags the contributors sum on the tile, so the series sum is ALWAYS <= the canonical
+    // figure. Rendering it as the headline would put two commit counts on one site.
+    const stats = await (await page.request.get("/stats.json")).json();
+    const activity = await (await page.request.get("/commit-activity.json")).json();
+
+    expect(activity.seriesTotal).toBeLessThanOrEqual(stats.commits);
+    expect(activity).not.toHaveProperty("total");
+
+    await page.goto("/commits");
+    const headline = page.locator("header p").first();
+    await expect(headline).toContainText(stats.commits.toLocaleString("de-DE"));
+
+    // The chart must actually have bars — an empty series would render a clean, wrong page.
+    const bars = page.locator("figure svg rect");
+    expect(await bars.count()).toBeGreaterThan(0);
+    expect(await bars.count()).toBe(activity.weeks.length);
+  });
+
   test("TC-STAT-008: No API call to /api/github-stats", async ({ page }) => {
     const apiCalls: string[] = [];
     page.on("request", (req) => {

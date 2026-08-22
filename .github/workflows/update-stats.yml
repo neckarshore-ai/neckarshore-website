@@ -34,6 +34,32 @@ jobs:
         with:
           token: ${{ secrets.STATS_PAT }}
 
+      # Membership gate for stats-config.json. It runs HERE and not in the PR
+      # test job for one reason: it needs cross-org read access, and the only
+      # place STATS_PAT exists is this workflow. In the PR job the honest
+      # options would be "permanently red" or "skip when the secret is
+      # missing" — and the second reports green for a check that never ran
+      # (backlog #448: vacuity guards must be CODE, not prose).
+      #
+      # Placed BEFORE "Collect stats" deliberately: if the list is wrong, every
+      # number computed from it is wrong too, and publishing first would mean
+      # the site serves bad figures until a human reads a red log. Fail here,
+      # keep serving yesterday's honest numbers.
+      - name: Repo-Liste gegen GitHub pruefen
+        env:
+          STATS_PAT: ${{ secrets.STATS_PAT }}
+        run: node scripts/check-repo-list.mjs
+
+      # Commit-Aktivitaet fuer /commits. Laeuft NACH dem Listen-Gate (eine falsche Liste
+      # macht auch diese Zeitleiste falsch) und braucht denselben STATS_PAT, weil sonst die
+      # privaten Repos unsichtbar waeren und die Kurve still zu flach liefe.
+      # FAIL-SOFT im Gegensatz zum Gate darueber: ein Repo, dessen Statistik GitHub gerade
+      # neu berechnet (202), zaehlt als unvollstaendig und wird auf der Seite ausgewiesen.
+      - name: Commit-Aktivitaet erheben
+        env:
+          STATS_PAT: ${{ secrets.STATS_PAT }}
+        run: node scripts/fetch-commit-activity.mjs
+
       - name: Install cloc
         run: sudo apt-get install -y cloc
 
@@ -319,7 +345,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/stats.json public/estate-test-scope.json public/repositories.json public/estate-test-scope-history.jsonl
+          git add public/stats.json public/estate-test-scope.json public/repositories.json public/estate-test-scope-history.jsonl public/commit-activity.json
           if git diff --staged --quiet; then
             echo "No changes to stats — skipping commit"
           else

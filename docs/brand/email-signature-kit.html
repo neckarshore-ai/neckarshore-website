@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E-Mail-Signatur-Kit — German Rauhut / neckarshore.ai</title>
+
+<style>
+  :root {
+    --paper:      #F6F7F9;
+    --surface:    #FFFFFF;
+    --ink:        #0E141B;
+    --ink-2:      #37444F;
+    --muted:      #6B7885;
+    --rule:       #DDE3E9;
+    --rule-firm:  #C2CBD4;
+    --ring:       #0E7490;
+    --sheet:      #FFFFFF;
+    --sheet-edge: #E3E8ED;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:      #0B1016;
+      --surface:    #141B22;
+      --ink:        #E9EEF3;
+      --ink-2:      #B6C2CD;
+      --muted:      #87949F;
+      --rule:       #212B35;
+      --rule-firm:  #35414D;
+      --ring:       #22D3EE;
+      --sheet:      #FFFFFF;
+      --sheet-edge: #2A353F;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:      #0B1016;
+    --surface:    #141B22;
+    --ink:        #E9EEF3;
+    --ink-2:      #B6C2CD;
+    --muted:      #87949F;
+    --rule:       #212B35;
+    --rule-firm:  #35414D;
+    --ring:       #22D3EE;
+    --sheet:      #FFFFFF;
+    --sheet-edge: #2A353F;
+  }
+
+  :root[data-theme="light"] {
+    --paper:      #F6F7F9;
+    --surface:    #FFFFFF;
+    --ink:        #0E141B;
+    --ink-2:      #37444F;
+    --muted:      #6B7885;
+    --rule:       #DDE3E9;
+    --rule-firm:  #C2CBD4;
+    --ring:       #0E7490;
+    --sheet:      #FFFFFF;
+    --sheet-edge: #E3E8ED;
+  }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0 20px 96px;
+  }
+
+  .wrap { max-width: 760px; margin: 0 auto; }
+
+  /* ---------- masthead ---------- */
+
+  .masthead { padding: 72px 0 0; }
+
+  .eyebrow {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  h1 {
+    font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    font-weight: 400;
+    font-size: clamp(32px, 6vw, 46px);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    color: var(--ink);
+    margin: 14px 0 0;
+  }
+
+  .lede {
+    color: var(--ink-2);
+    font-size: 17px;
+    max-width: 60ch;
+    margin: 20px 0 0;
+  }
+
+  .masthead-rule {
+    border: 0;
+    border-top: 1px solid var(--rule-firm);
+    margin: 40px 0 0;
+  }
+
+  /* ---------- controls ---------- */
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+    padding: 20px 0 0;
+  }
+
+  .controls-label {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .seg {
+    display: inline-flex;
+    border: 1px solid var(--rule-firm);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .seg button {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: var(--ink-2);
+    font: inherit;
+    font-size: 13px;
+    padding: 6px 14px;
+    cursor: pointer;
+  }
+
+  .seg button + button { border-left: 1px solid var(--rule-firm); }
+
+  .seg button[aria-pressed="true"] {
+    background: var(--ink);
+    color: var(--surface);
+  }
+
+  /* ---------- specimen ---------- */
+
+  .specimen { padding: 56px 0 0; }
+
+  .specimen-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--rule-firm);
+    border-radius: 2px;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+
+  h2 {
+    font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    font-weight: 400;
+    font-size: 27px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 12px 0 0;
+  }
+
+  .why {
+    color: var(--ink-2);
+    font-size: 15px;
+    max-width: 62ch;
+    margin: 8px 0 0;
+  }
+
+  /* the mail sheet — where the signature actually sits */
+
+  .sheet {
+    background: var(--sheet);
+    border: 1px solid var(--sheet-edge);
+    border-radius: 3px;
+    margin: 22px 0 0;
+    padding: 28px 28px 30px;
+    overflow-x: auto;
+  }
+
+  .sheet-hint {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #9AA6B2;
+    margin: 0 0 8px;
+  }
+
+  .sheet-divider {
+    border: 0;
+    border-top: 1px solid #E6EAEE;
+    margin: 0 0 22px;
+  }
+
+  body[data-ground="dark"] .sheet { background: #1B1B1D; border-color: #2E2E31; }
+  body[data-ground="dark"] .sheet-hint { color: #6E7681; }
+  body[data-ground="dark"] .sheet-divider { border-top-color: #35353A; }
+
+  /* ---------- actions ---------- */
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 16px 0 0;
+  }
+
+  .btn {
+    appearance: none;
+    font: inherit;
+    font-size: 13px;
+    line-height: 1;
+    padding: 10px 16px;
+    border-radius: 2px;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--surface);
+    cursor: pointer;
+    transition: opacity 140ms ease;
+  }
+
+  .btn:hover { opacity: 0.84; }
+
+  .btn.ghost {
+    background: transparent;
+    color: var(--ink-2);
+    border-color: var(--rule-firm);
+  }
+
+  .btn.ghost:hover { border-color: var(--ink); color: var(--ink); }
+
+  .btn.done { background: var(--surface); color: var(--ink); border-color: var(--ink); }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  .drawer {
+    margin: 14px 0 0;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    background: var(--surface);
+    padding: 16px 18px;
+    overflow-x: auto;
+  }
+
+  .drawer[hidden] { display: none; }
+
+  .drawer pre {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--ink-2);
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* ---------- prose sections ---------- */
+
+  .section { padding: 72px 0 0; }
+
+  .section > hr {
+    border: 0;
+    border-top: 1px solid var(--rule-firm);
+    margin: 0 0 28px;
+  }
+
+  h3 {
+    font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    font-weight: 400;
+    font-size: 23px;
+    line-height: 1.25;
+    color: var(--ink);
+    margin: 0 0 6px;
+  }
+
+  h4 {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 400;
+    margin: 26px 0 8px;
+  }
+
+  p { max-width: 66ch; }
+
+  .section p { color: var(--ink-2); }
+
+  ol, ul { max-width: 66ch; color: var(--ink-2); padding-left: 20px; }
+
+  li { margin: 5px 0; }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.88em;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 1px 5px;
+  }
+
+  .table-scroll { overflow-x: auto; margin: 12px 0 0; }
+
+  table.facts {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 520px;
+    font-size: 14.5px;
+  }
+
+  table.facts th, table.facts td {
+    text-align: left;
+    padding: 9px 14px 9px 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    color: var(--ink-2);
+  }
+
+  table.facts th {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  .note {
+    border-left: 2px solid var(--rule-firm);
+    padding: 2px 0 2px 16px;
+    margin: 18px 0 0;
+    color: var(--ink-2);
+    font-size: 15px;
+  }
+
+  .note strong { color: var(--ink); }
+
+  footer {
+    padding: 72px 0 0;
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+
+  footer hr { border: 0; border-top: 1px solid var(--rule-firm); margin: 0 0 20px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  }
+
+  @media (max-width: 600px) {
+    .masthead { padding-top: 48px; }
+    .sheet { padding: 20px 18px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Brand-Asset · 05. August 2026</p>
+    <h1>E-Mail-Signatur-Kit</h1>
+    <p class="lede">
+      Zwei Entwürfe, jeweils in zwei Marken: <strong>neckarshore.ai</strong> (die Firma) und
+      <strong>rauhut.com</strong> (die Person). Vorschau, HTML und Plain-Text-Fallback —
+      alles in einer Datei. Die Vorschau <em>ist</em> die Quelle: der Kopieren-Button greift
+      exakt das ab, was du hier siehst.
+    </p>
+    <hr class="masthead-rule" />
+
+    <div class="controls">
+      <span class="controls-label">Mail-Hintergrund</span>
+      <div class="seg" role="group" aria-label="Hintergrund der Vorschau umschalten">
+        <button type="button" data-ground="light" aria-pressed="true">Hell</button>
+        <button type="button" data-ground="dark" aria-pressed="false">Dunkel</button>
+      </div>
+      <span class="controls-label" style="text-transform:none;letter-spacing:0;font-family:inherit;font-size:13.5px;">
+        Prüft, wie die Signatur im Dark-Mode-Postfach des Empfängers steht.
+      </span>
+    </div>
+  </header>
+
+  <!-- ============ A · neckarshore.ai ============ -->
+
+  <section class="specimen">
+    <div class="specimen-head">
+      <span class="tag">Version A</span>
+      <span class="tag">neckarshore.ai</span>
+    </div>
+    <h2>Der Stapel</h2>
+    <p class="why">
+      Vertikal, mit der 3-px-Akzentkante aus dem Style Guide. Robusteste Variante:
+      bricht auf schmalen Mobil-Clients nicht um, weil es nichts zu brechen gibt.
+    </p>
+
+    <div class="sheet">
+      <p class="sheet-hint">Vorschau · Ende der Nachricht</p>
+      <hr class="sheet-divider" />
+
+      <div class="sig" id="sig-ns-a"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td width="3" style="width:3px;background-color:#0E7490;font-size:0;line-height:0;">&nbsp;</td><td style="padding-left:16px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td style="font-family:'Space Grotesk',Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:700;color:#0A2540;">German Rauhut</td></tr><tr><td style="font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;color:#64748B;padding-bottom:12px;">Founder</td></tr><tr><td style="font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:22px;color:#1E2937;"><a href="mailto:german@neckarshore.ai" style="color:#0E7490;text-decoration:none;">german@neckarshore.ai</a>&nbsp; &middot; &nbsp;<a href="tel:+491603859135" style="color:#1E2937;text-decoration:none;">+49 160 385 9135</a></td></tr><tr><td style="font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:22px;padding-bottom:12px;"><a href="https://neckarshore.ai" style="text-decoration:none;"><span style="color:#0A2540;font-weight:700;">neckarshore</span><span style="color:#0E7490;font-weight:700;">.ai</span></a><span style="color:#94A3B8;">&nbsp; &middot; &nbsp;</span><a href="https://www.linkedin.com/company/neckarshore/" style="color:#0E7490;text-decoration:none;">LinkedIn</a><span style="color:#94A3B8;">&nbsp; &middot; &nbsp;</span><span style="color:#64748B;">Stuttgart, Germany</span></td></tr><tr><td style="font-size:0;line-height:0;padding-bottom:12px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;width:100%;max-width:330px;"><tr><td height="1" style="height:1px;background-color:#DDE3EA;font-size:0;line-height:0;">&nbsp;</td></tr></table></td></tr><tr><td style="font-family:'Space Grotesk',Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:600;color:#0A2540;">Software Development. Closer to Home.</td></tr><tr><td style="font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;line-height:19px;color:#64748B;padding-bottom:12px;">Nearshore-Engineering aus Stuttgart &middot; DSGVO-konform &middot; Made in Germany</td></tr><tr><td style="font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;"><a href="https://calendly.com/rauhut/20min" style="color:#0E7490;text-decoration:none;font-weight:600;">20 Minuten Erstgespr&auml;ch vereinbaren &rarr;</a></td></tr></table></td></tr></table></div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn" data-copy="sig-ns-a" data-plain-src="plain-ns-a">Signatur kopieren</button>
+      <button type="button" class="btn ghost" data-html="sig-ns-a">HTML-Quelltext</button>
+      <button type="button" class="btn ghost" data-plain="plain-ns-a">Plain-Text ansehen</button>
+    </div>
+    <div class="drawer" id="drawer-sig-ns-a" hidden><pre></pre></div>
+    <div class="drawer" id="drawer-plain-ns-a" hidden><pre id="plain-ns-a">German Rauhut
+Founder
+
+german@neckarshore.ai · +49 160 385 9135
+neckarshore.ai · Stuttgart, Germany
+linkedin.com/company/neckarshore
+
+Software Development. Closer to Home.
+Nearshore-Engineering aus Stuttgart · DSGVO-konform · Made in Germany
+
+20 Minuten Erstgespräch: calendly.com/rauhut/20min</pre></div>
+  </section>
+
+  <!-- ============ B · neckarshore.ai ============ -->
+
+  <section class="specimen">
+    <div class="specimen-head">
+      <span class="tag">Version B</span>
+      <span class="tag">neckarshore.ai</span>
+    </div>
+    <h2>Die Spalte</h2>
+    <p class="why">
+      Identität links, Kontakt rechts, dazwischen eine Haarlinie. Baut halb so hoch und
+      wirkt gestalteter — der Preis ist ein Umbruchrisiko in sehr schmalen Mail-Clients.
+    </p>
+
+    <div class="sheet">
+      <p class="sheet-hint">Vorschau · Ende der Nachricht</p>
+      <hr class="sheet-divider" />
+
+      <div class="sig" id="sig-ns-b"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td valign="top" style="padding-right:22px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td style="font-family:'Space Grotesk',Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:18px;line-height:24px;letter-spacing:-0.3px;padding-bottom:10px;"><a href="https://neckarshore.ai" style="text-decoration:none;"><span style="color:#0A2540;font-weight:700;">neckarshore</span><span style="color:#0E7490;font-weight:700;">.ai</span></a></td></tr><tr><td style="font-family:'Space Grotesk',Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:19px;font-weight:700;color:#0A2540;">German Rauhut</td></tr><tr><td style="font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:19px;color:#64748B;">Founder</td></tr></table></td><td valign="top" style="border-left:1px solid #DDE3EA;padding-left:22px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td style="font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:22px;"><a href="mailto:german@neckarshore.ai" style="color:#0E7490;text-decoration:none;">german@neckarshore.ai</a></td></tr><tr><td style="font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:22px;color:#1E2937;"><a href="tel:+491603859135" style="color:#1E2937;text-decoration:none;">+49 160 385 9135</a></td></tr><tr><td style="font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:22px;padding-bottom:10px;"><a href="https://www.linkedin.com/company/neckarshore/" style="color:#0E7490;text-decoration:none;">LinkedIn</a><span style="color:#94A3B8;">&nbsp; &middot; &nbsp;</span><span style="color:#64748B;">Stuttgart, Germany</span></td></tr><tr><td style="font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;"><a href="https://calendly.com/rauhut/20min" style="color:#0E7490;text-decoration:none;font-weight:600;">20 Minuten Erstgespr&auml;ch &rarr;</a></td></tr></table></td></tr><tr><td colspan="2" style="font-size:0;line-height:0;padding-top:14px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;width:100%;max-width:420px;"><tr><td height="1" style="height:1px;background-color:#DDE3EA;font-size:0;line-height:0;">&nbsp;</td></tr></table></td></tr><tr><td colspan="2" style="font-family:'Space Grotesk',Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:19px;font-weight:600;color:#0A2540;padding-top:10px;">Software Development. Closer to Home.</td></tr><tr><td colspan="2" style="font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;line-height:18px;color:#64748B;padding-top:2px;">Nearshore-Engineering aus Stuttgart &middot; DSGVO-konform &middot; Made in Germany</td></tr></table></div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn" data-copy="sig-ns-b" data-plain-src="plain-ns-b">Signatur kopieren</button>
+      <button type="button" class="btn ghost" data-html="sig-ns-b">HTML-Quelltext</button>
+      <button type="button" class="btn ghost" data-plain="plain-ns-b">Plain-Text ansehen</button>
+    </div>
+    <div class="drawer" id="drawer-sig-ns-b" hidden><pre></pre></div>
+    <div class="drawer" id="drawer-plain-ns-b" hidden><pre id="plain-ns-b">neckarshore.ai
+German Rauhut — Founder
+
+german@neckarshore.ai · +49 160 385 9135
+linkedin.com/company/neckarshore · Stuttgart, Germany
+20 Minuten Erstgespräch: calendly.com/rauhut/20min
+
+Software Development. Closer to Home.
+Nearshore-Engineering aus Stuttgart · DSGVO-konform · Made in Germany</pre></div>
+  </section>
+
+  <!-- ============ A · rauhut.com ============ -->
+
+  <section class="specimen">
+    <div class="specimen-head">
+      <span class="tag">Version A</span>
+      <span class="tag">rauhut.com</span>
+    </div>
+    <h2>Der Stapel, persönlich</h2>
+    <p class="why">
+      Gleiches Skelett, andere Haut: Schwarz-Weiß-Grau, Pastellkante <code>#8DA5C4</code>,
+      Links in <code>#3F5C85</code>. Kein Teal, kein Navy — die Person ist nicht die Firma.
+    </p>
+
+    <div class="sheet">
+      <p class="sheet-hint">Vorschau · Ende der Nachricht</p>
+      <hr class="sheet-divider" />
+
+      <div class="sig" id="sig-rh-a"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td width="3" style="width:3px;background-color:#8DA5C4;font-size:0;line-height:0;">&nbsp;</td><td style="padding-left:16px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:600;color:#0A0A0A;">German Rauhut</td></tr><tr><td style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;color:#525252;padding-bottom:12px;">Technical Product Owner &amp; AI Product Builder</td></tr><tr><td style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:22px;color:#0A0A0A;"><a href="mailto:german@rauhut.com" style="color:#3F5C85;text-decoration:none;">german@rauhut.com</a>&nbsp; &middot; &nbsp;<a href="tel:+491603859135" style="color:#0A0A0A;text-decoration:none;">+49 160 385 9135</a></td></tr><tr><td style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:22px;padding-bottom:12px;"><a href="https://rauhut.com" style="color:#0A0A0A;text-decoration:none;font-weight:600;">rauhut.com</a><span style="color:#A3A3A3;">&nbsp; &middot; &nbsp;</span><a href="https://www.linkedin.com/in/german-rauhut/" style="color:#3F5C85;text-decoration:none;">LinkedIn</a><span style="color:#A3A3A3;">&nbsp; &middot; &nbsp;</span><a href="https://github.com/GmanFooFoo" style="color:#3F5C85;text-decoration:none;">GitHub</a></td></tr><tr><td style="font-size:0;line-height:0;padding-bottom:12px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;width:100%;max-width:330px;"><tr><td height="1" style="height:1px;background-color:#E5E5E5;font-size:0;line-height:0;">&nbsp;</td></tr></table></td></tr><tr><td style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:600;color:#0A0A0A;">Spezifikation und Umsetzung aus einer Hand.</td></tr><tr><td style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;line-height:19px;color:#525252;padding-bottom:12px;">Produkt, Architektur, Code &middot; Stuttgart</td></tr><tr><td style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;"><a href="https://calendly.com/rauhut/20min" style="color:#3F5C85;text-decoration:none;font-weight:600;">20 Minuten sprechen &rarr;</a></td></tr></table></td></tr></table></div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn" data-copy="sig-rh-a" data-plain-src="plain-rh-a">Signatur kopieren</button>
+      <button type="button" class="btn ghost" data-html="sig-rh-a">HTML-Quelltext</button>
+      <button type="button" class="btn ghost" data-plain="plain-rh-a">Plain-Text ansehen</button>
+    </div>
+    <div class="drawer" id="drawer-sig-rh-a" hidden><pre></pre></div>
+    <div class="drawer" id="drawer-plain-rh-a" hidden><pre id="plain-rh-a">German Rauhut
+Technical Product Owner & AI Product Builder
+
+german@rauhut.com · +49 160 385 9135
+rauhut.com · linkedin.com/in/german-rauhut · github.com/GmanFooFoo
+
+Spezifikation und Umsetzung aus einer Hand.
+Produkt, Architektur, Code · Stuttgart
+
+20 Minuten sprechen: calendly.com/rauhut/20min</pre></div>
+  </section>
+
+  <!-- ============ B · rauhut.com ============ -->
+
+  <section class="specimen">
+    <div class="specimen-head">
+      <span class="tag">Version B</span>
+      <span class="tag">rauhut.com</span>
+    </div>
+    <h2>Die Spalte, persönlich</h2>
+    <p class="why">
+      Der Name trägt hier allein — kein Wortzeichen, weil die Marke der Mensch ist.
+      Die Pastellkante wandert an die linke Kante der Kontaktspalte.
+    </p>
+
+    <div class="sheet">
+      <p class="sheet-hint">Vorschau · Ende der Nachricht</p>
+      <hr class="sheet-divider" />
+
+      <div class="sig" id="sig-rh-b"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td valign="top" style="padding-right:22px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:19px;font-weight:600;color:#0A0A0A;">German Rauhut</td></tr><tr><td style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:19px;color:#525252;padding-top:2px;">Technical Product Owner</td></tr><tr><td style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:19px;color:#525252;">&amp; AI Product Builder</td></tr></table></td><td valign="top" style="border-left:1px solid #8DA5C4;padding-left:22px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:22px;"><a href="mailto:german@rauhut.com" style="color:#3F5C85;text-decoration:none;">german@rauhut.com</a></td></tr><tr><td style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:22px;color:#0A0A0A;"><a href="tel:+491603859135" style="color:#0A0A0A;text-decoration:none;">+49 160 385 9135</a></td></tr><tr><td style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:22px;padding-bottom:10px;"><a href="https://rauhut.com" style="color:#0A0A0A;text-decoration:none;font-weight:600;">rauhut.com</a><span style="color:#A3A3A3;">&nbsp; &middot; &nbsp;</span><a href="https://www.linkedin.com/in/german-rauhut/" style="color:#3F5C85;text-decoration:none;">LinkedIn</a><span style="color:#A3A3A3;">&nbsp; &middot; &nbsp;</span><a href="https://github.com/GmanFooFoo" style="color:#3F5C85;text-decoration:none;">GitHub</a></td></tr><tr><td style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;"><a href="https://calendly.com/rauhut/20min" style="color:#3F5C85;text-decoration:none;font-weight:600;">20 Minuten sprechen &rarr;</a></td></tr></table></td></tr><tr><td colspan="2" style="font-size:0;line-height:0;padding-top:14px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;width:100%;max-width:420px;"><tr><td height="1" style="height:1px;background-color:#E5E5E5;font-size:0;line-height:0;">&nbsp;</td></tr></table></td></tr><tr><td colspan="2" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:19px;font-weight:600;color:#0A0A0A;padding-top:10px;">Spezifikation und Umsetzung aus einer Hand.</td></tr><tr><td colspan="2" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;line-height:18px;color:#525252;padding-top:2px;">Produkt, Architektur, Code &middot; Stuttgart</td></tr></table></div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn" data-copy="sig-rh-b" data-plain-src="plain-rh-b">Signatur kopieren</button>
+      <button type="button" class="btn ghost" data-html="sig-rh-b">HTML-Quelltext</button>
+      <button type="button" class="btn ghost" data-plain="plain-rh-b">Plain-Text ansehen</button>
+    </div>
+    <div class="drawer" id="drawer-sig-rh-b" hidden><pre></pre></div>
+    <div class="drawer" id="drawer-plain-rh-b" hidden><pre id="plain-rh-b">German Rauhut
+Technical Product Owner & AI Product Builder
+
+german@rauhut.com · +49 160 385 9135
+rauhut.com · linkedin.com/in/german-rauhut · github.com/GmanFooFoo
+20 Minuten sprechen: calendly.com/rauhut/20min
+
+Spezifikation und Umsetzung aus einer Hand.
+Produkt, Architektur, Code · Stuttgart</pre></div>
+  </section>
+
+  <!-- ============ Einbau ============ -->
+
+  <section class="section">
+    <hr />
+    <h3>Einbau</h3>
+    <p>
+      Auf <em>Signatur kopieren</em> klicken, dann im Mail-Client einfügen. Der Button legt
+      formatiertes HTML <em>und</em> Plain-Text in die Zwischenablage — der Client nimmt sich,
+      was er versteht.
+    </p>
+
+    <h4>Apple Mail (macOS) — der Weg, der funktioniert</h4>
+    <ol>
+      <li>Diese Seite in <strong>Safari</strong> öffnen. Safari übergibt formatiertes HTML an Mail sauberer als Chrome.</li>
+      <li>Mail öffnen → <strong>Mail → Einstellungen → Signaturen</strong>.</li>
+      <li>Links das Konto wählen, für das die Signatur gelten soll. <em>Wichtig:</em> wählst du „Alle Signaturen", lässt sich die neue Signatur später keinem Konto zuordnen.</li>
+      <li>Unten auf <code>+</code> — eine neue Signatur erscheint mit vorbelegtem Text.</li>
+      <li><strong>Häkchen „Immer meine Standardschriftart verwenden" entfernen.</strong> Das ist der Schritt, an dem es sonst scheitert: mit gesetztem Häkchen wirft Mail Farben, Größen und die Akzentkante weg und macht daraus grauen Fließtext.</li>
+      <li>Im rechten Feld alles markieren (<code>⌘A</code>), löschen, dann einfügen (<code>⌘V</code>).</li>
+      <li>Signatur links umbenennen, z. B. <code>neckarshore</code> und <code>rauhut</code>.</li>
+      <li>Fenster schließen — Mail sichert automatisch. Zuordnung prüfen: unter <strong>„Signatur auswählen"</strong> die Standard-Signatur pro Konto festlegen.</li>
+    </ol>
+
+    <p>
+      <strong>Wenn das Einfügen die Formatierung verliert:</strong> statt <code>⌘V</code> die
+      Signatur im Browser mit der Maus markieren und direkt in das Signaturfeld
+      <strong>ziehen</strong>. Drag-and-drop umgeht Mails Zwischenablage-Filter.
+    </p>
+
+    <p>
+      <strong>Antworten und Weiterleitungen:</strong> Mail hängt die Signatur standardmäßig
+      auch an jede Antwort. Bei einer werblichen Signatur mit CTA ist das in langen Threads
+      lästig. Unter <strong>Einstellungen → Verfassen</strong> steht, ob die Signatur
+      über oder unter dem zitierten Text landet — <em>über</em> dem Zitat ist die übliche Wahl.
+    </p>
+
+    <p>
+      <strong>iPhone und iPad:</strong> die Signatur wird nicht synchronisiert und
+      braucht eine eigene Fassung — siehe den nächsten Abschnitt.
+
+    <h4>Outlook (Web / Microsoft 365)</h4>
+    <ol>
+      <li>Einstellungen → E-Mail → Verfassen und Antworten → Signatur</li>
+      <li>Einfügen. Web-Outlook übernimmt HTML zuverlässiger als die Desktop-App.</li>
+    </ol>
+
+    <h4>Gmail</h4>
+    <ol>
+      <li>Einstellungen → Allgemein → Signatur → Neu erstellen</li>
+      <li>Einfügen. Gmail kappt Signaturen über ~10 000 Zeichen — hier unkritisch.</li>
+    </ol>
+  </section>
+
+
+  <section class="section">
+    <hr />
+    <h3>iPhone und iPad</h3>
+    <p>
+      Das iOS-Signaturfeld speichert kein HTML, sondern formatierten Text. Farben und Fettung
+      überstehen das Einfügen — <strong>Hyperlinks nicht</strong>. Beim Senden verlinkt iOS
+      anschließend automatisch alles neu, was wie eine Adresse aussieht, in seiner eigenen
+      Systemfarbe. Beschriftete Links wie „LinkedIn" oder „20 Minuten sprechen" bleiben deshalb
+      als toter Text zurück: es gibt nichts zu erkennen.
+    </p>
+    <p>
+      Die Fassung unten löst das, indem sie jede Adresse ausschreibt. Kein <code>&lt;a&gt;</code>-Tag,
+      keine Beschriftung — die automatische Erkennung macht daraus auf jedem Gerät wieder
+      klickbare Links.
+    </p>
+
+    <h4>neckarshore.ai</h4>
+    <div class="sheet">
+      <div class="sig ios" id="sig-ios-ns"><div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;line-height:21px;color:#1E2937;">German Rauhut<br>Founder<br><br>german@neckarshore.ai<br>+49 160 385 9135<br>neckarshore.ai<br>linkedin.com/company/neckarshore<br>Stuttgart, Germany<br><br>Software Development. Closer to Home.<br>Nearshore-Engineering aus Stuttgart · DSGVO-konform · Made in Germany<br><br>20 Minuten Erstgespräch: calendly.com/rauhut/20min</div></div>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn" data-copy="sig-ios-ns" data-plain-src="plain-ios-ns">Für iPhone kopieren</button>
+    </div>
+    <div hidden><pre id="plain-ios-ns">German Rauhut
+Founder
+
+german@neckarshore.ai
++49 160 385 9135
+neckarshore.ai
+linkedin.com/company/neckarshore
+Stuttgart, Germany
+
+Software Development. Closer to Home.
+Nearshore-Engineering aus Stuttgart · DSGVO-konform · Made in Germany
+
+20 Minuten Erstgespräch: calendly.com/rauhut/20min</pre></div>
+
+    <h4>rauhut.com</h4>
+    <div class="sheet">
+      <div class="sig ios" id="sig-ios-rh"><div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;line-height:21px;color:#1E2937;">German Rauhut<br>Technical Product Owner & AI Product Builder<br><br>german@rauhut.com<br>+49 160 385 9135<br>rauhut.com<br>linkedin.com/in/german-rauhut<br>github.com/GmanFooFoo<br><br>Spezifikation und Umsetzung aus einer Hand.<br>Produkt, Architektur, Code · Stuttgart<br><br>20 Minuten sprechen: calendly.com/rauhut/20min</div></div>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn" data-copy="sig-ios-rh" data-plain-src="plain-ios-rh">Für iPhone kopieren</button>
+    </div>
+    <div hidden><pre id="plain-ios-rh">German Rauhut
+Technical Product Owner & AI Product Builder
+
+german@rauhut.com
++49 160 385 9135
+rauhut.com
+linkedin.com/in/german-rauhut
+github.com/GmanFooFoo
+
+Spezifikation und Umsetzung aus einer Hand.
+Produkt, Architektur, Code · Stuttgart
+
+20 Minuten sprechen: calendly.com/rauhut/20min</pre></div>
+
+    <ol>
+      <li><strong>Einstellungen → Apps → Mail → Signatur</strong> (nicht in der Mail-App selbst).</li>
+      <li>Feld leeren, einfügen. Reiner Text — hier geht nichts kaputt.</li>
+      <li>Falls ein Empfänger-Client eine Adresse nicht erkennt: <code>https://</code> davorsetzen.</li>
+    </ol>
+
+    <div class="note">
+      <strong>Warum nicht dieselbe Signatur wie auf dem Mac.</strong> Ein Signaturfeld, das
+      Links verwirft, macht aus einem CTA einen Satz ohne Ziel — das ist schlechter als kein CTA.
+      Ausgeschriebene Adressen sehen weniger elegant aus, funktionieren aber überall.
+    </div>
+  </section>
+
+  <!-- ============ Entscheidungen ============ -->
+
+  <section class="section">
+    <hr />
+    <h3>Warum es so aussieht</h3>
+
+    <div class="table-scroll">
+      <table class="facts">
+        <thead>
+          <tr><th>Entscheidung</th><th>Grund</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Kein Logo-Bild</td>
+            <td>Gmail und Outlook blockieren externe Bilder per Default. Ein gehostetes Logo erscheint dann als kaputtes Platzhalter-Icon. Der Style Guide sieht für Signaturen ohnehin die Wortmarke vor.</td>
+          </tr>
+          <tr>
+            <td>Akzent <code>#0E7490</code>, nicht <code>#00B8D4</code></td>
+            <td>Der Style Guide nennt <code>#00B8D4</code>, die Live-Site fährt <code>#0E7490</code>. Auf Weiß schafft <code>#00B8D4</code> nur 3,2:1 — für 13-px-Text zu wenig. <code>#0E7490</code> liegt über 4,5:1.</td>
+          </tr>
+          <tr>
+            <td>Tabellen statt <code>div</code>/Flexbox</td>
+            <td>Outlook rendert mit der Word-Engine. Flexbox, Grid und <code>margin</code> auf Blockelementen fallen dort still aus.</td>
+          </tr>
+          <tr>
+            <td>Keine Webfonts</td>
+            <td>Space Grotesk und Inter laden im Postfach nicht. Sie stehen zuerst im Stack — wer sie lokal hat, sieht sie; alle anderen bekommen sauberes System-Sans.</td>
+          </tr>
+          <tr>
+            <td>Ein CTA, nicht drei</td>
+            <td>Ein Ziel ist messbar. Drei konkurrieren miteinander und lassen die Signatur nach Werbebanner aussehen.</td>
+          </tr>
+          <tr>
+            <td>Telefon-Link nicht eingefärbt</td>
+            <td>Er bleibt klickbar (<code>tel:</code>), sieht aber nicht nach Link aus — sonst hat die Kontaktzeile drei bunte Elemente.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <strong>Dark-Mode-Warnung.</strong> Schalte oben auf „Dunkel". Das Navy <code>#0A2540</code>
+      und das Schwarz <code>#0A0A0A</code> verlieren dort deutlich an Kontrast. Apple Mail und
+      Gmail hellen dunkle Textfarben meist automatisch auf, Outlook nicht zuverlässig.
+      Das ist der Grund, warum keine Fläche eingefärbt ist: eine Signatur ohne eigenen
+      Hintergrund überlebt jede Client-Invertierung.
+    </div>
+  </section>
+
+  <!-- ============ Offene Punkte ============ -->
+
+  <section class="section">
+    <hr />
+    <h3>Was du noch entscheiden musst</h3>
+    <ol>
+      <li><strong>Der Claim auf rauhut.com</strong> — „Spezifikation und Umsetzung aus einer Hand." ist mein Textvorschlag, nicht aus einer Quelle übernommen. Alles andere stammt aus Impressum, Style Guide und den Live-Sites.</li>
+      <li><strong>Mobilnummer in der Firmensignatur</strong> — <code>+49 160 385 9135</code> steht im Impressum, ist also ohnehin öffentlich. Trotzdem: sie geht damit in jede Mail.</li>
+      <li><strong>Umsatzsteuer-ID</strong> — im Impressum als „wird nachgetragen" markiert. Für rein geschäftliche Mails an Unternehmen ist eine Rechtsform-Zeile in der Signatur üblich; ich habe sie weggelassen, weil ein Einzelunternehmen ohne Handelsregister-Eintrag sie nicht führen muss.</li>
+      <li><strong>Style-Guide-Drift</strong> — der Guide nennt Accent <code>#00B8D4</code> und Titel „Founder &amp; CEO"; live gilt <code>#0E7490</code>. Zwei Quellen, ein Fakt. Gehört korrigiert.</li>
+    </ol>
+  </section>
+
+  <footer>
+    <hr />
+    <p>
+      Quellen: <code>04-Marketing/Brand/style-guide.md</code> ·
+      <code>04-Marketing/Website/legal/impressum.md</code> ·
+      <code>neckarshore-website/src/app/globals.css</code> ·
+      <code>rauhut-website/src/app/globals.css</code>. Kontaktdaten und Links sind aus diesen
+      Quellen übernommen, nichts davon ist erfunden.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    "use strict";
+
+    var body = document.body;
+    body.setAttribute("data-ground", "light");
+
+    /* ---- mail ground toggle ---- */
+    var groundButtons = document.querySelectorAll(".seg button[data-ground]");
+    Array.prototype.forEach.call(groundButtons, function (btn) {
+      btn.addEventListener("click", function () {
+        var ground = btn.getAttribute("data-ground");
+        body.setAttribute("data-ground", ground);
+        Array.prototype.forEach.call(groundButtons, function (b) {
+          b.setAttribute("aria-pressed", String(b === btn));
+        });
+      });
+    });
+
+    /* ---- copy ---- */
+    function flash(btn, label) {
+      var original = btn.textContent;
+      btn.textContent = label;
+      btn.classList.add("done");
+      window.setTimeout(function () {
+        btn.textContent = original;
+        btn.classList.remove("done");
+      }, 1800);
+    }
+
+    function legacyCopy(node) {
+      var range = document.createRange();
+      range.selectNodeContents(node);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      sel.removeAllRanges();
+      return ok;
+    }
+
+    Array.prototype.forEach.call(document.querySelectorAll("[data-copy]"), function (btn) {
+      btn.addEventListener("click", function () {
+        var node = document.getElementById(btn.getAttribute("data-copy"));
+        if (!node) { return; }
+        var html = node.innerHTML;
+        var plainId = btn.getAttribute("data-plain-src");
+        var plainNode = plainId ? document.getElementById(plainId) : null;
+        var text = plainNode
+          ? plainNode.textContent.trim()
+          : (node.innerText || node.textContent || "").replace(/\n{3,}/g, "\n\n").trim();
+
+        if (window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
+          var item = new window.ClipboardItem({
+            "text/html": new Blob([html], { type: "text/html" }),
+            "text/plain": new Blob([text], { type: "text/plain" })
+          });
+          navigator.clipboard.write([item]).then(function () {
+            flash(btn, "Kopiert ✓");
+          })["catch"](function () {
+            flash(btn, legacyCopy(node) ? "Kopiert ✓" : "Fehlgeschlagen");
+          });
+        } else {
+          flash(btn, legacyCopy(node) ? "Kopiert ✓" : "Fehlgeschlagen");
+        }
+      });
+    });
+
+    /* ---- drawers ---- */
+    function toggleDrawer(drawer) {
+      var isHidden = drawer.hasAttribute("hidden");
+      if (isHidden) { drawer.removeAttribute("hidden"); }
+      else { drawer.setAttribute("hidden", ""); }
+      return isHidden;
+    }
+
+    Array.prototype.forEach.call(document.querySelectorAll("[data-html]"), function (btn) {
+      btn.addEventListener("click", function () {
+        var id = btn.getAttribute("data-html");
+        var drawer = document.getElementById("drawer-" + id);
+        var source = document.getElementById(id);
+        if (!drawer || !source) { return; }
+        drawer.querySelector("pre").textContent = source.innerHTML;
+        var opened = toggleDrawer(drawer);
+        btn.textContent = opened ? "HTML ausblenden" : "HTML-Quelltext";
+      });
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll("[data-plain]"), function (btn) {
+      btn.addEventListener("click", function () {
+        var id = btn.getAttribute("data-plain");
+        var drawer = document.getElementById("drawer-" + id);
+        if (!drawer) { return; }
+        var opened = toggleDrawer(drawer);
+        btn.textContent = opened ? "Plain-Text ausblenden" : "Plain-Text ansehen";
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

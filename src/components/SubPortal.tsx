@@ -47,7 +47,7 @@ export default function SubPortal({
         <Breadcrumbs trail={breadcrumbTrailForCategory(category)} />
 
         <header className="max-w-[640px]">
-          <p className="font-heading text-sm font-semibold uppercase tracking-wider text-accent">
+          <p className="font-heading text-sm font-semibold uppercase tracking-wider text-accent dark:text-accent-bright">
             {category.subtitle}
           </p>
           <h1 className="mt-3 font-heading text-4xl font-bold text-primary dark:text-text-primary md:text-5xl">

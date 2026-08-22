@@ -10,7 +10,7 @@ Status: Waiting for designer delivery
 | 2 | Icon only (N-River) | PNG | 32x32, 16x16 | Transparent | Navy + Teal | P1 | - [ ] |
 | 3 | Icon only (N-River) | PNG | 180x180 | Navy (#0A2540) | White + Teal | P1 | - [ ] |
 | 4 | Icon only (N-River) | PNG | 400x400 | Navy (#0A2540) | White + Teal | P2 | - [ ] |
-| 5 | Horizontal Lockup (Icon + NECKARSHORE.AI) | SVG | Vektor | Transparent | Navy + Teal | P2 | - [ ] |
+| 5 | Horizontal Lockup (Icon + neckarshore.ai) | SVG | Vektor | Transparent | Navy + Teal | P2 | - [ ] |
 | 6 | Horizontal Lockup | SVG | Vektor | Transparent | White + Teal | P2 | - [ ] |
 | 7 | Horizontal Lockup | PNG | 300xAuto | Transparent | Navy + Teal | P3 | - [ ] |
 | 8 | Horizontal Lockup | PNG | 600xAuto | Transparent | Beide | P3 | - [ ] |

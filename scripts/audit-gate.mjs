@@ -66,15 +66,27 @@ export const ALLOWLIST = [
       "a downgrade across seven majors. Removable when Next widens its sharp range to >=0.35.0.",
   },
   {
-    id: "GHSA-mh99-v99m-4gvg",
-    pkg: "brace-expansion",
+    id: "GHSA-2v37-7h3g-55p8",
+    pkg: "nanoid",
     devOnly: true,
-    expires: "2026-10-31",
+    expires: "2026-08-26",
     reason:
-      "DoS in brace-expansion, reached only via minimatch@3 under ESLint tooling — dev-only, not in " +
-      "the production bundle. npm's remedy is eslint 10, a semver-major migration that is its own " +
-      "decision. Removable once the ESLint chain moves off minimatch@3.",
+      "nanoid <3.3.18 can loop indefinitely when a CUSTOM generator is called with size zero. " +
+      "Reached only via devDependency @tailwindcss/postcss -> postcss 8.5.23 -> nanoid, a build-time " +
+      "path; this repo never calls nanoid itself and ships none of it. The fix (3.3.18) is not " +
+      "installable on this machine: it was published 2026-08-07 and M2 carries the post-freeze " +
+      "cooldown `before=2026-08-05` (james.yaml J-COOLDOWN-EXPIRY-2026-08-26). Verified with " +
+      "`npm pack nanoid@3.3.18 --dry-run` -> notarget, NOT with `npm view`, which is unfenced and " +
+      "reports a false all-clear. Removable the moment the cooldown is lifted or rolled forward: " +
+      "the expiry is deliberately set to the cooldown's own expiry so this entry cannot outlive it.",
   },
+  // Both brace-expansion entries (GHSA-mh99-v99m-4gvg, GHSA-rgw5-rvv9-x895) removed
+  // 2026-08-12. Their own text named the condition for removal — "the bump fix is
+  // barred by the install freeze, re-decide at freeze lift" — and the freeze lifted
+  // that morning. `npm audit fix` then resolved both, and the gate's own
+  // "listed but no longer reported" line confirmed the entries had gone inert.
+  // An acceptance that outlives its reason is how a temporary exception becomes
+  // permanent silence, which is exactly what design rule 2 exists to prevent.
 ];
 
 /*
