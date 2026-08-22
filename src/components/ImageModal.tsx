@@ -54,7 +54,7 @@ export default function ImageModal({
     <>
       <button
         onClick={() => setOpen(true)}
-        className={className || "cursor-pointer text-accent underline decoration-accent/30 underline-offset-2 transition-colors hover:text-accent-hover hover:decoration-accent"}
+        className={className || "cursor-pointer text-accent underline decoration-accent/30 underline-offset-2 transition-colors hover:text-accent-hover hover:decoration-accent dark:text-accent-bright"}
       >
         {children}
       </button>
