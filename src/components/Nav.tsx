@@ -76,7 +76,7 @@ function ProductsDropdown() {
         aria-expanded={open}
         aria-haspopup="menu"
         data-track="nav_products"
-        className="flex items-center gap-1 text-sm font-medium text-primary/70 transition-colors duration-150 hover:text-accent dark:text-text-secondary/70 dark:hover:text-accent"
+        className="flex items-center gap-1 text-sm font-medium text-primary/70 transition-colors duration-150 hover:text-accent dark:text-text-tertiary dark:hover:text-accent"
       >
         Produkte
         <ChevronDown
@@ -166,7 +166,7 @@ export default function Nav({ showOssLaunch = false }: NavProps) {
               key={link.href}
               href={link.href}
               data-track={link.track}
-              className="text-sm font-medium text-primary/70 transition-colors duration-150 hover:text-accent dark:text-text-secondary/70 dark:hover:text-accent"
+              className="text-sm font-medium text-primary/70 transition-colors duration-150 hover:text-accent dark:text-text-tertiary dark:hover:text-accent"
             >
               {link.label}
             </a>
@@ -177,7 +177,7 @@ export default function Nav({ showOssLaunch = false }: NavProps) {
               key={link.href}
               href={link.href}
               data-track={link.track}
-              className="text-sm font-medium text-primary/70 transition-colors duration-150 hover:text-accent dark:text-text-secondary/70 dark:hover:text-accent"
+              className="text-sm font-medium text-primary/70 transition-colors duration-150 hover:text-accent dark:text-text-tertiary dark:hover:text-accent"
             >
               {link.label}
             </a>
@@ -218,7 +218,7 @@ export default function Nav({ showOssLaunch = false }: NavProps) {
               href={link.href}
               data-track={link.track}
               onClick={() => setOpen(false)}
-              className="block py-3 text-base font-medium text-primary/70 transition-colors hover:text-accent dark:text-text-secondary/70 dark:hover:text-accent"
+              className="block py-3 text-base font-medium text-primary/70 transition-colors hover:text-accent dark:text-text-tertiary dark:hover:text-accent"
             >
               {link.label}
             </a>
@@ -234,7 +234,7 @@ export default function Nav({ showOssLaunch = false }: NavProps) {
               href={p.href}
               data-track={p.track}
               onClick={() => setOpen(false)}
-              className="block py-2 pl-3 text-base font-medium text-primary/70 transition-colors hover:text-accent dark:text-text-secondary/70 dark:hover:text-accent"
+              className="block py-2 pl-3 text-base font-medium text-primary/70 transition-colors hover:text-accent dark:text-text-tertiary dark:hover:text-accent"
             >
               {p.label}
               <span className="ml-2 text-xs font-normal text-muted dark:text-text-tertiary">
@@ -257,7 +257,7 @@ export default function Nav({ showOssLaunch = false }: NavProps) {
               href={link.href}
               data-track={link.track}
               onClick={() => setOpen(false)}
-              className="block py-3 text-base font-medium text-primary/70 transition-colors hover:text-accent dark:text-text-secondary/70 dark:hover:text-accent"
+              className="block py-3 text-base font-medium text-primary/70 transition-colors hover:text-accent dark:text-text-tertiary dark:hover:text-accent"
             >
               {link.label}
             </a>
