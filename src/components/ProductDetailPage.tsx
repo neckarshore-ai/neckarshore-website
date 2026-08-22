@@ -73,12 +73,20 @@ interface ProductDetailPageProps {
   ctaName?: string;
   /** Live state: an honest, product-specific subline under the "Live ausprobieren →" CTA. */
   liveCtaNote?: string;
+  /**
+   * Optional product visual (screenshot, diagram), rendered between the CTA block and the
+   * Markdown body. A slot rather than a frontmatter field: the media is page-specific JSX
+   * (its own caption, its own zoom behaviour), and the content `.md` stays exportable plain
+   * Markdown — the export pipeline must not have to reason about React.
+   */
+  media?: React.ReactNode;
 }
 
 export default function ProductDetailPage({
   slug,
   ctaName,
   liveCtaNote,
+  media,
 }: ProductDetailPageProps) {
   const entry = getProductEntry(slug);
   if (!entry) notFound();
@@ -161,6 +169,8 @@ export default function ProductDetailPage({
               </div>
             </>
           )}
+
+          {media && <div className="mt-10">{media}</div>}
 
           <div className="mt-10">
             <Prose html={entry.bodyHtml} />

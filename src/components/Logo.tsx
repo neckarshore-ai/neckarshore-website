@@ -23,11 +23,13 @@ export default function Logo({
   return (
     <span
       className={`inline-flex items-center gap-0.5 ${size} ${className}`}
-      aria-label="NECKARSHORE.AI"
+      aria-label="neckarshore.ai"
     >
       <NIcon className="h-[1.4em] w-auto shrink-0 object-contain" />
-      <span className="font-heading text-[1.2em] font-semibold uppercase tracking-tight leading-none text-inherit">
-        ECKARSHORE<span className="text-accent dark:text-accent-bright">.AI</span>
+      {/* Wordmark is lowercase by brand decision (Founder, 2026-08-15) — the only
+          capital N in the brand is the icon tile itself. Do NOT re-add `uppercase`. */}
+      <span className="font-heading text-[1.2em] font-semibold lowercase tracking-tight leading-none text-inherit">
+        eckarshore<span className="text-accent dark:text-accent-bright">.ai</span>
       </span>
     </span>
   );

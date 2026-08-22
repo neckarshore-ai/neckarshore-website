@@ -315,6 +315,18 @@ export const cards = [
     ],
   },
   {
+    label: "Product OG — md-viewer",
+    dest: "public/og/md-viewer.jpg",
+    width: 1200, height: 630, padding: 72, maxKB: 200, taglineSize: 27,
+    headline: "md", headlineAccent: "-viewer.", accentInline: true, accentJoin: "",
+    tagline: "Markdown sofort lesen — gerendert und Quelltext nebeneinander. Finder-Quick-Action für macOS plus Web-Zwilling, der die Datei vollständig im Browser verarbeitet.",
+    chips: [
+      { text: "Quick Action", variant: "dot" },
+      { text: "macOS + Web", variant: "plain" },
+      { text: "MIT / Open Source", variant: "accent" },
+    ],
+  },
+  {
     label: "Product OG — obsidian-vault-autopilot",
     dest: "public/og/obsidian-vault-autopilot.jpg",
     width: 1200, height: 630, padding: 72, maxKB: 200, taglineSize: 27,

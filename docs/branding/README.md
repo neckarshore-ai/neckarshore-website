@@ -1,7 +1,13 @@
 # Branding Assets — Social Preview Cards
 
-Source of truth for all social preview / OpenGraph / GitHub repo card visuals
-across the neckarshore.ai ecosystem.
+The **design rules** for every social preview / OpenGraph / GitHub repo card visual across
+the neckarshore.ai ecosystem: what is fixed, what varies per card, which format targets
+exist and why.
+
+> **What this document is NOT the source of truth for: the card inventory.**
+> That lives in `scripts/og-cards.config.mjs`. This file used to copy the list and drifted
+> badly (5 named vs 23 configured, finished uploads reported as pending — corrected
+> 2026-08-15). Rules belong in prose; inventories belong in the config that generates them.
 
 > **Before changing anything in this document or `scripts/generate-og-image.mjs`:**
 > the current system was locked in during 2026-04-11 Session G after two rounds
@@ -32,7 +38,7 @@ config-driven on purpose — every card shares the same visual DNA.
 
 | Element | Value | Source |
 |---|---|---|
-| Brand block | N-Tile JPEG + `ECKARSHORE.AI` Space Grotesk, Uppercase | `public/images/neckarshore-logo-n.jpg`, matches `src/components/Logo.tsx` |
+| Brand block | N-Tile JPEG + `eckarshore.ai` Space Grotesk, lowercase (Founder-Entscheidung 2026-08-15) | `public/images/neckarshore-logo-n.jpg`, matches `src/components/Logo.tsx` |
 | Brand block size | 56px mark height, 46px wordmark | `DESIGN.markHeight`, `DESIGN.wordmarkSize` |
 | Background | Radial cyan glow (bottom-right) + radial primary glow (top-left) + vertical slate gradient | `DESIGN.color.bg1/bg2/bg3` |
 | Grid overlay | 60px × 60px faint slate lines, radial mask | fixed |
@@ -78,13 +84,66 @@ OG scraper support for WebP is patchy. A single well-compressed JPEG serves ever
 
 ## Current card inventory
 
-| # | Target | Config entry | Output file | Status |
-|---|---|---|---|---|
-| 1 | neckarshore.ai site OG | `neckarshore.ai OG (website SSR)` | `public/og-image.jpg` | Live, referenced in `src/app/layout.tsx` |
-| 2 | GitHub: `neckarshore-website` | `GitHub Repo Card — neckarshore-website` | `docs/branding/github-social-preview-website.jpg` | Generated, awaiting manual upload to GitHub repo Settings |
-| 3 | GitHub: `obsidian-vault-autopilot` | `GitHub Repo Card — obsidian-vault-autopilot` | `docs/branding/github-social-preview-vault-autopilot.jpg` | Generated, awaiting manual upload to GitHub repo Settings |
-| 4 | GitHub: `OMNOPSIS` | `GitHub Repo Card — OMNOPSIS` | — | Skipped — awaiting MASCHIN positioning brief ([positioning-request-maschin.md](./positioning-request-maschin.md)) |
-| 5 | GitHub: `Comedy-Execution-Engine` | `GitHub Repo Card — Comedy-Execution-Engine` | — | Skipped — awaiting MASCHIN positioning brief ([positioning-request-maschin.md](./positioning-request-maschin.md)) |
+> **Important:** this section deliberately does **not** list the cards one by one.
+> `scripts/og-cards.config.mjs` is the source of truth, and a hand-kept copy of it in this
+> file is exactly what went wrong before: the table below used to name 5 cards while the
+> config produced 23, and it reported uploads as pending that had been done weeks earlier.
+> What is written here is what the config **cannot** tell you — the two blocked cards and
+> the upload state of the live GitHub surfaces.
+
+**To see the actual inventory, ask the config, not this document:**
+
+```bash
+grep 'label:\|dest:' scripts/og-cards.config.mjs
+```
+
+**Counts at the last audit (2026-08-15), so a future reader can tell drift from growth:**
+
+| # | Group | Count | Output |
+|---|---|---|---|
+| 1 | Site OG | 1 | `public/og-image.jpg` |
+| 2 | GitHub repo cards | 10 configured, 8 generated | `docs/branding/github-social-preview-*.jpg` |
+| 3 | Per-product OG cards | 12 | `public/og/<slug>.jpg` |
+
+The per-product cards are the ones with a real guard behind them: `tests/unit/product-og-coverage.test.mjs`
+derives the expected set from the portfolio config, and `PRODUCT_OG_SLUGS` in `tests/e2e/seo.spec.ts`
+asserts each page actually serves its own image. Adding a product without its card fails CI.
+The GitHub repo cards have no such guard — they are uploaded by hand into a surface with no API.
+
+### The two cards that are blocked, and why
+
+| # | Target | Blocker |
+|---|---|---|
+| 1 | GitHub: `OMNOPSIS` | Awaiting MASCHIN positioning brief ([positioning-request-maschin.md](./positioning-request-maschin.md)) |
+| 2 | GitHub: `Comedy-Execution-Engine` | Same brief |
+
+Both are configured in `og-cards.config.mjs` but were never generated — the generator would
+produce a card carrying positioning nobody has decided. That is the correct state, not a gap.
+
+### Upload state of the public GitHub surfaces
+
+Probed live 2026-08-15 by reading each repo's `og:image` meta tag: a custom upload serves
+from `repository-images.githubusercontent.com`, the fallback serves from `opengraph.githubassets.com`.
+
+| # | Repo | Visibility | Custom card live? |
+|---|---|---|---|
+| 1 | `neckarshore-websites/neckarshore-website` | public | yes |
+| 2 | `neckarshore-ai/neckarshore-easter-eggs` | public | yes |
+| 3 | `neckarshore-skills/imap-mailbox-cleanup` | public | yes |
+| 4 | `neckarshore-skills/obsidian-vault-autopilot` | public | yes |
+
+The four remaining generated cards target **private** repos (`obsidian-instagram-scraper`,
+`obsidian-linkedin-scraper`, `obsidian-x-scraper`, `obsidian-social-scrapers-common`). Their
+upload state is **not verifiable from outside** — an anonymous fetch of a private repo returns
+a login page, not a preview tag. Recorded as unknown rather than assumed done; if one of them
+goes public, re-run the probe rather than trusting this line.
+
+**Why this whole section changed (2026-08-15):** the previous version claimed 5 cards and said
+rows 2 and 3 were "awaiting manual upload to GitHub repo Settings". Both halves were false —
+23 cards existed, and every checkable public repo already served its uploaded card. The
+document drifted in the comfortable direction: it under-reported the work and reported finished
+work as pending. Nothing gates a prose inventory, which is why this rewrite replaces the list
+with a pointer to the thing that cannot lie.
 
 ---
 

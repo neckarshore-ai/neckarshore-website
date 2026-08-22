@@ -19,7 +19,7 @@
     "lighthouse:mobile": "node scripts/lighthouse.mjs --quick --profile=mobile-4g",
     "lighthouse:5g": "node scripts/lighthouse.mjs --quick --profile=mobile-5g",
     "test:lighthouse:unit": "node --test scripts/lighthouse-profiles.test.mjs",
-    "test:unit": "node --import tsx --test tests/unit/aggregate-test-scope.test.mjs tests/unit/append-test-scope-history.test.mjs tests/unit/check-repo-list.test.mjs tests/unit/commit-activity.test.mjs tests/unit/check-stats-staleness.test.mjs tests/unit/disclosure-config.test.mjs tests/unit/export-markdown.test.ts tests/unit/private-slug-leak-gate.test.mjs tests/unit/product-og-coverage.test.mjs tests/unit/product-og.test.mjs tests/unit/repo-types.test.ts tests/unit/sitemap.test.ts tests/unit/stats-breakdown.test.ts tests/unit/withhold-private-repos.test.mjs",
+    "test:unit": "node --import tsx --test tests/unit/aggregate-test-scope.test.mjs tests/unit/append-test-scope-history.test.mjs tests/unit/check-repo-list.test.mjs tests/unit/commit-activity.test.mjs tests/unit/contrast-grouping.test.mjs tests/unit/check-stats-staleness.test.mjs tests/unit/disclosure-config.test.mjs tests/unit/export-markdown.test.ts tests/unit/llms-claims.test.ts tests/unit/private-slug-leak-gate.test.mjs tests/unit/og-cards-config.test.mjs tests/unit/product-og-coverage.test.mjs tests/unit/product-og.test.mjs tests/unit/repo-types.test.ts tests/unit/sitemap.test.ts tests/unit/stats-breakdown.test.ts tests/unit/withhold-private-repos.test.mjs",
     "sync:disclosure-config": "bash scripts/sync-disclosure-config.sh",
     "check:privacy": "bash scripts/check-private-slug-leak.sh",
     "crawl": "node scripts/link-crawler.mjs",
@@ -27,7 +27,8 @@
     "crawl:test": "node scripts/link-crawler.mjs --self-test",
     "linkcheck": "node scripts/link-check.mjs",
     "linkcheck:test": "node scripts/link-check.mjs --self-test",
-    "test:audit-gate:unit": "node scripts/audit-gate.test.mjs"
+    "test:audit-gate:unit": "node scripts/audit-gate.test.mjs",
+    "check:contrast": "node --import tsx scripts/check-contrast.mjs"
   },
   "dependencies": {
     "@upstash/redis": "1.37.0",
@@ -39,7 +40,7 @@
     "nodemailer": "9.0.5",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "sanitize-html": "2.17.6",
+    "sanitize-html": "2.17.7",
     "web-vitals": "5.3.0"
   },
   "devDependencies": {
@@ -50,6 +51,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/sanitize-html": "2.16.1",
+    "axe-core": "4.13.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
     "lighthouse": "13.4.1",

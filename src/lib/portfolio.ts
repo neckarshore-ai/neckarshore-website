@@ -38,7 +38,7 @@ export interface PortfolioItem {
   /**
    * Override for the bottom-left status pill label. Use ONLY when the derived label
    * (from `status`) would be dishonest — e.g. omnopsis carries a flagship `status: "live"`
-   * but is pre-launch ("In Entwicklung · Launch geplant Q3 2026" on its page), so the pill must say
+   * but is pre-launch ("In Entwicklung" on its page), so the pill must say
    * "In Entwicklung", not "Live". Most items omit this and let `statusPillLabel` derive it.
    */
   statusLabel?: string;
@@ -125,7 +125,9 @@ export const PORTFOLIO: PortfolioCategory[] = [
         tagline:
           "KI-first Documentation Engine für Engineering-Teams — fail-closed, BYOLLM, DSGVO-by-Design.",
         status: "live",
-        // Pre-launch (Launch geplant Q3 2026) — the card pill must match the page, not the flagship status flag.
+        // Pre-launch — the card pill must match the page, not the flagship status flag.
+        // NO launch date here or anywhere else: Founder-decided 2026-08-20, a public quarter
+        // claim expires and nothing in CI would notice. Guard: tests/unit/llms-claims.test.ts.
         statusLabel: "In Entwicklung",
         featured: true,
         href: "/products/omnopsis",
@@ -153,7 +155,9 @@ export const PORTFOLIO: PortfolioCategory[] = [
         slug: "clearpath",
         tagline: "Eine mentale Firewall gegen kognitive Verzerrungen.",
         status: "live",
-        featured: true,
+        // Unfeatured 2026-08-15 (Founder, #515): Park status = no active investment, so it
+        // leads no longer on the hub. Page stays LIVE and the card stays on the MMP
+        // sub-portal — unfeaturing is a ranking decision, not a retirement.
         href: "/products/clearpath",
         isExternal: false,
         schemaType: "SoftwareApplication",
@@ -166,7 +170,8 @@ export const PORTFOLIO: PortfolioCategory[] = [
         tagline:
           "Neutraler KI-Reality-Check für Online-Coachings und High-Ticket-Angebote.",
         status: "live",
-        featured: true,
+        // Unfeatured 2026-08-15 (Founder, #515) — same call as ClearPath: off the hub,
+        // page + sub-portal card stay live.
         href: "/products/snakeoil-check",
         isExternal: false,
         schemaType: "SoftwareApplication",
@@ -202,10 +207,24 @@ export const PORTFOLIO: PortfolioCategory[] = [
         href: "/products/kaze",
         isExternal: false,
         schemaType: "SoftwareApplication",
-        // Grundversion 2026-08-06 (Founder ask): card + [slug] skeleton detail page only.
-        // applicationCategory deliberately unset (schema default) until the Engels scope
-        // pass defines what Kaze publicly claims to be. No hasOwnPage → served by the
-        // skeleton; noindex + held out of the sitemap until real content lands.
+        // 2026-08-20: aus der Skelett-Seite wird eine eigene (src/app/products/kaze),
+        // gespeist aus content/products/kaze.md + product-faqs. Der Inhalt folgt den
+        // von der PM geschriebenen und vom Founder freigegebenen Texten der Kaze-eigenen
+        // Produktseite (kaze#139) — beide Flaechen sagen dasselbe, statt zweimal aehnlich.
+        //
+        // applicationCategory BLEIBT UNGESETZT, und das ist jetzt ein schaerferer Grund
+        // als vorher: die naheliegende Apple-Kategorie waere "Produktivitaet", und genau
+        // dieses Wort ist fuer Kaze gesperrt — die App verspricht Ruhe, nicht Ertrag, und
+        // der Unterschied entscheidet sich im Wortschatz. Eine Kategorie zu setzen, die
+        // dem Text widerspricht, waere eine Falschaussage an eine Maschine. Founder-Frage,
+        // nicht Bauentscheidung.
+        //
+        // noindex BLEIBT, obwohl jetzt echter Inhalt dasteht. Die App ist nicht im App
+        // Store; eine indexierte Seite ueber ein Produkt, das niemand bekommen kann,
+        // sammelt Besucher fuer eine Sackgasse. Das Kennzeichen schaltet Robots-Meta,
+        // Sitemap UND das FAQPage-Schema gemeinsam (AP-1) — wenn es faellt, faellt alles
+        // drei zusammen, und der Zeitpunkt ist eine Founder-Ansage.
+        hasOwnPage: true,
         noindex: true,
       },
       {
@@ -244,14 +263,33 @@ export const PORTFOLIO: PortfolioCategory[] = [
         tagline:
           "Deterministischer Vier-Säulen-Trust-Report für öffentliche GitHub-Repos — Sicherheit, Governance, Community.",
         status: "live",
+        // Featured 2026-08-15 (Founder, #515): Rang 1 of the portfolio ranking leads the hub.
+        featured: true,
         href: "/products/trustscope",
         isExternal: false,
         schemaType: "SoftwareApplication",
         applicationCategory: "DeveloperApplication",
-        // LIVE at trustscope.neckarshore.ai — the only PUBLIC-repo (MIT) MMP. Detail page via the
+        // LIVE at trustscope.neckarshore.ai — a PUBLIC-repo (MIT) MMP. Detail page via the
         // shared ProductDetailPage live branch → excluded from the [slug] skeleton route. Indexable;
         // emits liveSoftwareApplicationSchema (live url, NO Offer — the shared live branch stays
         // offer-free; genuinely free but not claimed as a schema Offer, AD-19 fail-closed).
+        hasOwnPage: true,
+      },
+      {
+        name: "md-viewer",
+        slug: "md-viewer",
+        tagline:
+          "Markdown sofort lesen — Finder-Quick-Action für macOS plus Web-Zwilling, gerendert und Quelltext nebeneinander.",
+        status: "live",
+        // Featured 2026-08-15 (Founder, #515) as the second Rang-1 lead. LIVE at
+        // md.neckarshore.ai (R2 2026-08-06 + 2026-08-15: 200), repo PUBLIC + MIT. Detail page via
+        // the shared ProductDetailPage live branch → excluded from the [slug] skeleton route.
+        // The name stays lowercase: it is the repo name, not a marketing wordmark.
+        featured: true,
+        href: "/products/md-viewer",
+        isExternal: false,
+        schemaType: "SoftwareApplication",
+        applicationCategory: "DeveloperApplication",
         hasOwnPage: true,
       },
     ],
