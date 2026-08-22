@@ -107,7 +107,7 @@ export default function Home() {
               <br />
               Closer to Home.
             </h1>
-            <p className="mt-3 text-sm font-medium text-muted dark:text-text-secondary/70">
+            <p className="mt-3 text-sm font-medium text-muted dark:text-text-tertiary">
               <strong>Neckarshore AI</strong> — KI-beschleunigte Nearshore-Softwareentwicklung aus Stuttgart.
             </p>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-neutral-dark/80 md:text-xl dark:text-text-secondary">
@@ -132,7 +132,7 @@ export default function Home() {
                 Unsere Services
               </a>
             </div>
-            <div className="mt-10 flex flex-wrap gap-6 text-sm font-medium tracking-wide text-muted dark:text-text-secondary/60">
+            <div className="mt-10 flex flex-wrap gap-6 text-sm font-medium tracking-wide text-muted dark:text-text-tertiary">
               <span className="flex items-center gap-2">
                 <Shield size={16} className="text-accent" />
                 DSGVO-by-Design
@@ -228,7 +228,7 @@ export default function Home() {
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="group rounded-xl border-l-4 border-accent bg-neutral-light p-8 shadow-sm transition-all duration-250 hover:-translate-y-0.5 hover:shadow-md dark:bg-deep-space"
+                  className="group rounded-xl border-l-4 border-accent bg-neutral-light p-8 shadow-sm transition-[transform,box-shadow] duration-250 hover:-translate-y-0.5 hover:shadow-md dark:bg-deep-space"
                 >
                   <item.icon size={32} className="text-secondary" />
                   <h3 className="mt-4 font-heading text-xl font-semibold text-primary md:text-2xl dark:text-text-primary">
@@ -289,7 +289,7 @@ export default function Home() {
               ].map((service) => (
                 <div
                   key={service.title}
-                  className="group rounded-xl bg-white p-8 shadow-[0_10px_30px_rgba(10,37,64,0.08)] transition-all duration-250 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(10,37,64,0.14)] dark:bg-surface dark:shadow-none dark:hover:shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+                  className="group rounded-xl bg-white p-8 shadow-[0_10px_30px_rgba(10,37,64,0.08)] transition-[transform,box-shadow] duration-250 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(10,37,64,0.14)] dark:bg-surface dark:shadow-none dark:hover:shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
                 >
                   <service.icon size={32} className="text-secondary" />
                   <h3 className="mt-4 font-heading text-lg font-semibold text-primary md:text-xl dark:text-text-primary">
@@ -451,7 +451,7 @@ export default function Home() {
 
       {/* ===== FOOTER ===== */}
       <footer className="border-t border-primary/5 bg-white px-4 py-10 md:px-6 dark:border-text-secondary/10 dark:bg-surface">
-        <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-4 text-sm text-muted md:flex-row md:justify-between dark:text-text-secondary/60">
+        <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-4 text-sm text-muted md:flex-row md:justify-between dark:text-text-tertiary">
           <Logo size="text-xl" className="text-primary/70 dark:text-text-secondary" />
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             <Link href="/products" className="transition-colors hover:text-accent">
