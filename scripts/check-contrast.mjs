@@ -6,14 +6,21 @@
  *   CONTRAST_URL=https://neckarshore.ai npm run check:contrast -- --quick
  *
  * WHY THIS EXISTS AS ITS OWN COMMAND, and not as a spec in tests/e2e/.
- * There are 355 known violations today. A spec would turn `main` red on the next push
- * and stay red until every one of them is repaired — which pressures whoever is in a
- * hurry to delete the spec. As a separate command it is loud and visible without
- * blocking delivery. Once the repair has landed, it becomes a required check. That
- * order — build the watcher, prove it red, repair, THEN switch it hard, with no
- * tolerated-legacy list — is a Founder decision from 2026-08-21, and the missing legacy
- * list is the point: a tolerated list would make the watcher green on its first run and
- * destroy the only red probe it will ever get for free.
+ * It was written while the site carried 355 violations. A spec would have turned `main`
+ * red on the next push and kept it red until every one of them was repaired — which
+ * pressures whoever is in a hurry to delete the spec. As a separate command it was loud
+ * and visible without blocking delivery. The order — build the watcher, prove it red,
+ * repair, THEN switch it hard, with no tolerated-legacy list — is a Founder decision
+ * from 2026-08-21, and the missing legacy list is the point: a tolerated list would have
+ * made the watcher green on its first run and destroyed the only red probe it will ever
+ * get for free.
+ *
+ * SINCE 2026-08-22 IT IS A GATE. The repair landed (355 → 0, two identical runs), so
+ * `.github/workflows/contrast.yml` runs this command on every pull request and every
+ * push to `main`. It stays its own workflow rather than a spec in the Playwright suite:
+ * it needs its own production build and its own settle logic, and a red here names a
+ * colour pair, not a failing test. Exit codes: 0 clean · 1 findings · 2 the run could
+ * not prove what it measured.
  *
  * WHY THE ROUTES ARE DERIVED, NOT LISTED.
  * tests/e2e/accessibility.spec.ts hardcodes three pages, so it was blind on 25 of 28 and
