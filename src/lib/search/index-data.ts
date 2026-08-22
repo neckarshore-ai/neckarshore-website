@@ -90,6 +90,17 @@ const PAGES: { id: string; title: string; text: string; category: string; url: s
     url: "/test-management",
   },
   {
+    // Added with the page itself — `test:search:unit` asserts that EVERY static app route
+    // has an index entry, and it caught this one missing before the page ever shipped.
+    // Worth naming: that guard derives its expectation from the routes on disk instead of
+    // trusting a hand-kept list, which is why it cannot quietly fall behind.
+    id: "page:/ki-beratung",
+    title: "KI-Beratung",
+    text: "KI-Potenzialanalyse zum Festpreis: Wo lohnen KI-Agenten in Ihren Prozessen? Use-Case-Map, ein bis zwei Durchstich-Empfehlungen mit Projektpreis-Indikation und Readiness-Notizen. Zwei Einstiegstiefen — Kompakt-Analyse remote oder Workshop-Tag vor Ort, die erste Stufe wird auf die zweite angerechnet, der Workshop-Tag bei Beauftragung der Umsetzung auf das Projekt. Keine Implementierung, kein Vendor-Vergleich, keine Workshop-Serie.",
+    category: "Seite",
+    url: "/ki-beratung",
+  },
+  {
     id: "page:/impressum",
     title: "Impressum",
     text: "Impressum von neckarshore.ai — German Rauhut, IT Consulting & Digital Ventures, Stuttgart. Angaben gemäß § 5 DDG.",

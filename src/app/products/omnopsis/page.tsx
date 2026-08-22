@@ -58,7 +58,7 @@ export default function OmnopsisPage() {
 
         <article>
           <header className="mb-6">
-            <p className="text-sm font-semibold uppercase tracking-widest text-accent">
+            <p className="text-sm font-semibold uppercase tracking-widest text-accent dark:text-accent-bright">
               Unser Flaggschiff
             </p>
             <h1 className="mt-3 font-heading text-4xl font-bold text-accent md:text-5xl">
@@ -72,7 +72,7 @@ export default function OmnopsisPage() {
 
           <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary/5 px-4 py-1.5 text-sm font-medium text-muted dark:bg-text-secondary/10 dark:text-text-tertiary">
             <span className="h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
-            In Entwicklung · Launch geplant Q3 2026
+            In Entwicklung
           </div>
 
           <section className="mt-12">
@@ -126,7 +126,7 @@ export default function OmnopsisPage() {
               <ImageModal
                 src="/images/omnixis-conceived-whiteboard-2024-12-11.jpg"
                 alt={`${BRAND.PRODUCT_SHORT} Whiteboard-Skizze, Sindelfingen, Dezember 2024`}
-                className="inline-flex min-h-[24px] items-center cursor-pointer text-accent underline decoration-accent/30 underline-offset-2 transition-colors hover:text-accent-hover hover:decoration-accent"
+                className="inline-flex min-h-[24px] items-center cursor-pointer text-accent underline decoration-accent/30 underline-offset-2 transition-colors hover:text-accent-hover hover:decoration-accent dark:text-accent-bright"
               >
                 Conceived
               </ImageModal>{" "}
@@ -135,13 +135,11 @@ export default function OmnopsisPage() {
               <ImageModal
                 src="/images/omnixis-born-first-session-2026-03-22.png"
                 alt={`Erste ${BRAND.PRODUCT_SHORT} Claude Code Session, März 2026`}
-                className="inline-flex min-h-[24px] items-center cursor-pointer text-accent underline decoration-accent/30 underline-offset-2 transition-colors hover:text-accent-hover hover:decoration-accent"
+                className="inline-flex min-h-[24px] items-center cursor-pointer text-accent underline decoration-accent/30 underline-offset-2 transition-colors hover:text-accent-hover hover:decoration-accent dark:text-accent-bright"
               >
                 Born
               </ImageModal>{" "}
               March 22, 2026 in Stuttgart.
-              <br />
-              Launch geplant Q3 2026.
             </p>
           </section>
 

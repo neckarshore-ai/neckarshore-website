@@ -62,8 +62,13 @@ test.describe("Content surface — Products index", () => {
     }
   });
 
-  test("TC-CNT-011: ClearPath card links to /products/clearpath", async ({ page }) => {
-    await page.goto("/products");
+  // ClearPath was UNFEATURED on 2026-08-15 (Founder, #515): off the hub, page + card stay
+  // live on the MMP sub-portal. The test moved with the decision rather than being deleted —
+  // "the card links to its detail page" is still the thing worth guarding, just one level down.
+  test("TC-CNT-011: ClearPath card links to /products/clearpath (MMP sub-portal)", async ({
+    page,
+  }) => {
+    await page.goto("/products/mmps");
     await expect(page.locator('a[href="/products/clearpath"]').first()).toBeVisible();
   });
 
@@ -78,12 +83,14 @@ test.describe("Content surface — Products index", () => {
     page,
   }) => {
     await page.goto("/products");
-    // featured MMPs present on the portal teaser (kaze added 2026-08-06, Grundversion)
-    for (const slug of ["clearpath", "snakeoil-check", "phonesis", "kaze"]) {
+    // featured MMPs present on the portal teaser (kaze added 2026-08-06; TrustScope +
+    // md-viewer promoted 2026-08-15 as the two Rang-1 leads, #515)
+    for (const slug of ["phonesis", "kaze", "trustscope", "md-viewer"]) {
       await expect(page.locator(`a[href="/products/${slug}"]`).first()).toBeVisible();
     }
-    // non-featured MMPs are NOT on the teaser (they live on the sub-portal)
-    for (const slug of ["local-seo-hub", "prod-or-pretend"]) {
+    // non-featured MMPs are NOT on the teaser (they live on the sub-portal). ClearPath and
+    // Snakeoil-Check joined this list on 2026-08-15 — unfeatured, NOT retired.
+    for (const slug of ["local-seo-hub", "prod-or-pretend", "clearpath", "snakeoil-check"]) {
       await expect(page.locator(`a[href="/products/${slug}"]`)).toHaveCount(0);
     }
     // the "mehr" tile links to the MMP sub-portal and signals the remainder
@@ -743,15 +750,34 @@ test.describe("Content surface — unified status pill", () => {
 
 // C1 (SEO/GEO audit 2026-06-24): the Omnopsis flagship hardcoded "MVP Q2 2026" in three
 // places (pill, Conceived/Born block, and the "Wann verfügbar?" FAQ answer — the last one
-// also in the FAQPage JSON-LD). Q2 expires 2026-06-30 → the date goes stale. Decoupled to
-// "Launch geplant Q3 2026" (Founder decision). page.content() covers the collapsed FAQ
-// <details> + the JSON-LD, so this guards all three against the stale-quarter regressing.
+// also in the FAQPage JSON-LD). Q2 expires 2026-06-30 → the date went stale, and this test
+// was written to lock the repair.
+//
+// THE REPAIR CARRIED THE SAME DEFECT, AND THIS TEST HELD IT IN PLACE. "MVP Q2 2026" was
+// replaced by "Launch geplant Q3 2026" and the test pinned that exact string — so it
+// required a quarter to be present, and would have gone green all the way to 2026-09-30,
+// then red for a reason no one would have connected to it. Same expiry, one quarter later.
+//
+// Founder decision 2026-08-20: no public launch quarter at all. "In Entwicklung" cannot
+// expire. The assertion below is therefore on the CLASS, not on a string: any quarter-shaped
+// claim fails, whichever quarter it names. page.content() covers the collapsed FAQ <details>
+// and the FAQPage JSON-LD, so all three original places stay guarded.
+//
+// Sibling guard, source-side: tests/unit/llms-claims.test.ts scans the four files that can
+// make this claim — including the English AI-reader prose, which no rendered page carries.
 test.describe("Content surface — Omnopsis milestone honesty", () => {
-  test("TC-CNT-066: /products/omnopsis carries no expired Q2-2026 claim", async ({ page }) => {
+  test("TC-CNT-066: /products/omnopsis claims no launch quarter at all", async ({ page }) => {
     await page.goto("/products/omnopsis");
     const html = await page.content();
-    expect(html).not.toContain("Q2 2026");
-    expect(html).toContain("Launch geplant Q3 2026");
+
+    const quarter = html.match(/\bQ[1-4]\s*[\/-]?\s*20\d{2}\b/);
+    expect(
+      quarter?.[0],
+      "a public launch quarter expires on a fixed date and nothing in CI notices the day it turns false",
+    ).toBeUndefined();
+
+    // Non-vacuity: the negative above would also pass on an empty or broken page.
+    expect(html).toContain("In Entwicklung");
   });
 });
 

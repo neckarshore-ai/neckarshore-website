@@ -172,7 +172,7 @@ export default function StatsGrid({
               {stat.sub && (
                 <p
                   data-testid={stat.testId}
-                  className="mt-1 text-xs font-medium leading-tight text-accent"
+                  className="mt-1 text-xs font-medium leading-tight text-accent-bright"
                 >
                   {stat.sub}
                 </p>
