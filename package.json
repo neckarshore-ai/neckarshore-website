@@ -52,7 +52,7 @@
     "@types/react-dom": "^19",
     "@types/sanitize-html": "2.16.1",
     "axe-core": "4.13.0",
-    "eslint": "^9",
+    "eslint": "^10",
     "eslint-config-next": "16.2.12",
     "lighthouse": "13.4.1",
     "tailwindcss": "^4",
