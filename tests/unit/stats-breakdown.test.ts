@@ -12,7 +12,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { breakdownLine } from "../../src/lib/stats-breakdown.ts";
+import { breakdownLine } from "../../src/lib/stats-breakdown";
 
 test("null / undefined / empty byType → null (no sub-line)", () => {
   assert.equal(breakdownLine(null), null);

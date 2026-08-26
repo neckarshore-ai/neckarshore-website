@@ -13,11 +13,11 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { buildMarkdownDocument, faqToMarkdown, tableToMarkdown } from "../../src/lib/export/serialize.ts";
-import { buildProductMarkdown } from "../../src/lib/export/builders/product.ts";
-import { buildWebsiteMarkdown } from "../../src/lib/export/builders/website.ts";
-import { extraSectionsForSlug } from "../../src/lib/export/product-sections.ts";
-import { resolveExport } from "../../src/lib/export/resolve.ts";
+import { buildMarkdownDocument, faqToMarkdown, tableToMarkdown } from "../../src/lib/export/serialize";
+import { buildProductMarkdown } from "../../src/lib/export/builders/product";
+import { buildWebsiteMarkdown } from "../../src/lib/export/builders/website";
+import { extraSectionsForSlug } from "../../src/lib/export/product-sections";
+import { resolveExport } from "../../src/lib/export/resolve";
 
 const OPTS = { baseUrl: "https://neckarshore.ai", exportedAt: "2026-06-28" };
 

@@ -15,8 +15,8 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import sitemap from "../../src/app/sitemap.ts";
-import { SITE_UPDATED, SITE_URL } from "../../src/lib/site-config.ts";
+import sitemap from "../../src/app/sitemap";
+import { SITE_UPDATED, SITE_URL } from "../../src/lib/site-config";
 
 test("TC-SEO-023: every sitemap entry stamps the stable SITE_UPDATED lastmod, not the build clock", () => {
   const entries = sitemap();

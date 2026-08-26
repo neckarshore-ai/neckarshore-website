@@ -20,9 +20,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-import { buildLlmsIndexText } from "../../src/lib/llms-index.ts";
-import { buildLlmsFullText } from "../../src/lib/llms-full.ts";
-import { SITE_UPDATED } from "../../src/lib/site-config.ts";
+import { buildLlmsIndexText } from "../../src/lib/llms-index";
+import { buildLlmsFullText } from "../../src/lib/llms-full";
+import { SITE_UPDATED } from "../../src/lib/site-config";
 
 /** Claims that were live and false. Each entry is a regression that actually happened. */
 const FORBIDDEN: { pattern: RegExp; why: string }[] = [

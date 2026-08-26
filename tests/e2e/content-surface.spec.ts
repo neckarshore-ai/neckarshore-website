@@ -595,8 +595,11 @@ test.describe("Content surface — AI Phrase Check skill detail", () => {
     expect(apps[0].offers).toBeDefined();
     const faqs = blocks.filter((b) => b["@type"] === "FAQPage");
     expect(faqs).toHaveLength(1);
-    expect(Array.isArray(faqs[0].mainEntity)).toBe(true);
-    expect(faqs[0].mainEntity.length).toBeGreaterThanOrEqual(1);
+    // mainEntity kommt als `unknown` aus dem JSON-LD-Helfer. Die Array-Zusicherung
+    // steht bewusst VOR dem Zugriff auf `.length` — sie ist es, die den Cast deckt.
+    const mainEntity = faqs[0].mainEntity;
+    expect(Array.isArray(mainEntity)).toBe(true);
+    expect((mainEntity as unknown[]).length).toBeGreaterThanOrEqual(1);
   });
 });
 
@@ -639,8 +642,11 @@ test.describe("Content surface — Product FAQ (GEO)", () => {
       ).toBeVisible();
       const faqs = (await ldJson(page)).filter((b) => b["@type"] === "FAQPage");
       expect(faqs).toHaveLength(1);
-      expect(Array.isArray(faqs[0].mainEntity)).toBe(true);
-      expect(faqs[0].mainEntity.length).toBeGreaterThanOrEqual(1);
+      // mainEntity kommt als `unknown` aus dem JSON-LD-Helfer. Die Array-Zusicherung
+      // steht bewusst VOR dem Zugriff auf `.length` — sie ist es, die den Cast deckt.
+      const mainEntity = faqs[0].mainEntity;
+      expect(Array.isArray(mainEntity)).toBe(true);
+      expect((mainEntity as unknown[]).length).toBeGreaterThanOrEqual(1);
     });
   }
 

@@ -10,7 +10,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { repoType, REPO_TYPE_ORDER } from "../../src/lib/repo-types.ts";
+import { repoType, REPO_TYPE_ORDER } from "../../src/lib/repo-types";
 
 test("classifies by GitHub org default", () => {
   assert.equal(repoType("omnopsis-ai/omnopsis-backend"), "Produkt");
