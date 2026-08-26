@@ -195,18 +195,47 @@ This bit us once: the XSS security hook blocked the raw-HTML injection prop on i
 
 ### Verification (mandatory after any JSON-LD change)
 
+> **Important:** Verify against **the build**, not against the live URL. Two independent
+> reasons, both measured — see "Why not the live URL" below.
+
 ```bash
-# 1. Confirm both scripts are in the SSR HTML, not the hydration payload:
-curl -s https://neckarshore.ai/ | grep -c 'application/ld+json'   # expect >= 2
+# 1. Build and serve the production output locally:
+npm run build && npm run start          # http://localhost:3000
 
-# 2. Parse and list @types from @graph:
-curl -s https://neckarshore.ai/ | python3 -c "import sys,re,json; [print(n.get('@type')) for m in re.findall(r'<script[^>]*ld\+json[^>]*>(.*?)</script>', sys.stdin.read(), re.DOTALL) for n in (json.loads(m).get('@graph',[json.loads(m)]))]"
+# 2. Count JSON-LD BLOCKS and list their @types (one command, does both):
+curl -s http://localhost:3000/ | python3 -c "import sys,re,json; h=sys.stdin.read(); ms=re.findall(r'<script[^>]*ld\+json[^>]*>(.*?)</script>', h, re.DOTALL); print('Bloecke:', len(ms)); [print(' -', n.get('@type')) for m in ms for n in (json.loads(m).get('@graph',[json.loads(m)]))]"
 
-# 3. Run Google Rich Results Test against the live URL (user, browser):
+# 3. Google Rich Results Test against the live URL (user, browser) — this one
+#    genuinely needs the public URL, because Google fetches it itself:
 #    https://search.google.com/test/rich-results?url=https%3A%2F%2Fneckarshore.ai%2F
 ```
 
-Expected `@types`: `['Organization','ProfessionalService']`, `Person`, `WebSite`, `WebPage`, `FAQPage`.
+Expected: **3 blocks**, `@types` `['Organization','ProfessionalService']`, `Person`, `WebSite`, `WebPage`, `FAQPage`.
+
+### Why not the live URL (2026-08-26)
+
+Two defects, both in the previous version of this block, both measured rather than assumed:
+
+1. **`grep -c` counts LINES, not occurrences — so the old step 1 could never reach its own
+   expectation.** It read `grep -c 'application/ld+json'   # expect >= 2`. Production HTML is
+   minified onto one line, so the answer is `1` on a perfectly healthy page — measured `1`
+   against the local build AND against live, while the page in fact carries 3 blocks. A
+   mandatory check whose pass condition is unreachable is not a check. (`grep -o … | wc -l`
+   would count occurrences, but that is still the wrong number: it returns 6 for 3 blocks.
+   Count BLOCKS, which is what the parse in step 2 does.)
+
+2. **A live fetch can silently return Vercel's defence page instead of the site.** Measured
+   2026-08-22: `curl` received a 34 KB "Vercel Security Checkpoint" page with HTTP **200**,
+   Playwright got 403. Nobody had switched anything on — this is Vercel's automatic
+   mitigation, which decides per traffic pattern, not per setting, and it was gone by itself
+   hours later (`vercel firewall overview` → Attack Mode: Off). The dangerous part is not that
+   it blocks: it is that **HTTP 200 plus different HTML is indistinguishable, for the caller,
+   from "the page changed"**. Every assertion against the live URL can therefore fail — or
+   pass — for a reason that has nothing to do with the code.
+
+If you must hit the live URL for something else, sanity-check the response first
+(`curl -s https://neckarshore.ai/ | wc -c` — the real homepage is ~116 KB; ~34 KB means you
+measured the checkpoint) and never let a live fetch be the only evidence for a claim.
 
 > **Note (per-route WebPage, 2026-06-28 — L-NECK-ENTITY-WEBPAGE-ID):** the `WebPage` node no
 > longer lives in the layout's Organization `@graph`. The route-invariant `Organization` /
