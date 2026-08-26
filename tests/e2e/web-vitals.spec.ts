@@ -91,7 +91,10 @@ test.describe("TC-WV pure lib — summarizeWebVitals (p75 per metric)", () => {
       { metric: "TTFB", value: "fast" },
     ]);
     expect(summary.LCP?.count).toBe(1);
-    expect(summary.FID).toBeUndefined();
+    // FID ist KEIN bekannter Schluessel mehr (web-vitals hat es fallen lassen) — genau
+    // das prueft dieser Test. Der Zugriff geht deshalb ueber eine geweitete Sicht, sonst
+    // meldet die Typpruefung den Kern der Zusicherung als Fehler.
+    expect((summary as Record<string, unknown>).FID).toBeUndefined();
     expect(summary.INP).toBeUndefined();
     expect(summary.TTFB).toBeUndefined();
   });

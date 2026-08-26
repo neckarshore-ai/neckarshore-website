@@ -1,0 +1,50 @@
+# Typpruefungs-Tor — bricht bei jedem TypeScript-Fehler ab, in src/ UND in tests/.
+#
+# WARUM ES DIESES TOR GIBT: `tsc` lief in diesem Repo NIRGENDS — weder als
+# npm-Skript noch in einem Workflow. Der Fehlerstapel konnte deshalb unbemerkt
+# wachsen, bis ein Abhaengigkeits-Sprung von aussen ihn erzwang: next 16.3.2
+# zieht tests/ in den Typcheck des Baus, 16.2.12 tat das nicht (Dependabot-PR
+# 191, Bau-Abbruch mit lint_or_type_error, 15 Fehler, alle in tests/).
+# Aufgeraeumt in PR 204 — dieses Tor haelt den Zustand.
+#
+# WARUM EIN EIGENER WORKFLOW statt eines Schritts in lint.yml: der Kontext
+# "ESLint (strict, zero warnings)" ist bereits Pflichtpruefung. Ein Schritt
+# darin waere ab dem Merge sofort scharf und damit nicht mehr einzeln
+# zurueckzuhalten. Als eigener Workflow meldet das Tor sichtbar rot, wird aber
+# erst dann bindend, wenn sein Kontext dem Zweigschutz hinzugefuegt wird —
+# eine bewusste Entscheidung, kein Nebeneffekt eines Merges.
+name: Typecheck
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Least-privilege default token — this workflow only reads the repo.
+permissions:
+  contents: read
+
+jobs:
+  typecheck:
+    name: TypeScript (tsc --noEmit, src + tests)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Kein `continue-on-error`, kein Filter: tsc exitet bei jedem Fehler
+      # non-zero. Der Lauf ist kalt, also ist er die ehrliche Zahl — lokal
+      # kann `incremental: true` ueber .tsbuildinfo ein aelteres Ergebnis
+      # zeigen.
+      - name: Run TypeScript typecheck
+        run: npm run typecheck
