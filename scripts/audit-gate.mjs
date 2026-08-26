@@ -65,21 +65,14 @@ export const ALLOWLIST = [
       "next@16.2.12 still resolves sharp to 0.34.5, and npm's proposed remedy here is next@9.3.3, " +
       "a downgrade across seven majors. Removable when Next widens its sharp range to >=0.35.0.",
   },
-  {
-    id: "GHSA-2v37-7h3g-55p8",
-    pkg: "nanoid",
-    devOnly: true,
-    expires: "2026-08-26",
-    reason:
-      "nanoid <3.3.18 can loop indefinitely when a CUSTOM generator is called with size zero. " +
-      "Reached only via devDependency @tailwindcss/postcss -> postcss 8.5.23 -> nanoid, a build-time " +
-      "path; this repo never calls nanoid itself and ships none of it. The fix (3.3.18) is not " +
-      "installable on this machine: it was published 2026-08-07 and M2 carries the post-freeze " +
-      "cooldown `before=2026-08-05` (james.yaml J-COOLDOWN-EXPIRY-2026-08-26). Verified with " +
-      "`npm pack nanoid@3.3.18 --dry-run` -> notarget, NOT with `npm view`, which is unfenced and " +
-      "reports a false all-clear. Removable the moment the cooldown is lifted or rolled forward: " +
-      "the expiry is deliberately set to the cooldown's own expiry so this entry cannot outlive it.",
-  },
+  // The nanoid entry (GHSA-2v37-7h3g-55p8) was removed 2026-08-26, on the day its own
+  // expiry fell due. It named its removal condition itself — "the moment the cooldown is
+  // lifted or rolled forward" — and the cooldown is gone: `npm config get before` is null
+  // and `npm pack nanoid@3.3.18 --dry-run` fetches the tarball. The advisory is not
+  // suppressed now, it is FIXED: package.json carries an `overrides` entry pinning nanoid
+  // to 3.3.18, because the path is purely transitive (@tailwindcss/postcss -> postcss ->
+  // nanoid) and postcss's `^3.3.16` range is already satisfied by 3.3.17, so `npm update`
+  // will not lift it. Same shape as the brace-expansion removal below.
   // Both brace-expansion entries (GHSA-mh99-v99m-4gvg, GHSA-rgw5-rvv9-x895) removed
   // 2026-08-12. Their own text named the condition for removal — "the bump fix is
   // barred by the install freeze, re-decide at freeze lift" — and the freeze lifted
