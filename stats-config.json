@@ -11,7 +11,7 @@
     { "owner": "neckarshore-ai", "name": "test-stats-action", "private": false },
     { "owner": "neckarshore-ai", "name": "vault", "private": true },
     { "owner": "neckarshore-mmps", "name": "clearpath", "private": false, "statsPath": "stats.json" },
-    { "owner": "neckarshore-mmps", "name": "kaze", "private": false },
+    { "owner": "neckarshore-mmps", "name": "kaze", "private": true },
     { "owner": "neckarshore-mmps", "name": "lockedin", "private": true },
     { "owner": "neckarshore-mmps", "name": "md-viewer", "private": false, "statsPath": "stats.json" },
     { "owner": "neckarshore-mmps", "name": "musclecat", "private": true },
