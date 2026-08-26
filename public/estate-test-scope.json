@@ -6,27 +6,27 @@
     "total": 3391
   },
   "byType": {
-    "e2e": 518,
-    "integration": 273,
+    "e2e": 534,
+    "integration": 292,
     "smoke": 1,
-    "unit": 1824
+    "unit": 2000
   },
   "endpoints": 96,
-  "expected": 16,
+  "expected": 17,
   "floor": true,
   "missing": [],
   "per_repo": [
     {
       "audited_sha": null,
       "byType": {
-        "integration": 225,
+        "integration": 244,
         "unit": 96
       },
       "endpoints": 0,
       "lenses": {},
       "private": true,
       "repo": "privates Repo",
-      "total": 321
+      "total": 340
     },
     {
       "audited_sha": "02459573530c22911e0e07327d1746e603ff1d04",
@@ -74,7 +74,7 @@
       "total": 348
     },
     {
-      "audited_sha": "cc051e1e5b8ce3776aee26039e615685b021e802",
+      "audited_sha": "a58bee08ddbd4e8fa2e16c8c8c38aeecdf3bc902",
       "byType": {
         "unit": 34
       },
@@ -84,7 +84,7 @@
       "total": 34
     },
     {
-      "audited_sha": "eaeaf37deccc396c6d3eeac05087ec7c31795973",
+      "audited_sha": "5218890f7a74f3e4737ceb1549b130a5f22a5774",
       "byType": {
         "integration": 4,
         "unit": 175
@@ -95,7 +95,7 @@
       "total": 179
     },
     {
-      "audited_sha": "f3e0c199c06c4852dc62247e5ad741341184a611",
+      "audited_sha": "17cbba30a9ba582354572669bd35a64145b72eaf",
       "byType": {
         "unit": 293
       },
@@ -105,14 +105,25 @@
       "total": 293
     },
     {
-      "audited_sha": "270e2991b431baccbfded5a9c94b06a9a488fdd3",
+      "audited_sha": null,
       "byType": {
-        "e2e": 20
+        "unit": 176
+      },
+      "endpoints": 0,
+      "lenses": {},
+      "private": true,
+      "repo": "privates Repo",
+      "total": 176
+    },
+    {
+      "audited_sha": "429cbb901ea442185426bc92a46c3468dfbf5e39",
+      "byType": {
+        "e2e": 24
       },
       "endpoints": 0,
       "lenses": {},
       "repo": "neckarshore-websites/goldoni-website",
-      "total": 20
+      "total": 24
     },
     {
       "audited_sha": "0c85542d7f5050604da2b1bac45313625a62999f",
@@ -125,7 +136,7 @@
       "total": 3
     },
     {
-      "audited_sha": "a648ef449d866f7ac6a819766330ebb7d144093d",
+      "audited_sha": "3faba9c37c49d4813d7922732d8962c932947214",
       "byType": {
         "e2e": 54
       },
@@ -135,14 +146,14 @@
       "total": 54
     },
     {
-      "audited_sha": "a2cc8685a14a0bf73e96d69b6fbe876d5c39e2f8",
+      "audited_sha": "7b2c7e5cb4c0a18a2b59dacc61b07c46a9556457",
       "byType": {
-        "e2e": 11
+        "e2e": 23
       },
       "endpoints": 0,
       "lenses": {},
       "repo": "neckarshore-websites/rauhut-website",
-      "total": 11
+      "total": 23
     },
     {
       "audited_sha": null,
@@ -252,8 +263,8 @@
       "total": 9
     }
   ],
-  "reporting": 16,
-  "repos": 22,
+  "reporting": 17,
+  "repos": 23,
   "total": 3391,
-  "updatedAt": "2026-08-14T05:27:47Z"
+  "updatedAt": "2026-08-26T09:00:02Z"
 }

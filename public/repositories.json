@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-08-14T05:27:47Z",
-  "privateCount": 23,
+  "updatedAt": "2026-08-26T09:00:02Z",
+  "privateCount": 27,
   "repos": [
     {
       "owner": "neckarshore-ai",
@@ -13,12 +13,6 @@
       "name": "clearpath",
       "visibility": "public",
       "description": "ClearPath — a mental firewall against cognitive bias: describe a decision and get a structured second opinion before you commit."
-    },
-    {
-      "owner": "neckarshore-mmps",
-      "name": "kaze",
-      "visibility": "public",
-      "description": "Kaze (風) — der App-Blocker, der dich rausschickt, den Wind suchen. iOS, kostenlos, Open Source (MIT). Notfallcode per E-Mail statt Abo-Zirkus."
     },
     {
       "owner": "neckarshore-mmps",
