@@ -53,16 +53,29 @@ jobs:
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+        with:
+          # Der Waechter liest nur Dateien und spricht ueber GH_TOKEN mit der API — er fuehrt keinen
+          # einzigen git-Befehl aus. checkout legt die Job-Anmeldung sonst per Voreinstellung in die
+          # lokale git-Konfiguration, wo sie fuer jeden Folgeschritt greifbar waere. Das ist die
+          # sparsamste Fassung: was nicht da liegt, kann nicht abgegriffen werden.
+          # (update-stats.yml behaelt sie bewusst — dieser Job PUSHT und braucht sie.)
+          persist-credentials: false
 
       # Kein `npm ci`: der Klassifikator ist abhängigkeitsfrei und läuft auf dem vorinstallierten
       # node des Runners. Ein Wächter, der erst ein Abhängigkeitsbaum installieren muss, hat mehr
       # Ausfallgründe als das, was er bewacht.
       - name: Frische klassifizieren
         id: pruefung
+        env:
+          # DIE EINGABE GEHOERT UEBER env, NICHT PER ${{ }} IN DEN KOMMANDOTEXT. Sie kommt vom
+          # Ausloeser eines workflow_dispatch und ist damit fremdbestimmter Text; direkt interpoliert
+          # waere `0"; <befehl>; "` ausfuehrbare Shell. Der Melde- und der Rot-Schritt darunter waren
+          # von Anfang an so gebaut — DIESER hier nicht, und genau darauf hat CodeRabbit auf PR #210
+          # gezeigt. Faenger war ein Werkzeug, nicht ich: ich hatte die Haertung im PR-Text bereits
+          # fuer den ganzen Workflow behauptet.
+          SCHWELLE: ${{ inputs.schwelle_stunden || '36' }}
         run: |
-          node scripts/check-stats-freshness.mjs \
-            public/stats.json \
-            "${{ github.event.inputs.schwelle_stunden || '36' }}"
+          node scripts/check-stats-freshness.mjs public/stats.json "${SCHWELLE}"
 
       - name: Ausfall melden
         if: steps.pruefung.outputs.stale == 'true'
