@@ -1,6 +1,6 @@
 {
   "audited_floor": {
-    "applied": true,
+    "applied": false,
     "audited": "2026-07-10",
     "source": "Lenin estate recount 2026-07-10 (drift-targeted fan-out wf_4fcf8c92-3a7: 18 repos re-measured on fresh clones at pinned origin/main SHAs + 7 inherited SHA-re-pinned; strict additive convention: executed AND CI-gated AND disjoint AND evidence-backed; adversarially verified, 0 refuted)",
     "total": 3391
@@ -9,7 +9,7 @@
     "e2e": 534,
     "integration": 292,
     "smoke": 1,
-    "unit": 2000
+    "unit": 2192
   },
   "endpoints": 96,
   "expected": 17,
@@ -95,28 +95,28 @@
       "total": 179
     },
     {
-      "audited_sha": "17cbba30a9ba582354572669bd35a64145b72eaf",
+      "audited_sha": "948566ae323a0c4dfdeef4ed4b474fd98fa4e00f",
       "byType": {
-        "unit": 293
+        "unit": 447
       },
       "endpoints": 0,
       "lenses": {},
       "repo": "Obsidian Vault Autopilot",
-      "total": 293
+      "total": 447
     },
     {
       "audited_sha": null,
       "byType": {
-        "unit": 176
+        "unit": 214
       },
       "endpoints": 0,
       "lenses": {},
       "private": true,
       "repo": "privates Repo",
-      "total": 176
+      "total": 214
     },
     {
-      "audited_sha": "429cbb901ea442185426bc92a46c3468dfbf5e39",
+      "audited_sha": "182db0228aca5e00dfd00bdde945edb299e6ef87",
       "byType": {
         "e2e": 24
       },
@@ -265,6 +265,6 @@
   ],
   "reporting": 17,
   "repos": 23,
-  "total": 3391,
-  "updatedAt": "2026-08-26T09:53:19Z"
+  "total": 3438,
+  "updatedAt": "2026-08-27T14:56:19Z"
 }

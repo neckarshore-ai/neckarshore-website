@@ -1,17 +1,17 @@
 {
-  "days": 157,
-  "commits": 8418,
-  "tests": 3391,
+  "days": 158,
+  "commits": 8494,
+  "tests": 3438,
   "endpoints": 96,
-  "linesOfCode": 1186633,
+  "linesOfCode": 1196576,
   "repos": 41,
   "testScope": {
-    "total": 3391,
+    "total": 3438,
     "byType": {
       "e2e": 534,
       "integration": 292,
       "smoke": 1,
-      "unit": 2000
+      "unit": 2192
     },
     "reporting": 17,
     "expected": 17,
@@ -19,11 +19,11 @@
     "repos": 23,
     "floor": true,
     "audited_floor": {
-      "applied": true,
+      "applied": false,
       "audited": "2026-07-10",
       "source": "Lenin estate recount 2026-07-10 (drift-targeted fan-out wf_4fcf8c92-3a7: 18 repos re-measured on fresh clones at pinned origin/main SHAs + 7 inherited SHA-re-pinned; strict additive convention: executed AND CI-gated AND disjoint AND evidence-backed; adversarially verified, 0 refuted)",
       "total": 3391
     }
   },
-  "updatedAt": "2026-08-26T09:53:19Z"
+  "updatedAt": "2026-08-27T14:56:19Z"
 }

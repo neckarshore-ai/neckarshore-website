@@ -1,147 +1,147 @@
 {
-  "updatedAt": "2026-08-26T09:52:07Z",
+  "updatedAt": "2026-08-27T14:54:07Z",
   "startDate": "2026-03-22",
-  "seriesTotal": 4317,
+  "seriesTotal": 7498,
   "weeks": [
     {
       "week": "2026-03-22",
-      "total": 344
+      "total": 363
     },
     {
       "week": "2026-03-29",
-      "total": 116
-    },
-    {
-      "week": "2026-04-05",
-      "total": 338
-    },
-    {
-      "week": "2026-04-12",
-      "total": 336
-    },
-    {
-      "week": "2026-04-19",
-      "total": 203
-    },
-    {
-      "week": "2026-04-26",
-      "total": 255
-    },
-    {
-      "week": "2026-05-03",
-      "total": 257
-    },
-    {
-      "week": "2026-05-10",
-      "total": 329
-    },
-    {
-      "week": "2026-05-17",
-      "total": 122
-    },
-    {
-      "week": "2026-05-24",
-      "total": 52
-    },
-    {
-      "week": "2026-05-31",
-      "total": 107
-    },
-    {
-      "week": "2026-06-07",
       "total": 167
     },
     {
+      "week": "2026-04-05",
+      "total": 384
+    },
+    {
+      "week": "2026-04-12",
+      "total": 370
+    },
+    {
+      "week": "2026-04-19",
+      "total": 216
+    },
+    {
+      "week": "2026-04-26",
+      "total": 267
+    },
+    {
+      "week": "2026-05-03",
+      "total": 271
+    },
+    {
+      "week": "2026-05-10",
+      "total": 351
+    },
+    {
+      "week": "2026-05-17",
+      "total": 132
+    },
+    {
+      "week": "2026-05-24",
+      "total": 61
+    },
+    {
+      "week": "2026-05-31",
+      "total": 231
+    },
+    {
+      "week": "2026-06-07",
+      "total": 361
+    },
+    {
       "week": "2026-06-14",
-      "total": 124
+      "total": 284
     },
     {
       "week": "2026-06-21",
-      "total": 76
+      "total": 185
     },
     {
       "week": "2026-06-28",
-      "total": 134
+      "total": 399
     },
     {
       "week": "2026-07-05",
-      "total": 190
+      "total": 451
     },
     {
       "week": "2026-07-12",
-      "total": 270
+      "total": 557
     },
     {
       "week": "2026-07-19",
-      "total": 113
+      "total": 392
     },
     {
       "week": "2026-07-26",
-      "total": 149
+      "total": 385
     },
     {
       "week": "2026-08-02",
-      "total": 121
+      "total": 374
     },
     {
       "week": "2026-08-09",
-      "total": 179
+      "total": 508
     },
     {
       "week": "2026-08-16",
-      "total": 178
+      "total": 435
     },
     {
       "week": "2026-08-23",
-      "total": 157
+      "total": 354
     }
   ],
   "months": [
     {
       "month": "2026-03",
-      "total": 460
+      "total": 530
     },
     {
       "month": "2026-04",
-      "total": 1132
+      "total": 1237
     },
     {
       "month": "2026-05",
-      "total": 867
+      "total": 1046
     },
     {
       "month": "2026-06",
-      "total": 501
+      "total": 1229
     },
     {
       "month": "2026-07",
-      "total": 722
+      "total": 1785
     },
     {
       "month": "2026-08",
-      "total": 635
+      "total": 1671
     }
   ],
   "areas": [
+    {
+      "area": "Infrastruktur",
+      "total": 3109
+    },
     {
       "area": "Omnopsis",
       "total": 1813
     },
     {
-      "area": "MMPs",
-      "total": 863
+      "area": "Websites",
+      "total": 1224
     },
     {
-      "area": "Websites",
-      "total": 760
+      "area": "MMPs",
+      "total": 869
     },
     {
       "area": "Skills",
-      "total": 469
-    },
-    {
-      "area": "Infrastruktur",
-      "total": 409
+      "total": 480
     },
     {
       "area": "Agenten",
@@ -149,9 +149,9 @@
     }
   ],
   "peak": {
-    "month": "2026-04",
-    "total": 1132
+    "month": "2026-07",
+    "total": 1785
   },
-  "reposMissing": 2,
-  "reposCounted": 39
+  "reposMissing": 0,
+  "reposCounted": 41
 }
