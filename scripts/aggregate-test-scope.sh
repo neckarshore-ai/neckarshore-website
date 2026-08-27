@@ -137,7 +137,10 @@ OUT=$(jq -s -S \
     # total, aber ohne byType" ist im Fail-soft-Absatz oben ausdruecklich vorgesehen (alte
     # omnopsis-backend-Form). Ueber `seeded` gezaehlt wuerde die Zusicherung an genau diesem Fall
     # brechen; ueber byType-Leere gezaehlt ist sie per Konstruktion wahr. Heute liefern beide
-    # Definitionen dieselbe Zahl (419) — die Wahl zahlt sich erst spaeter aus.
+    # Definitionen dieselbe Zahl — die Wahl zahlt sich erst spaeter aus. (Beim Schreiben dieser
+    # Zeile waren es 419; seit PR #214 zwei Stunden spaeter sind es 354, weil dort 65 Tests aus
+    # zwei archivierten Repos aus der Saat fielen. Die Zahl steht hier bewusst nicht mehr fest
+    # verdrahtet: sie ist eine Momentaufnahme und veraltet schneller als die Aussage darueber.)
     untyped_total: ([$merged[] | select((.byType | length) == 0) | .total] | add // 0),
     endpoints: ([$merged[].endpoints] | add // 0),
     reporting: ($live | length),

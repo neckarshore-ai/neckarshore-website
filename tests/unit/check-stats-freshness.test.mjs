@@ -89,3 +89,35 @@ test("formatVerdict benennt in JEDEM Zweig den gemessenen Wert — der Issue-Tex
   assert.match(formatVerdict(classifyFreshness(at(2), NOW)), /frisch/);
   assert.match(formatVerdict(classifyFreshness(null, NOW)), /ÜBERFÄLLIG.*updatedAt/);
 });
+
+// ── Nachbesserung nach der Auslieferung: fail-closed auf die SCHWELLE selbst ──
+//
+// Gefunden von einer Pruefagenten-Linse NACH dem Merge von #210/#213, danach von Hand nachgemessen.
+// `Number("abc")` ist NaN und `age > NaN` ist immer falsch — eine vertippte Schwelle stellte den
+// Waechter still auf "frisch", egal wie alt die Zahl war. Fail-OPEN in dem einen Bauteil, dessen
+// erklaerter Zweck fail-closed ist, und ausgerechnet auf dem Hand-Hebel, ueber den die Bruchprobe
+// laeuft. Der cron-Weg war nie betroffen: er uebergibt keine Eingabe und landet auf 36.
+
+test("FAIL-CLOSED auf die Schwelle: eine nichtnumerische Schwelle meldet, statt still gruen zu sein", () => {
+  // `undefined` steht ABSICHTLICH NICHT in dieser Liste: es loest den JS-Vorgabeparameter aus und
+  // landet korrekt auf 36. Ich hatte es zuerst hineingeschrieben, der Test wurde rot, und richtig
+  // war der Code. Die Zeile bleibt als Merkposten stehen — sonst schreibt sie jemand wieder hinein.
+  for (const kaputt of ["abc", "", NaN, null, Infinity, -Infinity, {}]) {
+    const v = classifyFreshness(at(1), NOW, kaputt);
+    assert.equal(v.stale, true, `Schwelle ${JSON.stringify(kaputt)} muss melden statt zu schweigen`);
+    assert.equal(v.reason, "invalid-threshold");
+    assert.equal(v.thresholdHours, null, "eine unbrauchbare Schwelle wird nicht als Zahl weitergereicht");
+  }
+});
+
+test("das Alter wird auch bei unbrauchbarer Schwelle mitgemeldet — der Mensch soll es sehen", () => {
+  const v = classifyFreshness(at(45), NOW, "keine-zahl");
+  assert.equal(v.ageHours, 45, "das Alter ist bekannt, nur die Schwelle nicht");
+  assert.match(formatVerdict(v), /UEBERFAELLIG \(fail-closed\)/);
+});
+
+test("gueltige Schwellen bleiben unveraendert — die Nachbesserung darf den Normalfall nicht anfassen", () => {
+  assert.equal(classifyFreshness(at(1), NOW, 36).stale, false);
+  assert.equal(classifyFreshness(at(45), NOW, 36).stale, true);
+  assert.equal(classifyFreshness(at(1), NOW, 0).stale, true, "0 bleibt der Bruchproben-Hebel");
+});

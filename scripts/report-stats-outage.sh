@@ -42,10 +42,18 @@ esac
 # `/issues` liefert AUCH Pull Requests — `select(.pull_request == null)` ist deshalb Pflicht und
 # nicht Kosmetik: ein PR mit dem Marker im Titel wuerde sonst als bestehender Vorgang gelten und die
 # Meldung waere ein Kommentar am falschen Ort.
+#
+# KEIN `| head -n 1` HINTER gh. `--jq` laeuft PRO SEITE, also kann jede Seite eine Zeile liefern.
+# Beendet `head` die Leitung nach der ersten, bekommt gh SIGPIPE, `pipefail` reicht 141 durch und
+# `set -e` bricht das Skript ab — der Melder stirbt dann daran, dass er melden wollte. Nachgemessen
+# statt hergeleitet: `set -euo pipefail; { echo 111; sleep 0.3; echo 222; } | head -n 1` -> exit 141.
+# Die Ausgabe wird deshalb erst vollstaendig eingesammelt und danach die erste Zeile genommen; sed
+# liest seine Eingabe zu Ende und schliesst die Leitung nicht vorzeitig. (Pruefagenten-Fund nach der
+# Auslieferung von PR #213.)
 REPO_SLUG=$(gh repo view --json nameWithOwner --jq .nameWithOwner)
-BESTEHEND=$(gh api --paginate "repos/${REPO_SLUG}/issues?state=open&per_page=100" \
-  --jq "[.[] | select(.pull_request == null) | select(.title | contains(\"${MARKER}\")) | .number] | first // empty" \
-  | head -n 1)
+TREFFER=$(gh api --paginate "repos/${REPO_SLUG}/issues?state=open&per_page=100" \
+  --jq "[.[] | select(.pull_request == null) | select(.title | contains(\"${MARKER}\")) | .number] | first // empty")
+BESTEHEND=$(printf '%s\n' "$TREFFER" | sed -n '1p')
 
 if [ -n "$BESTEHEND" ]; then
   echo "Bestehender offener Vorgang #${BESTEHEND} — kommentiere statt neu anzulegen." >&2
