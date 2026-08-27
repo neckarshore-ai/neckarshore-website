@@ -1,0 +1,109 @@
+# Wächter über den Statistik-Sammler — der Melder für den AUSBLEIBENDEN Lauf.
+#
+# WARUM ES DIESEN ZWEITEN WORKFLOW GIBT: update-stats.yml trägt seit heute einen
+# `if: failure()`-Schritt. Der fängt den ROTEN Lauf. Er kann den ausbleibenden Lauf nicht fangen —
+# ein Workflow, der nie startet, führt keinen Schritt aus, auch keinen Meldeschritt. Genau dieser
+# Fall wurde am 2026-08-27 gestreift: cron steht auf 04:00 UTC, der Lauf kam um 14:51 UTC. Wäre er
+# gar nicht gekommen, hätte es niemand bemerkt.
+#
+# WAS GEMESSEN WIRD: nicht der Laufstatus, sondern das ALTER DER VERÖFFENTLICHTEN ZAHL
+# (public/stats.json -> updatedAt). Roter Lauf, ausbleibender Lauf und "grün gemeldet, aber nicht
+# gepusht" sehen am Laufstatus verschieden aus und am Alter der Zahl gleich. Gemessen wird das, was
+# die Seite den Besuchern zeigt.
+#
+# WAS DIESER WÄCHTER NICHT KANN, ausdrücklich hier statt im Kleingedruckten: er ist selbst ein
+# cron-Workflow und kann selbst sterben. Er verkleinert den blinden Fleck, er beseitigt ihn nicht.
+# Der Grund, ihn trotzdem dem externen Totmannschalter vorzuziehen: er ist ein API-Aufruf ohne
+# Abhängigkeiten, der Sammler ist ein 200-Zeilen-Job mit Klonen, cloc und PAT — die Ausfallraten
+# sind nicht vergleichbar. Ein externer Totmannschalter bleibt die stärkere Lösung und ist als
+# eigener Vorgang offen, nicht vergessen.
+#
+# ZWEITER MORGEN, NICHT ERSTER: bei einem verpassten Lauf ist der Stand am nächsten Mittag ~30 h alt
+# und damit von einem gesunden VERZÖGERTEN Lauf nicht unterscheidbar. Der Wächter meldet deshalb am
+# zweiten Morgen (~54 h). Zwei Tage statt zwölf ist der ehrliche Gewinn. Herleitung und Grenzwert
+# sind in tests/unit/check-stats-freshness.test.mjs festgenagelt.
+name: Stats Watchdog
+
+on:
+  schedule:
+    # 12:00 UTC — weit nach dem 04:00-Fenster des Sammlers UND nach dessen beobachtetem Verzug
+    # (bis ~15:00 UTC gemessen). Ein Wächter, der vor dem Lauf prüft, meldet den Lauf als fehlend,
+    # den er gerade nicht abgewartet hat.
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+    inputs:
+      schwelle_stunden:
+        description: "Überfälligkeits-Schwelle in Stunden (Standard 36). 0 = alles ist überfällig — der Hebel für die Bruchprobe."
+        required: false
+        default: "36"
+
+# Sparsamster Standard-Token.
+permissions:
+  contents: read
+
+jobs:
+  watchdog:
+    name: Alter der veroeffentlichten Zahl pruefen
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Job-scoped statt workflow-scoped (#270 §1.3): nur dieser Job legt einen Vorgang an.
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+
+      # Kein `npm ci`: der Klassifikator ist abhängigkeitsfrei und läuft auf dem vorinstallierten
+      # node des Runners. Ein Wächter, der erst ein Abhängigkeitsbaum installieren muss, hat mehr
+      # Ausfallgründe als das, was er bewacht.
+      - name: Frische klassifizieren
+        id: pruefung
+        run: |
+          node scripts/check-stats-freshness.mjs \
+            public/stats.json \
+            "${{ github.event.inputs.schwelle_stunden || '36' }}"
+
+      - name: Ausfall melden
+        if: steps.pruefung.outputs.stale == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Ausgaben laufen ueber env, NICHT direkt in die Shell interpoliert: ein `"` oder `$(...)`
+          # im Befundtext wuerde sonst als Shell-Syntax gelesen. Variablen-Expansion wertet den Inhalt
+          # nicht erneut aus — genau deshalb ist dieser Umweg die Absicherung.
+          VERDICT: ${{ steps.pruefung.outputs.verdict }}
+          UPDATED_AT: ${{ steps.pruefung.outputs.updated_at }}
+          AGE_HOURS: ${{ steps.pruefung.outputs.age_hours }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          cat > /tmp/ausfall.md <<TXT
+          **Die veroeffentlichte Estate-Zahl steht still.**
+
+          - Befund: ${VERDICT}
+          - \`public/stats.json\` -> \`updatedAt\`: \`${UPDATED_AT}\`
+          - Alter: **${AGE_HOURS} h**
+          - Gemeldet von: Waechter (\`stats-watchdog.yml\`), Lauf ${RUN_URL}
+
+          Der Waechter misst das Alter der veroeffentlichten Zahl, nicht den Laufstatus. Ein ueberfaelliger
+          Stand heisst: der Sammler ist rot, **oder** er ist gar nicht gestartet, **oder** er lief gruen
+          und hat nicht gepusht. Alle drei sehen hier gleich aus — welcher es ist, steht in
+          \`gh run list --workflow=update-stats.yml\`.
+
+          Solange dieser Vorgang offen ist, wird hier weiter kommentiert statt ein neuer angelegt.
+          TXT
+          bash scripts/report-stats-outage.sh \
+            "[stats-ausfall]" \
+            "[stats-ausfall] Estate-Zahl steht still" \
+            /tmp/ausfall.md
+
+      # Der Lauf geht ROT, nachdem der Vorgang steht. Zwei Signale statt einem: der offene Vorgang
+      # ist der Kanal, der bleibt; der rote Lauf ist der, den man in der Actions-Liste sieht.
+      # Reihenfolge ist Absicht — erst melden, dann scheitern.
+      - name: Rot gehen, damit der Ausfall auch in der Actions-Liste steht
+        if: steps.pruefung.outputs.stale == 'true'
+        env:
+          VERDICT: ${{ steps.pruefung.outputs.verdict }}
+        run: |
+          echo "::error::${VERDICT}"
+          exit 1

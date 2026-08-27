@@ -29,6 +29,11 @@ jobs:
     # scope for a commit-and-push job (#89/#96/#97 pipeline — do NOT downgrade).
     permissions:
       contents: write
+      # issues: write NUR fuer den Meldeschritt am Ende dieses Jobs. Ohne diese Zeile scheitert
+      # `gh issue create` mit 403 — und zwar GENAU DANN, wenn der Job ohnehin schon rot ist, also
+      # in dem Moment, in dem die Meldung gebraucht wird. Ein Melder, der nur im Fehlerfall
+      # scheitert, ist schlimmer als keiner: im Protokoll sieht er aus wie ein funktionierender.
+      issues: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
         with:
@@ -352,3 +357,50 @@ jobs:
             git commit -m "chore: update daily stats"
             git push
           fi
+
+      # --- Ausfallmeldung: der Melder fuer den ROTEN Lauf ---------------------------------------
+      # WARUM DIESER SCHRITT EXISTIERT: bis 2026-08-27 trug dieser Workflow keinen einzigen
+      # Benachrichtigungsschritt. Vom 15.08. bis 26.08. sind ZWOELF schedule-Laeufe in Folge rot
+      # gelaufen, public/stats.json stand still, und gefunden hat es ein Mensch, der zufaellig ins
+      # Protokoll sah. GitHub verschickt bei scheiternden schedule-Laeufen zwar von sich aus eine
+      # Mail an den letzten Bearbeiter der cron-Zeile — diese Mails KAMEN an und wurden nicht
+      # gelesen (Founder-Auskunft 2026-08-27). Deshalb ein Issue: es bleibt offen, bis jemand es
+      # schliesst, statt einmal vorbeizurauschen.
+      #
+      # `if: failure()` heisst: ein vorheriger Schritt DIESES Jobs ist gescheitert. Was dieser
+      # Schritt NICHT faengt und auch nicht fangen kann: einen Lauf, der nie startet — ein Workflow,
+      # der nicht laeuft, fuehrt keinen Meldeschritt aus. Dafuer gibt es stats-watchdog.yml, der
+      # statt des Laufs das Alter der veroeffentlichten Zahl misst. Die beiden zusammen sind der
+      # Melder, keiner von beiden allein.
+      #
+      # Beide Melder teilen sich scripts/report-stats-outage.sh und denselben Titel-Marker, also
+      # auch denselben Vorgang: ein Ausfall ist ein Ausfall, egal welcher der beiden ihn sieht.
+      - name: Ausfall melden
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # ueber env statt direkt interpoliert — Script-Injection-Muster, siehe stats-watchdog.yml.
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          set -euo pipefail
+          cat > /tmp/ausfall.md <<TXT
+          **Der Statistik-Sammler ist rot gelaufen.**
+
+          - Workflow: \`update-stats.yml\`, Status \`${JOB_STATUS}\`
+          - Lauf: ${RUN_URL}
+          - Wirkung: \`public/stats.json\` wurde in diesem Lauf **nicht** neu veroeffentlicht. Die Seite
+            zeigt weiter den letzten erfolgreichen Stand — nicht falsch, aber alt.
+
+          Welcher Schritt gescheitert ist, steht im verlinkten Protokoll. Haeufige Ursachen aus der
+          Vergangenheit: eine Zeile in \`stats-config.json\`, die auf ein umbenanntes, archiviertes oder
+          privat gewordenes Repo zeigt (das Listen-Tor haelt dann bewusst an, bevor falsche Zahlen
+          veroeffentlicht werden), oder ein abgelaufener \`STATS_PAT\`.
+
+          Solange dieser Vorgang offen ist, kommentieren beide Melder hier hinein, statt neue Vorgaenge
+          anzulegen. Schliessen, wenn wieder gruen — der Waechter meldet sich von selbst erneut.
+          TXT
+          bash scripts/report-stats-outage.sh \
+            "[stats-ausfall]" \
+            "[stats-ausfall] Estate-Zahl steht still" \
+            /tmp/ausfall.md
