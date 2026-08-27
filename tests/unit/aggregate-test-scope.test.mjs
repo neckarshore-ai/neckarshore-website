@@ -362,14 +362,27 @@ test("fully-stamped rollup → unstamped[] is empty and NO WARN fires", () => {
 test("seed: repos with a known Lenin Durchstich carry a non-null audited_sha", () => {
   const seed = JSON.parse(readFileSync(SEED_PATH, "utf8"));
   const bySlug = Object.fromEntries(seed.repos.map((r) => [r.repo, r]));
-  // The 6 repos covered by a Lenin Durchstich (5 reports 2026-06-19..2026-06-30). Assert non-null
-  // + hex-shape, NOT the exact SHA — a legitimate re-audit may re-stamp with a newer SHA.
+  // Die Repos mit einem Lenin-Durchstich (5 Berichte 2026-06-19..2026-06-30), die HEUTE noch in der
+  // Saat stehen. Geprueft wird non-null + Hex-Form, NICHT die exakte SHA — eine berechtigte
+  // Nachpruefung darf neu stempeln.
+  //
+  // WARUM DIE LISTE GEPFLEGT WERDEN MUSS UND NICHT NUR WAECHST: die Zeile darunter behauptet
+  // ANWESENHEIT in der Saat. Das ist Absicht (ein Durchstich-Repo darf nicht still herausfallen),
+  // hat aber die Kehrseite, dass ein inhaltlich RICHTIGES Entfernen den Test rot faerbt. Genau das
+  // ist am 2026-08-27 passiert: neckarshore-ai/observatory ist bei GitHub `archived=true` und wurde
+  // mitsamt seinen 30 Tests aus der Saat genommen — der Test meldete daraufhin "seed must contain
+  // neckarshore-ai/observatory", obwohl das Entfernen der Zweck der Aenderung war.
+  // Wer hier eine Zeile streicht, muss den Grund danebenschreiben. Wer sie ohne Grund streicht,
+  // hebt die Absicherung auf.
   const KNOWN_DURCHSTICH = [
     "neckarshore-websites/neckarshore-website",
     "omnopsis-ai/omnopsis-frontend",
     "neckarshore-ai/dev-environment",
     "omnopsis-ai/omnopsis-contracts",
-    "neckarshore-ai/observatory",
+    // neckarshore-ai/observatory — 2026-08-27 aus der Saat entfernt, weil das Repo bei GitHub
+    // archiviert ist (gh api repos/neckarshore-ai/observatory -> archived=true, letzter Push
+    // 2026-06-30). Der Durchstich hat stattgefunden, das Repo ist tot. Nicht wieder aufnehmen,
+    // ohne vorher die Archivierung zu pruefen.
     "neckarshore-skills/ai-phrase-check",
   ];
   for (const slug of KNOWN_DURCHSTICH) {
