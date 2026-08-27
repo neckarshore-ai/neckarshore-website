@@ -1,10 +1,4 @@
 {
-  "audited_floor": {
-    "applied": false,
-    "audited": "2026-07-10",
-    "source": "Lenin estate recount 2026-07-10 (drift-targeted fan-out wf_4fcf8c92-3a7: 18 repos re-measured on fresh clones at pinned origin/main SHAs + 7 inherited SHA-re-pinned; strict additive convention: executed AND CI-gated AND disjoint AND evidence-backed; adversarially verified, 0 refuted)",
-    "total": 3391
-  },
   "byType": {
     "e2e": 534,
     "integration": 292,
@@ -116,7 +110,7 @@
       "total": 214
     },
     {
-      "audited_sha": "182db0228aca5e00dfd00bdde945edb299e6ef87",
+      "audited_sha": "fd17e353ee74de21b79e1f892b6f16a464f719f2",
       "byType": {
         "e2e": 24
       },
@@ -146,7 +140,7 @@
       "total": 54
     },
     {
-      "audited_sha": "7b2c7e5cb4c0a18a2b59dacc61b07c46a9556457",
+      "audited_sha": "c3162015d964b265ca81ef6d88bf77937f4bc1e6",
       "byType": {
         "e2e": 23
       },
@@ -220,26 +214,6 @@
       "private": true,
       "repo": "privates Repo",
       "seeded": true,
-      "total": 35
-    },
-    {
-      "audited_sha": null,
-      "byType": {},
-      "endpoints": 0,
-      "lenses": {},
-      "private": true,
-      "repo": "privates Repo",
-      "seeded": true,
-      "total": 30
-    },
-    {
-      "audited_sha": null,
-      "byType": {},
-      "endpoints": 0,
-      "lenses": {},
-      "private": true,
-      "repo": "privates Repo",
-      "seeded": true,
       "total": 19
     },
     {
@@ -264,7 +238,8 @@
     }
   ],
   "reporting": 17,
-  "repos": 23,
-  "total": 3438,
-  "updatedAt": "2026-08-27T14:56:19Z"
+  "repos": 21,
+  "total": 3373,
+  "untyped_total": 354,
+  "updatedAt": "2026-08-27T22:00:34Z"
 }
