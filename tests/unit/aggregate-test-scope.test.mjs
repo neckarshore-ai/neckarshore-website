@@ -406,3 +406,63 @@ test("seed: every row has an audited_sha (string|null) + a non-empty sha_note", 
     assert.ok(typeof r.sha_note === "string" && r.sha_note.length > 0, `${r.repo} needs a non-empty sha_note (provenance / reason-if-null)`);
   }
 });
+
+// ── untyped_total: die Differenz zwischen sum(byType) und total muss BENANNT sein (Q5) ──
+//
+// WARUM ES DIESE TESTS GIBT: der Skriptkopf erklaerte `sum(byType)==total` zur Eigenschaft, und die
+// Ausgabe verletzte sie um genau die Saat-Summe — byType wird nur aus LIVE gebaut, total aus
+// live+seed. Kein Feld benannte die Luecke. Ein Leser, der nachrechnete, hielt die Gesamtzahl fuer
+// falsch; genau daran ist der Founder am 2026-08-27 haengengeblieben.
+
+test("untyped_total: sum(byType) + untyped_total == total (die ehrliche Zusicherung)", () => {
+  const { json } = runAggregator(
+    [
+      { owner: "o", name: "a", statsPath: "s.json", stats: { tests: { total: 30, byType: { unit: 20, e2e: 10 } } } },
+      { owner: "o", name: "b", statsPath: "s.json", stats: { tests: { total: 12, byType: { unit: 12 } } } },
+    ],
+    { floor: true, repos: [{ repo: "o/c", total: 7 }, { repo: "o/d", total: 5 }] },
+  );
+  const byTypeSum = Object.values(json.byType).reduce((a, b) => a + b, 0);
+  assert.equal(byTypeSum, 42, "byType kommt NUR aus den live Produzenten");
+  assert.equal(json.untyped_total, 12, "die beiden Saat-Zeilen tragen keine Typangabe");
+  assert.equal(json.total, 54);
+  assert.equal(byTypeSum + json.untyped_total, json.total, "die Zahlen muessen sich addieren");
+});
+
+test("untyped_total zaehlt ueber byType-LEERE, nicht ueber `seeded` — der Fail-soft-Fall haengt daran", () => {
+  // Der Skriptkopf sieht ausdruecklich einen LIVE-Produzenten mit numerischem total und OHNE
+  // byType vor (alte omnopsis-backend-Form). Ueber `seeded` gezaehlt waere er in untyped_total
+  // NICHT enthalten und die Zusicherung waere genau an diesem Fall falsch.
+  const { json } = runAggregator(
+    [
+      { owner: "o", name: "neu", statsPath: "s.json", stats: { tests: { total: 30, byType: { unit: 30 } } } },
+      { owner: "o", name: "alt", statsPath: "s.json", stats: { tests: { total: 9 } } }, // live, kein byType
+    ],
+    { floor: true, repos: [{ repo: "o/saat", total: 4 }] },
+  );
+  const byTypeSum = Object.values(json.byType).reduce((a, b) => a + b, 0);
+  assert.equal(json.untyped_total, 13, "9 (live ohne byType) + 4 (Saat) — NICHT nur die 4");
+  assert.equal(byTypeSum + json.untyped_total, json.total, "Zusicherung haelt auch im Fail-soft-Fall");
+});
+
+test("untyped_total ist 0, wenn jede Zeile eine Typangabe traegt", () => {
+  const { json } = runAggregator([
+    { owner: "o", name: "a", statsPath: "s.json", stats: { tests: { total: 5, byType: { unit: 5 } } } },
+  ]);
+  assert.equal(json.untyped_total, 0);
+  assert.equal(Object.values(json.byType).reduce((a, b) => a + b, 0), json.total);
+});
+
+test("EIN GREIFENDER audited_floor HEBT total AN — dann gilt die Zusicherung bewusst NICHT", () => {
+  // Die dokumentierte Ausnahme, und sie ist hier festgenagelt, damit niemand sie spaeter fuer einen
+  // Fehler haelt: max() hebt total ueber die Summe. `audited_floor.applied` ist die Begruendung.
+  const { json } = runAggregator(
+    [{ owner: "o", name: "a", statsPath: "s.json", stats: { tests: { total: 10, byType: { unit: 10 } } } }],
+    { floor: true, repos: [{ repo: "o/saat", total: 5 }], audited_floor: { total: 100, audited: "2026-07-10", source: "x" } },
+  );
+  const byTypeSum = Object.values(json.byType).reduce((a, b) => a + b, 0);
+  assert.equal(json.audited_floor.applied, true);
+  assert.equal(json.total, 100, "der Boden fuehrt");
+  assert.equal(json.untyped_total, 5, "untyped_total bleibt die ehrliche Saat-Summe, es wird NICHT mitgehoben");
+  assert.ok(byTypeSum + json.untyped_total < json.total, "die Differenz ist der Boden, und applied sagt das");
+});

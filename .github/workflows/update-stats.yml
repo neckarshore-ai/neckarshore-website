@@ -227,7 +227,12 @@ jobs:
           # internal reporting/expected provenance fields. audited_floor (no slugs — TC-CNT-083's
           # two-slug-field assumption holds) rides along so stats.json carries the same headline
           # provenance as estate-test-scope.json; jq emits null when the seed has none.
-          TEST_SCOPE_SUBSET=$(echo "$TEST_SCOPE" | jq '{total, byType, reporting, expected, missing, repos, floor, audited_floor}')
+          # untyped_total MUSS hier mit aufgezaehlt werden, sonst erreicht es public/stats.json nie —
+          # die Projektion nennt jeden Schluessel einzeln. withhold-private-repos.sh reicht unbekannte
+          # Schluessel zwar durch (es setzt nur per_repo/missing/unstamped), diese Zeile tut das NICHT.
+          # Es ist eine reine Zahl ohne Slug — TC-CNT-083s Annahme (per_repo[].repo + missing[] sind
+          # die einzigen slug-tragenden Felder) bleibt damit unberuehrt.
+          TEST_SCOPE_SUBSET=$(echo "$TEST_SCOPE" | jq '{total, byType, untyped_total, reporting, expected, missing, repos, floor, audited_floor}')
           # `unstamped` is a TRANSIENT pipeline field (drives the stderr WARN + the job summary,
           # which read the in-memory $TEST_SCOPE) — it is deliberately NOT persisted to the served
           # artifact. Stripping it keeps the served schema unchanged AND keeps per_repo[].repo +
