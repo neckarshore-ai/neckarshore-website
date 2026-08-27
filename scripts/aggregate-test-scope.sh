@@ -12,6 +12,13 @@
 #
 # No-double-count contract (docs/reference/stats-json-contract.md):
 #   - .tests.total and .tests.byType are ADDITIVE (distinct runner totals; sum(byType)==total).
+#     ACHTUNG, DAS GILT PRO PRODUZENT UND NICHT FUER DIESE AUSGABE: `byType` wird nur aus den LIVE
+#     Produzenten gebaut, `total` aus live+seed. Saat-Zeilen tragen per Definition keine Typangabe,
+#     also ist sum(byType) systematisch KLEINER als total. Bis 2026-08-27 benannte kein Feld die
+#     Differenz, und ein Leser, der nachrechnete, hielt die Gesamtzahl fuer falsch (genau das ist
+#     dem Founder passiert). Deshalb gibt es jetzt `untyped_total`, und die ehrliche Eigenschaft
+#     lautet:  sum(byType) + untyped_total == total   (ausser wenn ein audited_floor greift, der
+#     total per max() anhebt — dann ist total groesser und `audited_floor.applied` sagt warum).
 #   - .tests.lenses are OVERLAPPING, display-only subsets — NEVER summed into total or byType.
 # Fail-closed-visible:
 #   - a repo with a statsPath whose file is absent/unparseable contributes 0, emits a WARN on
@@ -124,6 +131,14 @@ OUT=$(jq -s -S \
   | {
     total: ([$merged[].total] | add // 0),
     byType: (reduce $live[].byType as $b ({}; reduce ($b | to_entries[]) as $e (.; .[$e.key] = ((.[$e.key] // 0) + $e.value)))),
+    # Die Summe der Zeilen, die NICHTS zu byType beitragen — sie macht die Differenz zwischen
+    # sum(byType) und total benennbar statt unerklaerlich.
+    # DEFINITION UEBER byType-LEERE, NICHT UEBER `seeded`: der Fall "Live-Produzent mit numerischem
+    # total, aber ohne byType" ist im Fail-soft-Absatz oben ausdruecklich vorgesehen (alte
+    # omnopsis-backend-Form). Ueber `seeded` gezaehlt wuerde die Zusicherung an genau diesem Fall
+    # brechen; ueber byType-Leere gezaehlt ist sie per Konstruktion wahr. Heute liefern beide
+    # Definitionen dieselbe Zahl (419) — die Wahl zahlt sich erst spaeter aus.
+    untyped_total: ([$merged[] | select((.byType | length) == 0) | .total] | add // 0),
     endpoints: ([$merged[].endpoints] | add // 0),
     reporting: ($live | length),
     expected: $expected,
