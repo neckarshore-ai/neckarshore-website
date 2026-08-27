@@ -33,8 +33,19 @@ case "$TITEL" in
 esac
 
 # Offener Vorgang mit demselben Marker? Lokaler Filter auf der Listen-API (kein Suchindex).
-BESTEHEND=$(gh issue list --state open --limit 100 --json number,title \
-  --jq "[.[] | select(.title | contains(\"${MARKER}\")) | .number] | first // empty")
+#
+# VOLLSTAENDIG BLAETTERN statt `--limit 100`: ein Ausfall-Vorgang kann lange offen stehen, waehrend
+# neuere Vorgaenge ihn nach hinten schieben. Faellt er aus dem Fenster, legt der naechste Melder
+# einen zweiten an — also genau die Lawine, die die Entdoppelung verhindern soll, nur spaeter und
+# schwerer zu erkennen. (CodeRabbit-Fund auf PR #210.)
+#
+# `/issues` liefert AUCH Pull Requests — `select(.pull_request == null)` ist deshalb Pflicht und
+# nicht Kosmetik: ein PR mit dem Marker im Titel wuerde sonst als bestehender Vorgang gelten und die
+# Meldung waere ein Kommentar am falschen Ort.
+REPO_SLUG=$(gh repo view --json nameWithOwner --jq .nameWithOwner)
+BESTEHEND=$(gh api --paginate "repos/${REPO_SLUG}/issues?state=open&per_page=100" \
+  --jq "[.[] | select(.pull_request == null) | select(.title | contains(\"${MARKER}\")) | .number] | first // empty" \
+  | head -n 1)
 
 if [ -n "$BESTEHEND" ]; then
   echo "Bestehender offener Vorgang #${BESTEHEND} — kommentiere statt neu anzulegen." >&2
