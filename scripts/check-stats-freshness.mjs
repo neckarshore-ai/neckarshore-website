@@ -66,6 +66,23 @@ export function ageHours(updatedAt, nowMs) {
  *   reason: "fresh" | "overdue" | "unknown-timestamp"
  */
 export function classifyFreshness(updatedAt, nowMs, thresholdHours = DEFAULT_THRESHOLD_HOURS) {
+  // FAIL-CLOSED AUF DIE SCHWELLE SELBST. `Number("abc")` ist NaN, und `age > NaN` ist IMMER falsch —
+  // eine vertippte Schwelle haette den Waechter also still auf "frisch" gestellt, egal wie alt die
+  // Zahl ist. Fail-OPEN in genau dem Bauteil, dessen erklaerter Zweck fail-closed ist. Gefunden von
+  // einer Pruefagenten-Linse nach der Auslieferung, danach von Hand nachgemessen:
+  //   node scripts/check-stats-freshness.mjs public/stats.json abc
+  //   -> "frisch: 0.6 h alt (Schwelle NaN h)"   {"stale":false,...}
+  // Der cron-Weg war nie betroffen (er uebergibt keine Eingabe und landet auf 36); betroffen war der
+  // Hand-Hebel — also ausgerechnet der Weg, ueber den die Bruchprobe laeuft.
+  if (!Number.isFinite(thresholdHours)) {
+    return {
+      stale: true,
+      ageHours: ageHours(updatedAt, nowMs),
+      updatedAt: updatedAt ?? null,
+      thresholdHours: null,
+      reason: "invalid-threshold",
+    };
+  }
   const age = ageHours(updatedAt, nowMs);
   if (age === null) {
     return {
@@ -90,6 +107,9 @@ export function classifyFreshness(updatedAt, nowMs, thresholdHours = DEFAULT_THR
 
 /** Menschenlesbare Zeile für Protokoll und Issue-Text. */
 export function formatVerdict(v) {
+  if (v.reason === "invalid-threshold") {
+    return `UEBERFAELLIG (fail-closed): die uebergebene Schwelle ist keine Zahl — der Waechter kann nicht urteilen und schweigt deshalb NICHT.`;
+  }
   if (v.reason === "unknown-timestamp") {
     return `ÜBERFÄLLIG: public/stats.json trägt keinen lesbaren updatedAt-Zeitstempel (gelesen: ${JSON.stringify(v.updatedAt)}).`;
   }
