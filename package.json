@@ -32,13 +32,13 @@
     "check:contrast": "node --import tsx scripts/check-contrast.mjs"
   },
   "dependencies": {
-    "@upstash/redis": "1.38.2",
+    "@upstash/redis": "1.38.3",
     "gray-matter": "4.0.3",
     "lucide-react": "1.31.0",
-    "marked": "18.0.10",
+    "marked": "18.0.11",
     "minisearch": "7.2.0",
     "next": "16.2.12",
-    "nodemailer": "9.0.5",
+    "nodemailer": "9.0.6",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "sanitize-html": "2.17.7",
