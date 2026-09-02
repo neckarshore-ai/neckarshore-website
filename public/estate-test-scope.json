@@ -3,7 +3,7 @@
     "e2e": 534,
     "integration": 292,
     "smoke": 1,
-    "unit": 2192
+    "unit": 2213
   },
   "endpoints": 96,
   "expected": 17,
@@ -89,14 +89,14 @@
       "total": 179
     },
     {
-      "audited_sha": "948566ae323a0c4dfdeef4ed4b474fd98fa4e00f",
+      "audited_sha": "91ab83872e64c3109b90dfc9acc46036b8be32e3",
       "byType": {
-        "unit": 447
+        "unit": 468
       },
       "endpoints": 0,
       "lenses": {},
       "repo": "Obsidian Vault Autopilot",
-      "total": 447
+      "total": 468
     },
     {
       "audited_sha": null,
@@ -239,7 +239,7 @@
   ],
   "reporting": 17,
   "repos": 21,
-  "total": 3373,
+  "total": 3394,
   "untyped_total": 354,
-  "updatedAt": "2026-09-01T09:03:55Z"
+  "updatedAt": "2026-09-02T08:16:58Z"
 }
